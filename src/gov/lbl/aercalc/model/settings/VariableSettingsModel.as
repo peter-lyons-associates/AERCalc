@@ -20,7 +20,7 @@ public class VariableSettingsModel
 
         this.init();
 
-        //TODO AERCalc should load these from external file, as COMFEN does
+        //TODO WincovER should load these from external file, as COMFEN does
 
         Logger.debug("Initializing variable settings");
 

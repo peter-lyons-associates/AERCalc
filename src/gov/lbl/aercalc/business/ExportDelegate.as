@@ -24,7 +24,7 @@ public class ExportDelegate {
     // to escape the delimiter if it appears in property value
     private var _exportColumns:Array = [
         {
-            title: "AERCalc Record ID",
+            title: "WincovER Record ID",
             varName: "id",
             escapeDelimiter: false,
             includeInParentRow: true,
@@ -186,7 +186,7 @@ public class ExportDelegate {
             blankIfZero: false
         },
         {
-            title: "AERCalc Version",
+            title: "WincovER Version",
             varName: "AERCalcVersion",
             escapeDelimiter: false,
             includeInParentRow: false,

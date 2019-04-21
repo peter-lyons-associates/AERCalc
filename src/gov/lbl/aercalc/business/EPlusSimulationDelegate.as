@@ -357,7 +357,7 @@ package gov.lbl.aercalc.business
 			
 			var appXML:XML = NativeApplication.nativeApplication.applicationDescriptor;
 			var air:Namespace = appXML.namespaceDeclarations()[0];
-			var createdByText:String = "!- Created by AERCalc v" + appXML.air::versionNumber + "\n";
+			var createdByText:String = "!- Created by WincovER v" + appXML.air::versionNumber + "\n";
 			idf = combineFiles(files, Utils.makeUsableAsAFilename(wVO.name) + "_" + city + fileEnding, createdByText);
 				
 			return idf;

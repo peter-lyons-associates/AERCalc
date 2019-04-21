@@ -16,7 +16,7 @@ import gov.lbl.aercalc.view.dialogs.ImportW7WindowsDialog;
 		public static const IMPORT_STATE_FAILED:String =	"w7ImportFailed";
 		public static const IMPORT_STATE_COMPLETE:String = 	"w7ImportComplete";
 
-		/* 	A complete list of base case window IDs that AERCalc recognizes.
+		/* 	A complete list of base case window IDs that WincovER recognizes.
 			Any other incoming base window ID will be considered unrecognized.
 		 */
 		public static const VALID_BASE_CASE_WINDOW_IDS:Array = 	["BW-A", "BW-B", "BW-C", "BW-D", "BW-E", "BW-F"];
@@ -45,7 +45,7 @@ import gov.lbl.aercalc.view.dialogs.ImportW7WindowsDialog;
 
         public var importW7WindowsDialog:ImportW7WindowsDialog = new ImportW7WindowsDialog();
 
-		/* 	A complete list of shade type IDs (and related description) that AERCalc recognizes.F
+		/* 	A complete list of shade type IDs (and related description) that WincovER recognizes.F
 		    Any other incoming IDs will be considered unrecognized.
 		 */
         //TODO Expose for modification: move this to database and load on startup

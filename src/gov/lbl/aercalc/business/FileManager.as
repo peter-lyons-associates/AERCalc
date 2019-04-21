@@ -14,7 +14,7 @@ import gov.lbl.aercalc.util.Logger;
 public class FileManager {
 
 
-    /* Manages saving and loading AERCalc .sqlite databases
+    /* Manages saving and loading WincovER .sqlite databases
        and related files, e.g. helper bsdfs. */
 
     protected var _currentProjectPath:String;
@@ -69,7 +69,7 @@ public class FileManager {
     /* ********************** */
 
     /* Allows user to browse for a directory that should have
-       a AERCalc .sqlite database and a bsdf directory. This method
+       a WincovER .sqlite database and a bsdf directory. This method
        will try to create the bsdf directory if it's missing, and will
        throw an error if it can't. It'll also throw errors if the .sqlite
        file is missing or the selected file is not a directory.
@@ -90,7 +90,7 @@ public class FileManager {
         }
 
         loadFile.addEventListener(Event.SELECT, onBrowseForProjectDirectorySelected, false, 0, true);
-        loadFile.browseForDirectory("Select an AERCalc project directory")
+        loadFile.browseForDirectory("Select an WincovER project directory")
     }
 
 
@@ -152,7 +152,7 @@ public class FileManager {
 
 
     /* Make sure supplied directory has all required files
-       that a proper AERCalc directory would have. Returns a
+       that a proper WincovER directory would have. Returns a
        string describing errors, otherwise null.
      */
     public function validateDirectory(projectDir:File):Boolean {

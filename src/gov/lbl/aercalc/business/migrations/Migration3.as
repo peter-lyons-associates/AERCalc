@@ -50,7 +50,7 @@ public class Migration3 extends BaseMigration
         // These columns help us track versions of helper files
         // used to import or simulate products
 
-        Logger.debug("Adding AERCalcVersion to track AERCalc version used for simulation", this);
+        Logger.debug("Adding AERCalcVersion to track WincovER version used for simulation", this);
         c.text = "ALTER TABLE windows ADD COLUMN 'AERCalcVersion' Text;";
         c.execute();
 

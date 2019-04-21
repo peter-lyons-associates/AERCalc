@@ -41,7 +41,7 @@ public class DBController
 			{
 				var errorMsg:String = "Couldn't open database at " + dbManager.dbPath + ". Please place the " +
 						"database in this location or use File>Options to select the correct path " +
-						"to the database. Until then, AERCalc will not work properly.";
+						"to the database. Until then, WincovER will not work properly.";
 				throw new Error(errorMsg);
 			}
 		}

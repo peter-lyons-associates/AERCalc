@@ -33,18 +33,16 @@
         public var WarningIcon:Class;
 
 
-        private var _msg:String =  "Your database is from an earlier version of AERCalc and must be updated to the latest database version. " +
-                                    "Once updated you cannot use the database in earlier versions of AERCalc.";
-        private var _msg2:String = "Press 'OK' below to start updating or 'CANCEL' to cancel and close AERCalc.";
+        private var _msg:String =   "Your database is from an earlier version of WincovER and must be updated to the latest database version. " +
+                                    "Once updated you cannot use the database in earlier versions of WincovER.";
+        private var _msg2:String =  "Press 'OK' below to start updating or 'CANCEL' to cancel and close WincovER.";
 
 
         public function setValues(userNotesArr:Array, closeHandler:Function, currDBVersion:int, targetDBVersion:int):void {
-
             _closeHandler = closeHandler;
             _currDBVersion = currDBVersion;
             _targetDBVersion = targetDBVersion;
             _userNotesAC = new ArrayCollection(userNotesArr);
-
         }
 
         private function onCC():void

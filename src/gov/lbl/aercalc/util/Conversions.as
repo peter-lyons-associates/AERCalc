@@ -1,6 +1,6 @@
 package gov.lbl.aercalc.util {
 
-/* Holds conversions for units used in AERCalc  */
+/* Holds conversions for units used in WincovER  */
 
 public class Conversions
 {

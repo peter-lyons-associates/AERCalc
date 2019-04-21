@@ -182,7 +182,7 @@ public class ApplicationController
 
 			//db should always be in 'db' subdirectory in a project
 			if (!dbFile.exists){
-                Alert.show("Can't find AERCalc db: " + dbFile.name + " in a 'db' subdirectory in folder " +  projectDir.nativePath + ". Please select a different database.", "Database Error");
+                Alert.show("Can't find WincovER db: " + dbFile.name + " in a 'db' subdirectory in folder " +  projectDir.nativePath + ". Please select a different database.", "Database Error");
 				Logger.error("openProject() couldn't find dbFile " + dbFile.nativePath, this);
 				var evt:ApplicationEvent = new ApplicationEvent(ApplicationEvent.PROJECT_LOAD_FAILED, true);
                 dispatcher.dispatchEvent(evt);
@@ -232,7 +232,7 @@ public class ApplicationController
 
 		[EventHandler(event="DBEvent.DB_OPEN_FAILED")]
 		public function onDatabaseOpenFailed(event:DBEvent):void {
-			Alert.show("Couldn't open database. Please restart AERCalc to open default project. (" + event.msg + ")", "ERROR");
+			Alert.show("Couldn't open database. Please restart WincovER to open default project. (" + event.msg + ")", "ERROR");
 		}
 
 
@@ -351,7 +351,7 @@ public class ApplicationController
                 Alert.show("The selected directory does not have a db subdirectory with a .sqlite file.");
                 return;
             } catch (error:MissingBSDFDirectoryError){
-                Alert.show("The selected directory is missing 'bsdf' subdirectory and AERCalc cannot automatically create one.", "Error");
+                Alert.show("The selected directory is missing 'bsdf' subdirectory and WincovER cannot automatically create one.", "Error");
                 return;
             } catch (error:Error){
                 Alert.show("Error when trying to open selected directory: " + error, "Error");
@@ -549,7 +549,7 @@ public class ApplicationController
                 }
                 catch(error:Error)
                 {
-                    var errorMsg:String = "AERCalc couldn't create the necessary files in your user directory. Please make sure you have the correct permissions to run this program and then restart AERCalc (error: couldn't create file: " + baseDir.nativePath + ")"
+                    var errorMsg:String = "WincovER couldn't create the necessary files in your user directory. Please make sure you have the correct permissions to run this program and then restart WincovER (error: couldn't create file: " + baseDir.nativePath + ")"
                     Logger.error(errorMsg, this);
                     throw Error(errorMsg)
                 }

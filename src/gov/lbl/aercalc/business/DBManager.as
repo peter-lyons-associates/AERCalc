@@ -28,7 +28,7 @@ import mx.controls.Alert;
 	 *  DBMANGER FOR AIR
 	 * 
 	 *  DBManager is a singleton that manages all connections and 
-	 *  operations on the AERCalc DB. It also acts as an ORM for certain Classes.
+	 *  operations on the WincovER DB. It also acts as an ORM for certain Classes.
 	 *
 	 * 	Some code adapted from: http://coenraets.org/blog/2008/12/using-the-sqlite-database-access-api-in-air%E2%80%A6-part-3-annotation-based-orm-framework/
 	 * 

@@ -13,7 +13,7 @@ import gov.lbl.aercalc.model.ApplicationModel;
 
 /*  MigrationManager
     This class manages a list of migrations that should be run at startup if the user's database
-    is not in the most current state. The migrations that need to be run are compiled into AERCalc
+    is not in the most current state. The migrations that need to be run are compiled into WincovER
     at build time as an array of values assigned to a property of this class.
 
  */
@@ -37,7 +37,7 @@ public class MigrationManager
     private var _backupDBFileName:String = "";
 
     // Array of migration classes to run for this particular version of
-    // AERCalc and the verison it expects the DB to be in.
+    // WincovER and the verison it expects the DB to be in.
     private var _migrationsArr:Array;
 
     private var _currDBFile:File;
@@ -132,8 +132,8 @@ public class MigrationManager
         }
         else
         {
-            errorMsg = 	"Couldn't completely update existing database to new version. Please contact the AERCalc administrators. ";
-            errorMsg += "Your current database may be in an unusable state. Your old AERCalc database was backed up here: " + _backupDBFile.nativePath;
+            errorMsg = 	"Couldn't completely update existing database to new version. Please contact the WincovER administrators. ";
+            errorMsg += "Your current database may be in an unusable state. Your old WincovER database was backed up here: " + _backupDBFile.nativePath;
             throw new DatabaseMigrationError(errorMsg);
         }
     }

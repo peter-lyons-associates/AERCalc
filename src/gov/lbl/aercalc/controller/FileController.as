@@ -19,7 +19,7 @@ public class FileController {
 
     /* This controller class manages the opening
        and saving of 'files'...which really means
-       a AERCalc database. It also checks for
+       a WincovER database. It also checks for
        and makes note of which, if any, helper
        .bsdf files are available, as each product
        row in a database should have a related bsdf file

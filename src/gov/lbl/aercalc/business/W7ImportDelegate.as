@@ -238,7 +238,7 @@ public class W7ImportDelegate extends EventDispatcher
         if (_wExe.exists==false){
             Logger.error("Couldn't find the WINDOW executable in the default directory.", this);
             var msg:String = "Couldn't find the WINDOW executable in the default directory. ";
-            msg += ("Please make sure the WINDOW .exe (" + _wExe.name + ") file exists in the AERCalc installation folder in the W7 sub-folder." + _wExe);
+            msg += ("Please make sure the WINDOW .exe (" + _wExe.name + ") file exists in the WincovER installation folder in the W7 sub-folder." + _wExe);
             throw new LblWindowDelegateError(msg)
         }
 
@@ -246,7 +246,7 @@ public class W7ImportDelegate extends EventDispatcher
         {
             Logger.error("Couldn't find the WINDOW database at path: " + wDB.nativePath, this);
             msg = "Couldn't find the WINDOW database at path: " + wDB.nativePath;
-            msg += "Please select AERCalc > Preferences from the menu and update the WINDOW database path to point to a valid .mdb file";
+            msg += "Please select WincovER > Preferences from the menu and update the WINDOW database path to point to a valid .mdb file";
             throw new LblWindowDelegateError(msg);
         }
 		
@@ -686,7 +686,7 @@ public class W7ImportDelegate extends EventDispatcher
         if (_wExe.exists==false){
             Logger.error("Couldn't find the WINDOW executable in the default directory.", this);
             var msg:String = "Couldn't find the WINDOW executable in the default directory. ";
-            msg += ("Please make sure the WINDOW .exe (" + _wExe.name + ") file exists in the AERCalc installation folder in the W7 sub-folder." + _wExe);
+            msg += ("Please make sure the WINDOW .exe (" + _wExe.name + ") file exists in the WincovER installation folder in the W7 sub-folder." + _wExe);
             throw new LblWindowDelegateError(msg);
         }
 
@@ -694,7 +694,7 @@ public class W7ImportDelegate extends EventDispatcher
         {
             Logger.error("Couldn't find the WINDOW database at path: " + wDB.nativePath, this);
             msg = "Couldn't find the WINDOW database at path: " + wDB.nativePath;
-            msg += "Please select AERCalc > Preferences from the menu and update the WINDOW database path to point to a valid .mdb file";
+            msg += "Please select WincovER > Preferences from the menu and update the WINDOW database path to point to a valid .mdb file";
             throw new LblWindowDelegateError(msg);
         }
 
@@ -831,7 +831,7 @@ public class W7ImportDelegate extends EventDispatcher
 	
 	
 	/* Clear any lock files W7 wrote, probably during
-	a recent AERCalc action. We don't do any writing
+	a recent WincovER action. We don't do any writing
 	so don't need to worry about blowing these away if
 	they're hanging around.
 	*/

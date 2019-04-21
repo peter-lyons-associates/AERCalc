@@ -148,8 +148,8 @@ package gov.lbl.aercalc.util
 				try
 				{					
 					logFileStream.open(logFile, FileMode.WRITE);
-					logFileStream.writeUTFBytes("AERCalc LOG" + File.lineEnding + "-------------------------------------" + File.lineEnding);
-					logFileStream.writeUTFBytes("AERCalc version: " + AboutInfo.applicationVersion + File.lineEnding);
+					logFileStream.writeUTFBytes("WincovER LOG" + File.lineEnding + "-------------------------------------" + File.lineEnding);
+					logFileStream.writeUTFBytes("WincovER version: " + AboutInfo.applicationVersion + File.lineEnding);
 					logFileStream.writeUTFBytes("Flash player version: " + AboutInfo.flashPlayerVersion + File.lineEnding);
 					
 				}

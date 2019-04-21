@@ -34,7 +34,7 @@ public class LibraryDelegate
 			var lookup:Object = {} //for quick sorting below
 			var hierWindowsArr:Array = new Array();
 			
-			// load table data from AERCalc db
+			// load table data from WincovER db
 			var dbWindowsAC:ArrayCollection = dbManager.findAll(WindowVO);
 			
 			// The window data in windows table is flat.

@@ -21,7 +21,7 @@
 			
 			private function onCreationComplete():void
 			{
-				testRunner.runWithFlexUnit4Runner(currentRunTestSuite(), "AERCalc");
+				testRunner.runWithFlexUnit4Runner(currentRunTestSuite(), WincovER);
 			}
 			
 		]]>
