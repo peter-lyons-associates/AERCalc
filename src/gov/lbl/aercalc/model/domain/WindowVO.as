@@ -8,7 +8,7 @@ package gov.lbl.aercalc.model.domain
 	
 	import mx.collections.ArrayList;
 
-[Bindable]
+	[Bindable]
 	[Table(name="windows")]
 	public class WindowVO extends AERCalcVO
 	{
@@ -65,7 +65,7 @@ package gov.lbl.aercalc.model.domain
 		protected var _AERCalcVersion:String = "";
         protected var _WINDOWVersion:String = "";
         protected var _EPlusVersion:String = "";
-        protected var _ESCalcVersion:String = "";
+        protected var _WincovERCalcVersion:String = "";
 
 		protected var _userID:String = null;
 		public var shadingSystemType:String = "";
@@ -142,11 +142,11 @@ package gov.lbl.aercalc.model.domain
                     msg += "Current version of E+ : " + currEPlusVersion + "\n";
                 }
 
-                var currESCalcVersion:String = ApplicationModel.VERSION_ESCALC;
-                var isOldESCalcImport:Boolean = Utils.compareVersions(currESCalcVersion, _ESCalcVersion) == Utils.FIRST_ARG_HIGHER;
+                var currWincovERCalcVersion:String = ApplicationModel.VERSION_WINCOVER_CALC;
+                var isOldESCalcImport:Boolean = Utils.compareVersions(currWincovERCalcVersion, _WincovERCalcVersion) == Utils.FIRST_ARG_HIGHER;
                 if (isOldESCalcImport){
-                    msg += "Simulated with old ESCalc : " + _ESCalcVersion + "\n";
-                    msg += "Current version of ESCalc : " + currESCalcVersion + "\n";
+                    msg += "Simulated with old WincovER-Calc : " + _WincovERCalcVersion + "\n";
+                    msg += "Current version of WincovER-Calc : " + currWincovERCalcVersion + "\n";
                 }
 			}
 
@@ -379,15 +379,15 @@ package gov.lbl.aercalc.model.domain
         }
 
 
-        public function set ESCalcVersion(value:String):void {
+        public function set WincovERCalcVersion(value:String):void {
             if (value==null || value==""){
                 value = "0.0.0";
             }
-            _ESCalcVersion = value;
+            _WincovERCalcVersion = value;
             setVersionStatus();
         }
-        public function get ESCalcVersion():String {
-            return _ESCalcVersion;
+        public function get WincovERCalcVersion():String {
+            return _WincovERCalcVersion;
         }
 
 

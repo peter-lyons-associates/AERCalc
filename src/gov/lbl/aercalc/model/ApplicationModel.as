@@ -32,7 +32,7 @@ package gov.lbl.aercalc.model
 		//to do an initial import and parse the xml
 		public static const VERSION_WINDOW:String				= "7.7.01";
 		public static const VERSION_ENERGYPLUS:String			= "8.5.0";
-		public static const VERSION_ESCALC:String				= "1.0.9";
+		public static const VERSION_WINCOVER_CALC:String		= "0.0.1";
 		public static const VERSION_THERM:String				= "7.7.01";
 
 		public static const BASE_STORAGE_PATH_DIRNAME:String 	= "AppData/LBNL/aercalc";
@@ -54,7 +54,7 @@ package gov.lbl.aercalc.model
 		//Used on first startup to find DB within Application directory,
 		//then full path is saved to DBManager.dbPath
 
-		public static const AERCALC_DEFAULT_DB_NAME:String 	= "aercalc.sqlite";
+		public static const AERCALC_DEFAULT_DB_NAME:String 	= "wincover.sqlite";
         public static const AERCALC_DEFAULT_DB_PATH:String 	= AERCALC_DB_SUBDIR + AERCALC_DEFAULT_DB_NAME;
 
 		public static var WINDOW_EXE_FILE_PATH:String 			= WINDOW_SUBDIR + "W7.exe";

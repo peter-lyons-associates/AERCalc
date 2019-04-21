@@ -208,7 +208,7 @@ public class ExportDelegate {
         },
         {
             title: "ESCalc Version",
-            varName: "ESCalcVersion",
+            varName: "WincovERCalcVersion",
             escapeDelimiter: false,
             includeInParentRow: false,
             blankIfZero: false

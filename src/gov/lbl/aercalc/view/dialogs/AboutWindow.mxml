@@ -76,17 +76,17 @@
 
 			<s:VGroup paddingBottom="10"  paddingLeft="10" gap="0" width="580">
 				<s:Image source="@Embed('/assets/img/logo.png')" width="400" height="41"/>
-				<s:VGroup paddingLeft="12">
-					<s:Spacer height="10"/>
-					<s:Label text="by Lawrence Berkeley National Laboratory" fontSize="13" color="#ffffff"/>
-					<s:Label text="{'Version ' + AboutInfo.applicationVersion}" fontSize="13" color="#FFFFFF"/>
+				<s:VGroup paddingLeft="10">
+					<s:Spacer height="5"/>
+					<s:Label text="by Peter Lyons &amp; Associates" fontSize="16" color="#ffffff"/>
+					<s:Label text="{'Version ' + AboutInfo.applicationVersion}" fontSize="16" color="#FFFFFF"/>
 					<s:Spacer height="20"/>
 				</s:VGroup>
 			
 			</s:VGroup>
 
 			<s:VGroup width="200">
-				<s:Image source="{AERCalcResources.DOE_LOGO_WHITE}" alpha=".8"/>
+
 			</s:VGroup>
 
 		</s:HGroup>
@@ -109,15 +109,10 @@
 															
 							<s:p><s:span fontWeight='bold'>Program Development Team:</s:span></s:p>
 							
-							<s:p><s:a href='https://www.lbl.gov' target='_blank' lineHeight='170%' fontStyle="italic">Lawrence Berkeley National Laboratory</s:a></s:p>
+							<s:p><s:a href='https://www.lbl.gov' target='_blank' lineHeight='170%' fontStyle="italic">Peter Lyons &amp; Associates Team</s:a></s:p>
 								
-							<s:p>D. Charlie Curcija</s:p>
-							<s:p>Stephen Czarnecki</s:p>
-							<s:p>Robert Hart</s:p>
-							<s:p>Christian Kohler</s:p>
-							<s:p>Robin Mitchell</s:p>
-							<s:p>Jinqing Peng</s:p>
-							<s:p>Simon Vidanovic</s:p>
+							<s:p>Peter Lyons</s:p>
+							<s:p>Rebecca Powles</s:p>
 							
 							<s:p><s:a href='https://www.mcquilleninteractive.com' target='_blank' lineHeight='170%' fontStyle="italic">McQuillen Interactive</s:a></s:p>
 							<s:p>Daniel McQuillen</s:p>		
@@ -126,23 +121,10 @@
 													
 							<s:p><s:span fontWeight='bold' >Copyright Notice</s:span></s:p>
 							
-							<s:p>License language is under development. Please treat this as internal testing version and don't distribute further.</s:p>
-	
-							<s:p/>
-							
-							<s:p><s:span fontWeight='bold' >Open Source Libraries</s:span></s:p>
-							<s:p >
-								<s:a href='https://flex.apache.org/' target='_blank' lineHeight="170%">Apache Flex</s:a>
-								<s:br/>
-								<s:a href='https://code.google.com/p/swizframework/' target='_blank'>SWIZ</s:a>
-								<s:br/>
-								<s:a href='https://github.com/AlexandruCiobanu/flexxb' target='_blank'>FlexXB</s:a>
-							</s:p>
-							<s:br/>
+							<s:p>License language is under development. Please treat this as internal testing version<s:br/>
+								and don't distribute further.</s:p>
 							<s:p>See license.txt in the application folder for complete license information</s:p>
-	
-	
-	
+
 						</s:TextFlow>
 					</s:textFlow>
 				</s:RichEditableText>	
@@ -153,8 +135,12 @@
 				
 				<s:Label text="VERSIONS" fontWeight="bold"/>
 				<s:HGroup>
-					<s:Label text="AERCalc" /> 
+					<s:Label text="WincovER" />
 					<s:Label text="{AboutInfo.applicationVersion}" />
+				</s:HGroup>
+				<s:HGroup>
+					<s:Label text="WincovER-Calc"/>
+					<s:Label text="{ApplicationModel.VERSION_WINCOVER_CALC}" />
 				</s:HGroup>
 				<s:HGroup>
 					<s:Label text="WINDOW"/> 
@@ -167,10 +153,6 @@
 				<s:HGroup>
 					<s:Label text="THERM"/> 
 					<s:Label text="{ApplicationModel.VERSION_THERM}" />
-				</s:HGroup>
-				<s:HGroup>
-					<s:Label text="ESCalc"/> 
-					<s:Label text="{ApplicationModel.VERSION_ESCALC}" />
 				</s:HGroup>
 				
 			</s:VGroup>

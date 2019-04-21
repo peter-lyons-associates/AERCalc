@@ -56,8 +56,7 @@ public class MigrationManager
 
         //IMPORTANT: THESE MUST BE ADDED TO THE ARRAY IN ORDER OF THEIR VERSION NUMBER
         _migrationsArr = [];
-        _migrationsArr.push(new Migration2());
-        _migrationsArr.push(new Migration3());
+        //_migrationsArr.push(new Migration2());
     }
 
     public function get installedDBVersion():Number
@@ -86,8 +85,10 @@ public class MigrationManager
         if (_migrationsArr && _migrationsArr.length>0)
         {
             return BaseMigration(_migrationsArr[_migrationsArr.length-1]).version;
+        } else {
+            /* No migrations exist yet. */
+            return 0;
         }
-        throw new Error("Can't get target DB version");
     }
 
 
@@ -138,7 +139,7 @@ public class MigrationManager
         }
     }
 
-    /* Make a backupe of the aercalc.sqlite database */
+    /* Make a backupe of the wincover.sqlite database */
     private function makeBackupDB():void
     {
         _currDBFile = applicationModel.currProjectDB;
@@ -170,7 +171,7 @@ public class MigrationManager
 			//Before running migrations try to attach to a distribution DB
 			try {
 				var conn:SQLConnection = dbManager.sqlConnection;
-				var distDB:File = File.applicationDirectory.resolvePath("db/aercalc.sqlite");
+				var distDB:File = File.applicationDirectory.resolvePath("db/wincover.sqlite");
 				conn.attach("distributionDB",distDB);
 			}
 			catch(error:Error){

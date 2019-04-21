@@ -251,13 +251,13 @@ public class SimulationController {
         var vo:WindowVO = simulationModel.currSimulationWindow;
         vo.AERCalcVersion = AboutInfo.applicationVersion;
         vo.EPlusVersion = ApplicationModel.VERSION_ENERGYPLUS;
-        vo.ESCalcVersion = ApplicationModel.VERSION_ESCALC;
+        vo.WincovERCalcVersion = ApplicationModel.VERSION_WINCOVER_CALC;
 		if (vo.isParent){
             for(var index:uint=0;index<vo.children.length;index++){
                 var childVO:WindowVO = vo.children[index] as WindowVO;
                 childVO.AERCalcVersion = AboutInfo.applicationVersion;
                 childVO.EPlusVersion = ApplicationModel.VERSION_ENERGYPLUS;
-                childVO.ESCalcVersion = ApplicationModel.VERSION_ESCALC;
+                childVO.WincovERCalcVersion = ApplicationModel.VERSION_WINCOVER_CALC;
                 dbManager.save(childVO);
             }
 		}
