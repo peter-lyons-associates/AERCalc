@@ -62,7 +62,7 @@ package gov.lbl.aercalc.model.domain
 		public var cgdbVersion:String = "";
 		public var WINDOWOriginDB:String = "";
 		public var THERMFiles:String = "";
-		protected var _AERCalcVersion:String = "";
+		protected var _WincovERVersion:String = "";
         protected var _WINDOWVersion:String = "";
         protected var _EPlusVersion:String = "";
         protected var _WincovERCalcVersion:String = "";
@@ -343,15 +343,15 @@ package gov.lbl.aercalc.model.domain
 		}
 
 
-        public function set AERCalcVersion(value:String):void {
+        public function set WincovERVersion(value:String):void {
             if (value==null || value==""){
                 value = "0.0.0";
             }
-            _AERCalcVersion = value;
+            _WincovERVersion = value;
             setVersionStatus();
         }
-        public function get AERCalcVersion():String {
-            return _AERCalcVersion;
+        public function get WincovERVersion():String {
+            return _WincovERVersion;
         }
 
 		

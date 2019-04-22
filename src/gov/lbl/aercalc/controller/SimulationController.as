@@ -249,13 +249,13 @@ public class SimulationController {
 
 		//remember the version of helper apps used for simulation
         var vo:WindowVO = simulationModel.currSimulationWindow;
-        vo.AERCalcVersion = AboutInfo.applicationVersion;
+        vo.WincovERVersion = AboutInfo.applicationVersion;
         vo.EPlusVersion = ApplicationModel.VERSION_ENERGYPLUS;
         vo.WincovERCalcVersion = ApplicationModel.VERSION_WINCOVER_CALC;
 		if (vo.isParent){
             for(var index:uint=0;index<vo.children.length;index++){
                 var childVO:WindowVO = vo.children[index] as WindowVO;
-                childVO.AERCalcVersion = AboutInfo.applicationVersion;
+                childVO.WincovERVersion = AboutInfo.applicationVersion;
                 childVO.EPlusVersion = ApplicationModel.VERSION_ENERGYPLUS;
                 childVO.WincovERCalcVersion = ApplicationModel.VERSION_WINCOVER_CALC;
                 dbManager.save(childVO);

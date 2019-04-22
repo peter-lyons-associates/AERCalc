@@ -187,7 +187,7 @@ public class ExportDelegate {
         },
         {
             title: "WincovER Version",
-            varName: "AERCalcVersion",
+            varName: "WincovERVersion",
             escapeDelimiter: false,
             includeInParentRow: false,
             blankIfZero: false
