@@ -73,7 +73,7 @@ package gov.lbl.aercalc.model
 
 		public static const AIR_INFILTRATION_DEFAULT:Number 	= 0.01016002;  	// SI value m3/sm2  = 2 cfm/ft2		
 
-		public static var currUnits:String	= "IP";
+		public static var currUnits:String	= "SI";
 		public static var logEventLevel:int = LogEventLevel.DEBUG;		
 
 
