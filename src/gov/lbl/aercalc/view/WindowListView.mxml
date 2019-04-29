@@ -368,18 +368,18 @@
 										   width="70"/>
 								
 				<mx:AdvancedDataGridColumn dataField="epc"
-										   headerText="EPc"
+										   headerText="Heating"
 										   showDataTips="false"
 										   width="50"
-										   labelFunction="{windowListViewPM.epLabelFunction}"
+										   labelFunction="{windowListViewPM.heatingRatingLabelFunction}"
 										   textAlign="right"
 										   editable="false"/>
 				
 				<mx:AdvancedDataGridColumn dataField="eph"
-										   headerText="EPh"
+										   headerText="Cooling"
 										   showDataTips="false"
 										   width="50"
-										   labelFunction="{windowListViewPM.epLabelFunction}"
+										   labelFunction="{windowListViewPM.coolingRatingLabelFunction}"
 										   textAlign="right"
 										   editable="false"/>
 				

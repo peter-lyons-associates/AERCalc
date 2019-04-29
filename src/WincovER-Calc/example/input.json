@@ -1,0 +1,22 @@
+{
+  "windows": [
+    {
+      "name": "Absorbing Applied Film Interior::AF::BW01",
+      "bsdf_path": "example/data/Absorbing Applied Film Interior__AF__BW01_bsdf.idf",
+      "shgc": 1,
+      "uvalue": 1
+    },
+    {
+      "name": "Absorbing Applied Film Interior 2::AF::BW01",
+      "bsdf_path": "example/data/Absorbing Applied Film Interior__AF__BW01_bsdf.idf",
+      "shgc": 1,
+      "uvalue": 1
+    },
+    {
+      "name": "Absorbing Applied Film Interior 3 ::AF::BW01",
+      "bsdf_path": "example/data/Absorbing Applied Film Interior__AF__BW01_bsdf.idf",
+      "shgc": 1,
+      "uvalue": 1
+    }
+  ]
+}

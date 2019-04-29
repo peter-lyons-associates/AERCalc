@@ -1,5 +1,7 @@
 package gov.lbl.aercalc.controller {
 
+import com.fenestralia.wincover.business.WincoverCalcDelegate;
+
 import flash.events.IEventDispatcher;
 import flash.events.TimerEvent;
 import flash.filesystem.File;
@@ -43,13 +45,7 @@ public class SimulationController {
     public var dispatcher:IEventDispatcher;
 	
 	[Inject]
-	public var esCalcDelegate:ESCalcDelegate;
-	
-	[Inject]
-	public var ePlusSimulationDelegate:EPlusSimulationDelegate;
-	
-	[Inject]
-	public var eSCalcResultsLoader:ESCalcResultsLoader;	
+	public var wincoverCalcDelegate:WincoverCalcDelegate;
 
     [Inject]
     public var dbManager:DBManager;
@@ -58,21 +54,16 @@ public class SimulationController {
     public function SimulationController() {
     }
 
-
     [PostConstruct]
     public function onPostConstruct():void {
-		ePlusSimulationDelegate.addEventListener(EPlusSimulationDelegate.RUN_EPLUS_FINISHED, onEnergyPlusFinished);
-		ePlusSimulationDelegate.addEventListener(EPlusSimulationDelegate.RUN_EPLUS_FAILED, onEnergyPlusFailed);
-		esCalcDelegate.addEventListener(ESCalcDelegate.RUN_ESCALC_FINISHED, onESCalcFinished);
-		esCalcDelegate.addEventListener(ESCalcDelegate.RUN_ESCALC_FAILED, onESCalcFailed);
+        wincoverCalcDelegate.addEventListener(WincoverCalcDelegate.RUN_WINCOVER_CALC_FINISHED, onWincoverCalcFinished);
+        wincoverCalcDelegate.addEventListener(WincoverCalcDelegate.RUN_WINCOVER_CALC_FAILED, onWincoverCalcFailed);
     }
 	
 	
 	protected function cancelSimulation():void
 	{
-		ePlusSimulationDelegate.cancel();
-		esCalcDelegate.cancel();
-		eSCalcResultsLoader.cancel();
+        wincoverCalcDelegate.cancel();
         simulationModel.simulationInProgress = false;
 		if(simulationModel.progressDialog.progressBar)
 		{
@@ -155,10 +146,9 @@ public class SimulationController {
 	   of the simulation process */
 	[EventHandler("SimulationErrorEvent.SIMULATION_ERROR")]
 	public function onSimulationError(event:SimulationErrorEvent):void {
+        Logger.error("Simulation error: " + event.errorMessage, this);
 		Alert.show(event.errorMessage,"Simulation Error");
-		Logger.error("Simulation error: " + event.errorMessage, this);
 		cancelSimulation();
-		return;
 	}
 
 	
@@ -183,7 +173,10 @@ public class SimulationController {
 		
 		
         simulationModel.currSimulationWindow = simulationModel.selectedWindowsAL.getItemAt(simulationModel.currWindowIndex) as WindowVO;
-		Logger.debug("Starting EPlus simulation for window id: " + simulationModel.currSimulationWindow.id + " name: " + simulationModel.currSimulationWindow.name);
+		var msg:String = 	"Starting EPlus simulation for" +
+							" window id: " + simulationModel.currSimulationWindow.id +
+							" name: " + simulationModel.currSimulationWindow.name;
+		Logger.debug(msg);
 		simulationModel.progressDialog.setProgress(simulationModel.currWindowIndex, simulationModel.getNumWindows());
 		
 		try{
@@ -203,34 +196,36 @@ public class SimulationController {
 		}
 			
 		//window is valid for simulation. Try starting EPlus simulation and catch and report any errors
-		Logger.debug("window " + simulationModel.currSimulationWindow.name + " is valid for simulation. Starting EPlus simulation...", this);
-		simulationModel.progressDialog.setStatusMessage("Running Simulation " + (simulationModel.currWindowIndex + 1) + "/" + simulationModel.getNumWindows() + File.lineEnding + simulationModel.currSimulationWindow.name);
+		Logger.debug("window " + simulationModel.currSimulationWindow.name + " is valid. Starting WincovER-Calc...", this);
+		var statusMsg:String = "Running Simulation " + (simulationModel.currWindowIndex + 1) + "/" +
+								simulationModel.getNumWindows() + File.lineEnding +
+								simulationModel.currSimulationWindow.name;
+		simulationModel.progressDialog.setStatusMessage(statusMsg);
 		var errorMsg:String = null;
 		try {
-			ePlusSimulationDelegate.init();
-			ePlusSimulationDelegate.runEnergyPlus(simulationModel.currSimulationWindow);
+            wincoverCalcDelegate.init();
+            wincoverCalcDelegate.calculateRatings(simulationModel.currSimulationWindow);
 		}
 		catch(error:FileMissingError){
 			errorMsg = "Couldn't run simulation because a required file is missing. " + error.message;
 		}
 		catch(error:SimulationError){
-			errorMsg = "Error encountered when starting the EnergyPlus simulation. " + error.message;
+			errorMsg = "Error encountered when starting the WincovER-Calc simulation. " + error.message;
 		}
 		catch(error:Error)
 		{
 			//catchall error. We're not sure what failed in this one...
-			errorMsg = "Error running simulation. " + error.errorID + " : " + error.message;
+			errorMsg = "Error running WincovER-Calc. " + error.errorID + " : " + error.message;
 		}
 
 		if (errorMsg){
-            Alert.show(errorMsg,"Simulation Error");
+            Alert.show(errorMsg,"WincovER-Calc Error");
             cancelSimulation();
-			return;
+		} else {
+            // Do nothing.
+			// At this point the simulation process is async, so watch
+            // for events and error events in listener methods defined below...
 		}
-		
-		// At this point the simulation process is async, so watch
-		// for events and error events in listener methods defined below...
-			
     }
 
 	
@@ -269,49 +264,40 @@ public class SimulationController {
     }
 
     protected function onSingleSimulationFailed(errorMsg:String):void {
-		
 		//TODO: Show errors nicely in popup after simulations complete
-		
 		errorMsg = "Window : " + simulationModel.currSimulationWindow.name + " \n\nError : " + errorMsg;
-		
 		Alert.show(errorMsg, "Simulation Error");
-		
         simulationModel.currSimulationWindow.simulationStatus = SimulationModel.SIMULATION_STATUS_FAILED;
         libraryModel.windowsAC.refresh();
         doNextSimulation();
     }
 	
 
-	/* ENERGYPLUS LISTENERS */
+	/* ~~~~~~~~~~~~~~~~~~~~~~~*/
+	/* WINCOVERCALC LISTENERS */
+    /* ~~~~~~~~~~~~~~~~~~~~~~~*/
 	
-	protected function onEnergyPlusFinished(event:DynamicEvent):void
+	protected function onWincoverCalcFinished(event:DynamicEvent):void
 	{
-		var energyPlusFiles:ArrayCollection = event.energyPlusFiles;
-		var shadeType:String = event.shadeType;
-
-		Logger.debug("running ESCalc", this);
-		
-		try
-		{				
-			esCalcDelegate.init();
-			esCalcDelegate.calc(energyPlusFiles, shadeType);
-		}
-		catch(error:Error)
-		{
-			Alert.show("There was an error when trying to run ESCalc: " + error.message, "Error")
-		}			
+		/* TODO: Read heating and cooling ratings and assign to current window */
+        //simulationModel.currSimulationWindow.heatingRating = event.heatingRating;
+        //simulationModel.currSimulationWindow.coolingRather = event.coolingRating;
+        onSingleSimulationComplete();
 	}
 	
-	protected function onEnergyPlusFailed(event:DynamicEvent):void {
+	protected function onWincoverCalcFailed(event:DynamicEvent):void {
 		var errorMsg:String = event.error;
 		onSingleSimulationFailed(errorMsg);
 	}
-	
+
+
+    /* ~~~~~~~~~~~~~~~~~~~~~~~*/
+	/*   VALIDATION METHODS   */
+    /* ~~~~~~~~~~~~~~~~~~~~~~~*/
+
 	/*  Validate that the windowVO is defined correctly and all necessary files exist.
 		If the method returns without error the window is valid for simulation.
-
 		TODO: Add more checks!
-
 	*/
 	protected function validateWindowForSimulation(wVO:WindowVO):void
 	{
@@ -353,37 +339,7 @@ public class SimulationController {
             throw new WindowValidationError("Window " + wVO.id + " is missing name");
         }
 	}
-	
-	/* ESCALC LISTENERS */
-	
-	protected function onESCalcFinished(event:DynamicEvent):void
-	{
-		var hotResultsPath:String = event.hotResultsPath;
-		var coldResultsPath:String = event.coldResultsPath;
-		
-		Logger.debug("running ESCalcResultsLoader", this);
-		
-		try
-		{
-			eSCalcResultsLoader.init();
-			var eph:Number = eSCalcResultsLoader.loadColdClimateResults(coldResultsPath);
-			var epc:Number = eSCalcResultsLoader.loadHotClimateResults(hotResultsPath);
-			simulationModel.currSimulationWindow.epc = epc;
-			simulationModel.currSimulationWindow.eph = eph;
-			onSingleSimulationComplete();
-			
-		}
-		catch(error:Error)
-		{
-			Alert.show("There was an error when trying to run ESCalc: " + error.message, "Error")
-		}			
-	}
-	
-	protected function onESCalcFailed(event:DynamicEvent):void {
-		var errorMsg:String = event.error;
-		onSingleSimulationFailed(errorMsg);
-	}
-	
+
 
 
 }

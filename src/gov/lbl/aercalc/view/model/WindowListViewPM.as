@@ -335,14 +335,20 @@ public class WindowListViewPM extends EventDispatcher {
 	}
 	
 
-	public function epLabelFunction(item:Object, column:AdvancedDataGridColumn):String{
+	public function heatingRatingLabelFunction(item:Object, column:AdvancedDataGridColumn):String{
         var value:Number = item[column.dataField];
         if (value==0){
             return "";
         }
 		return Utils.normalizeEPValue(value);
 	}
-
+    public function coolingRatingLabelFunction(item:Object, column:AdvancedDataGridColumn):String{
+        var value:Number = item[column.dataField];
+        if (value==0){
+            return "";
+        }
+        return Utils.normalizeEPValue(value);
+    }
 
 	/* We need this so we can add isParent to the first row (so we can sort the column)
 	but we don't want to actually show the value */
