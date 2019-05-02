@@ -149,13 +149,13 @@ public class WincoverCalcDelegate extends EventDispatcher {
         inputObject.shgc = wVO.SHGC;
         inputObject.uValue = wVO.UvalWinter;
         var input_file_json:String = JSON.stringify(inputObject);
-        input_file_json = "{ 'windows': [ " + input_file_json + "] }";
+        input_file_json = "{ \"windows\": [ " + input_file_json + "] }";
         Logger.debug("Input file json is: " + input_file_json);
 
-        var inputFile:File = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINCOVER_CALC_INPUT_SUBDIR);
+        var inputFile:File = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINCOVER_CALC_INPUT_SUBDIR).resolvePath("input.json");
         var stream:FileStream = new FileStream();
         stream.open(inputFile, FileMode.WRITE);
-        stream.writeUTF(input_file_json);
+        stream.writeUTFBytes(input_file_json);
         stream.close();
     }
 

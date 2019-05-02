@@ -48,8 +48,8 @@ package gov.lbl.aercalc.model
 		public static const ENERGY_PLUS_OUTPUT_DIR:String 		= ENERGY_PLUS_SUBDIR + "Output/";
 		public static const BSDF_SUBDIR:String 					= "bsdf/";
 		public static const WINDOW_SUBDIR:String 				= "W7/";	 //setting to var so we can switch to W7 during development
-		public static const THERM_SUBDIR:String 				= "THERM/";	 
-		public static const THERM_FILES_SUBDIR:String 			= "AERC_sample_THERM_files/";
+		public static const THERM_SUBDIR:String 				= "THERM/";
+        public static const THERM_FILES_SUBDIR:String 			= "WincovER_sample_THERM_files/";
 
 		//Used on first startup to find DB within Application directory,
 		//then full path is saved to DBManager.dbPath
