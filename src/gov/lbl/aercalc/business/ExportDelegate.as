@@ -129,22 +129,15 @@ public class ExportDelegate {
             blankIfZero: false
         },
         {
-            title: "EPc Ratio",
-            varName: "epc",
+            title: "Cooling Rating",
+            varName: "coolingRating",
             escapeDelimiter: false,
             includeInParentRow: true,
             blankIfZero: true
         },
         {
-            title: "EPh Ratio",
-            varName: "eph",
-            escapeDelimiter: false,
-            includeInParentRow: true,
-            blankIfZero: true
-        },
-        {
-            title: "EPc",
-            varName: "epcNormalized",
+            title: "Heating Rating",
+            varName: "heatingRating",
             escapeDelimiter: false,
             includeInParentRow: true,
             blankIfZero: true

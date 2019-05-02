@@ -54,9 +54,6 @@ public class AppSettingsDelegate {
             appSettings = getDefaults();           
         }
 
-        // Do any setup or init of static helpers and such that need to know about
-        // user settings
-        Utils.epFormatter.precision = appSettings.epPrecision;
 
         return appSettings;
     }

@@ -3,6 +3,7 @@
 		xmlns:fx="http://ns.adobe.com/mxml/2009"
 		xmlns:swiz="http://swiz.swizframework.org"
 		xmlns:business="gov.lbl.aercalc.business.*"
+		xmlns:business2="com.fenestralia.wincover.business.*"
 		xmlns:model="gov.lbl.aercalc.model.*"
 		xmlns:settingsModel="gov.lbl.aercalc.model.settings.*"
 		xmlns:settings="gov.lbl.aercalc.model.settings.*"
@@ -12,6 +13,7 @@
 	<fx:Script><![CDATA[
 
 		import gov.lbl.aercalc.view.model.WindowListViewPM;
+		import com.fenestralia.wincover.business.WincoverCalcDelegate
 
 		]]></fx:Script>
 
@@ -51,9 +53,7 @@
 		<business:LibraryDelegate id="libraryDelegate"/>
 		<business:W7ImportDelegate id="w7ImportDelegate"/>
 		<business:AppSettingsDelegate id="appSettingsDelegate"/>
-		<business:ESCalcDelegate id="esCalcDelegate"/>
-		<business:EPlusSimulationDelegate id="ePlusSimulationDelegate"/>
-		<business:ESCalcResultsLoader id="eSCalcResultsLoader"/>
+		<business2:WincoverCalcDelegate id="wincoverCalcDelegate"/>
 		<business:ExportDelegate id="exportDelegate"/>
 		<business:InfiltrationCalcs id="infiltrationCalcs"/>
 		<business:FileManager id="fileManager"/>

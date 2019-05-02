@@ -1,4 +1,4 @@
-# AERCalc Project 
+# WincovER Project 
 ## Overview
 A "Project" is a folder containing two things: 
  - a `db` subdirectory with a `.sqlite` file containing product information for use in AERCalc.

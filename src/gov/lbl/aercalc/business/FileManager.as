@@ -168,7 +168,7 @@ public class FileManager {
             throw new MissingBSDFDirectoryError("No bsdf directory in project");
         }
 
-        var dbSubdir:File = projectDir.resolvePath(ApplicationModel.AERCALC_DB_SUBDIR);
+        var dbSubdir:File = projectDir.resolvePath(ApplicationModel.DB_SUBDIR);
         if (!dbSubdir.exists){
             Logger.error("validateDirectory(): No db subdirectory in project folder.", this);
             throw new MissingSQLiteFileError("No db subdirectory in project folder.");
@@ -202,7 +202,7 @@ public class FileManager {
      */
     protected function getDBFile(projectDir:File):File {
 
-        var dbSubdir:File = projectDir.resolvePath(ApplicationModel.AERCALC_DB_SUBDIR);
+        var dbSubdir:File = projectDir.resolvePath(ApplicationModel.DB_SUBDIR);
         var files:Array = dbSubdir.getDirectoryListing();
         for(var i:uint = 0; i < files.length; i++)
         {

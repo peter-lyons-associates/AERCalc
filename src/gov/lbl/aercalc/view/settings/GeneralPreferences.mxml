@@ -20,7 +20,6 @@
         protected override function read(settings:AppSettings):void
         {
             logDebugMessages.selected = settings.logEventLevel == LogEventLevel.DEBUG;
-            epPrecision.value = settings.epPrecision;
             showIDColumn.selected = settings.showIDColumn;
 			keepIntermediateFiles.selected = settings.keepIntermediateFiles;
         }
@@ -28,18 +27,6 @@
         protected override function write(settings:AppSettings):void
         {
             logDebugMessages.selected ? settings.logEventLevel = LogEventLevel.DEBUG : settings.logEventLevel = LogEventLevel.INFO;
-
-            if (settings.epPrecision != epPrecision.value){
-                settings.epPrecision = epPrecision.value;
-
-                //Update Utils, since it has the utility method that rounds EPH and EPC
-                Utils.epFormatter.precision = epPrecision.value;
-
-                var evt:PrecisionEvent = new PrecisionEvent(PrecisionEvent.PRECISION_CHANGED, true);
-                evt.precision = epPrecision.value;
-                dispatcher.dispatchEvent(evt);
-            }
-
             settings.showIDColumn = showIDColumn.selected;
 			settings.keepIntermediateFiles = keepIntermediateFiles.selected;
 
@@ -52,19 +39,6 @@
         <s:CheckBox id="logDebugMessages"
                     change="onChange()"/>
         <s:Label text="Show debug messages" paddingTop="5"/>
-    </s:HGroup>
-
-    <s:HGroup width="100%"  verticalAlign="top">
-        <s:Label text="Precision" paddingTop="5" width="95"/>
-        <s:NumericStepper id="epPrecision"
-                          minimum="0"
-                          maximum="4"
-                          change="onChange()"/>
-        <s:Label text="Precision for display of computed EPH and EPC values"
-                 width="100%"
-                 maxDisplayedLines="3"
-                 styleName="formNote"
-                 paddingTop="5"/>
     </s:HGroup>
 
     <s:HGroup width="100%"  verticalAlign="top">

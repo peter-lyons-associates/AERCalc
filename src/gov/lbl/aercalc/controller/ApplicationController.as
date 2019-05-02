@@ -151,7 +151,7 @@ public class ApplicationController
 			checkAndUpdateHelperFiles();
 
             var defaultProjectDir:File = ApplicationModel.baseStorageDir;
-			var defaultDB:File = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.AERCALC_DEFAULT_DB_PATH);
+			var defaultDB:File = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.DEFAULT_DB_PATH);
             loadProject(defaultProjectDir, defaultDB, true);
 		}
 
@@ -567,12 +567,11 @@ public class ApplicationController
 
             var helperFiles:Array = [
                 weather_dir,
-                ApplicationModel.AERCALC_DB_SUBDIR,
-                ApplicationModel.AERCALC_DEFAULT_DB_PATH,
+                ApplicationModel.DB_SUBDIR,
+                ApplicationModel.DEFAULT_DB_PATH,
                 ApplicationModel.WINDOW_SUBDIR,
                 ApplicationModel.ENERGY_PLUS_SUBDIR,
-                ApplicationModel.AERCALC_DB_SUBDIR,
-                ApplicationModel.EPCALC_SUBDIR,
+                ApplicationModel.WINCOVER_CALC_SUBDIR,
                 ApplicationModel.BSDF_SUBDIR,
                 ApplicationModel.THERM_SUBDIR,
                 ApplicationModel.THERM_FILES_SUBDIR

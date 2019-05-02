@@ -349,8 +349,8 @@ public class W7ImportController {
         // UPDATE DATA
 		
 		// Zero out existing EPc and EPh value when importing
-		windowVO.epc = 0;
-		windowVO.eph = 0;
+		windowVO.coolingRating = 0;
+		windowVO.heatingRating = 0;
         // We just generated a bsdf
 		windowVO.hasBSDF = true;
         windowVO.WINDOWVersion = ApplicationModel.VERSION_WINDOW;

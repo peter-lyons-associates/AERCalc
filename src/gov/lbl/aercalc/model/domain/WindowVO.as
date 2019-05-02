@@ -90,8 +90,8 @@ package gov.lbl.aercalc.model.domain
 		protected var _Tvis:Number = 0;
 		//TvT represents 'material variability'
 		protected var _TvT:Number = 0;
-		protected var _epc:Number = 0;
-		protected var _eph:Number = 0;
+		protected var _heatingRating:Number = 0;
+		protected var _coolingRating:Number = 0;
 		protected var _name:String = "";
 		protected var _airInfiltration:Number = ApplicationModel.AIR_INFILTRATION_DEFAULT;
 		//protected var _airInfiltrationCold:Number = ApplicationModel.AIR_INFILTRATION_COLD_DEFAULT;
@@ -153,21 +153,9 @@ package gov.lbl.aercalc.model.domain
 			this.versionStatus = msg;
 		}
 
-
-		[Transient]
-		public function get epcNormalized():Number{
-			return this.epc * 100;
-		}
-		
-        [Transient]
-        public function get ephNormalized():Number{
-            return this.eph * 100;
-        }
-
-
 		//TODO Need better way to know row has been simulated
 		public function isSimulated():Boolean {
-			return (this.epc>0 || this.eph>0);
+			return (this.coolingRating>0 || this.heatingRating>0);
 		}
 		
 		
@@ -502,13 +490,13 @@ package gov.lbl.aercalc.model.domain
 		}		
 
 
-		public function set epc(value:Number):void
+		public function set coolingRating(value:Number):void
 		{
-			_epc = value
+			_coolingRating = value
 		}
-		public function get epc():Number
+		public function get coolingRating():Number
 		{
-			return _epc
+			return _coolingRating
 		}
 
 
@@ -539,13 +527,13 @@ package gov.lbl.aercalc.model.domain
 
 
 
-		public function set eph(value:Number):void
+		public function set heatingRating(value:Number):void
 		{
-			_eph = value
+			_heatingRating = value
 		}
-		public function get eph():Number
+		public function get heatingRating():Number
 		{
-			return _eph
+			return _heatingRating
 		}
 
 

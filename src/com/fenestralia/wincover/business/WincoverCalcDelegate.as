@@ -1,6 +1,9 @@
 package com.fenestralia.wincover.business {
 import gov.lbl.aercalc.events.SimulationEvent;
 import gov.lbl.aercalc.util.Utils;
+import flash.events.EventDispatcher;
+
+import mx.core.Application;
 
 public class WincoverCalcDelegate extends EventDispatcher {
 
@@ -20,6 +23,7 @@ public class WincoverCalcDelegate extends EventDispatcher {
     import gov.lbl.aercalc.model.ApplicationModel;
     import gov.lbl.aercalc.model.domain.WindowVO;
     import gov.lbl.aercalc.util.Logger;
+    import gov.lbl.aercalc.error.FileMissingError;
 
     public static const RUN_WINCOVER_CALC_FAILED:String = "WincovERCalcFailed";
     public static const RUN_WINCOVER_CALC_FINISHED:String = "WincovERCalcFinished";
@@ -58,6 +62,16 @@ public class WincoverCalcDelegate extends EventDispatcher {
     /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
     public function calculateRatings(window:WindowVO){
+
+        //TODO: Write window properties to input.json
+        try {
+            createInputFileJSON(window);
+        } catch(error:Error){
+            Logger.error("Couldn't write input.json file for WincovER. Error"+ error.messages, this);
+            // TODO: This should fail gracefully with message, not throw error
+            throw new Error(error.message);
+        }
+
 
     }
 
@@ -102,7 +116,7 @@ public class WincoverCalcDelegate extends EventDispatcher {
     /*  Handle errors arriving via stderror. Since we handle process error once the process has exited,
         there's nothing to do here really except log out the incoming errors.
      */
-    public function onWincoverCaclStandardError(event:ProgressEvent):void
+    public function onWincoverCalcStandardError(event:ProgressEvent):void
     {
         var text:String = _wincoverCalcProcess.standardError.readUTFBytes(_wincoverCalcProcess.standardError.bytesAvailable);
         Logger.error(text);
@@ -112,6 +126,38 @@ public class WincoverCalcDelegate extends EventDispatcher {
     /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     /*                  PRIVATE METHODS                 */
     /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+    /* Creates a string for the input file, formatted in the JSON structure
+       as expected by wincover-calc. Then writes that to the approprate sub directory.
+    */
+    protected function createInputFileJSON(wVO:WindowVO):void {
+
+        var inputObject:WincoverCalcInputVO = new WincoverCalcInputVO();
+        inputObject.name = wVO.name;
+
+        // TODO: Move this to helper method
+        var bsdfName:String = Utils.makeUsableAsAFilename(wVO.name) + "_bsdf.idf";
+        var projectBSDFDir:File = applicationModel.getCurrentProjectBSDFDir();
+        var w7IdfFile:File = projectBSDFDir.resolvePath(bsdfName);
+        if (!w7IdfFile.exists){
+            var msg:String = "Missing idf file: " + w7IdfFile.nativePath;
+            throw new FileMissingError(msg);
+        }
+
+
+        inputObject.bsdf_path = w7IdfFile.nativePath;
+        inputObject.shgc = wVO.SHGC;
+        inputObject.uValue = wVO.UvalWinter;
+        var input_file_json:String = JSON.stringify(inputObject);
+        input_file_json = "{ 'windows': [ " + input_file_json + "] }";
+        Logger.debug("Input file json is: " + input_file_json);
+
+        var inputFile:File = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINCOVER_CALC_INPUT_SUBDIR);
+        var stream:FileStream = new FileStream();
+        stream.open(inputFile, FileMode.WRITE);
+        stream.writeUTF(input_file_json);
+        stream.close();
+    }
 
 
     protected function _readWincoverCalcOutput():void{

@@ -35,8 +35,11 @@ package gov.lbl.aercalc.model
 		public static const VERSION_WINCOVER_CALC:String		= "0.0.1";
 		public static const VERSION_THERM:String				= "7.7.01";
 
-		public static const BASE_STORAGE_PATH_DIRNAME:String 	= "AppData/LBNL/aercalc";
+		public static const BASE_STORAGE_PATH_DIRNAME:String 	= "AppData/Local/WincovER/";
 		public static const WINCOVER_CALC_SUBDIR:String 		= "WincovER-Calc/";
+        public static const WINCOVER_CALC_INPUT_SUBDIR:String 	= WINCOVER_CALC_SUBDIR + "input/";
+        public static const WINCOVER_CALC_OUTPUT_SUBDIR:String 	= WINCOVER_CALC_SUBDIR + "output/";
+		public static const WINCOVER_CALC_EXE_FILE_NAME:String 	= "wincover-calc.exe";
 		public static const ENERGY_PLUS_SUBDIR:String 			= "EnergyPlus/";
 		public static const ENERGY_PLUS_MAC_SUBDIR:String		= "EnergyPlusMac/";
 		public static const ENERGY_PLUS_INC_DIR:String 			= ENERGY_PLUS_SUBDIR + "IncFiles/";
@@ -44,19 +47,15 @@ package gov.lbl.aercalc.model
 		public static const ENERGY_PLUS_WEATHER_DIR:String 		= ENERGY_PLUS_SUBDIR + "weather/";
 		public static const ENERGY_PLUS_OUTPUT_DIR:String 		= ENERGY_PLUS_SUBDIR + "Output/";
 		public static const BSDF_SUBDIR:String 					= "bsdf/";
-		public static const AERCALC_DB_SUBDIR:String 			= "db/";
 		public static const WINDOW_SUBDIR:String 				= "W7/";	 //setting to var so we can switch to W7 during development
 		public static const THERM_SUBDIR:String 				= "THERM/";	 
 		public static const THERM_FILES_SUBDIR:String 			= "AERC_sample_THERM_files/";
-		public static const EPCALC_SUBDIR:String 				= "EP_Weighting_Scripts_ESCalc/";		
-		public static const EPCALC_OUTPUT:String 				= EPCALC_SUBDIR + "Output/";
-		public static const ESCALC_EXE_FILE_NAME:String 		= "ESCalc.exe";
 
 		//Used on first startup to find DB within Application directory,
 		//then full path is saved to DBManager.dbPath
-
-		public static const AERCALC_DEFAULT_DB_NAME:String 	= "wincover.sqlite";
-        public static const AERCALC_DEFAULT_DB_PATH:String 	= AERCALC_DB_SUBDIR + AERCALC_DEFAULT_DB_NAME;
+        public static const DB_SUBDIR:String 					= "db/";
+		public static const DEFAULT_DB_NAME:String 				= "wincover.sqlite";
+        public static const DEFAULT_DB_PATH:String 				= DB_SUBDIR + DEFAULT_DB_NAME;
 
 		public static var WINDOW_EXE_FILE_PATH:String 			= WINDOW_SUBDIR + "W7.exe";
 		public static var WINDOW_LOGS_FILE_PATH:String 			=  WINDOW_SUBDIR + "W7.log";
@@ -70,7 +69,7 @@ package gov.lbl.aercalc.model
 
 		public static const AERCALC_LOG_FILE_PATH:String		= "logs/";
 		public static const AERCALC_LOG_FILE_NAME:String 		= "aercalc-log.txt";
-		public static const APP_SETTINGS_FILE_PATH:String 		= "settings/aercalc-settings.xml";
+		public static const APP_SETTINGS_FILE_PATH:String 		= "settings/wincover-settings.xml";
 
 		public static const AIR_INFILTRATION_DEFAULT:Number 	= 0.01016002;  	// SI value m3/sm2  = 2 cfm/ft2		
 

@@ -146,7 +146,7 @@ public class MigrationManager
 
         //copy DB in case something goes wrong
         var backupName:String = "backup.sqlite";
-        _backupDBFile = applicationModel.currProjectDir.resolvePath(ApplicationModel.AERCALC_DB_SUBDIR);
+        _backupDBFile = applicationModel.currProjectDir.resolvePath(ApplicationModel.DB_SUBDIR);
 
         if (!_backupDBFile.exists)
         {

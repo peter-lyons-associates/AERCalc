@@ -1,6 +1,5 @@
 package gov.lbl.aercalc.controller {
 
-import com.fenestralia.wincover.business.WincoverCalcDelegate;
 
 import flash.events.IEventDispatcher;
 import flash.events.TimerEvent;
@@ -8,9 +7,7 @@ import flash.filesystem.File;
 import flash.utils.Timer;
 
 import gov.lbl.aercalc.business.DBManager;
-import gov.lbl.aercalc.business.EPlusSimulationDelegate;
-import gov.lbl.aercalc.business.ESCalcDelegate;
-import gov.lbl.aercalc.business.ESCalcResultsLoader;
+import com.fenestralia.wincover.business.WincoverCalcDelegate;
 import gov.lbl.aercalc.error.FileMissingError;
 import gov.lbl.aercalc.error.SimulationError;
 import gov.lbl.aercalc.error.WindowValidationError;
@@ -100,8 +97,8 @@ public class SimulationController {
         for (var index:uint=0;index<selectedItems.length;index++){
 			var selectedWindow:WindowVO = selectedItems[index];
             if(selectedWindow.isChild()==false){
-				selectedWindow.epc = 0;
-				selectedWindow.eph = 0;
+				selectedWindow.coolingRating = 0;
+				selectedWindow.heatingRating = 0;
                 simulationModel.selectedWindowsAL.addItem(selectedWindow);
             }
         }

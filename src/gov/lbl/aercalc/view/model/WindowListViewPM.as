@@ -395,7 +395,7 @@ public class WindowListViewPM extends EventDispatcher {
 	
     public function onUserChangeFinished(adg:AdvancedDataGrid, event:AdvancedDataGridEvent, selectedItem:Object):void {
         // User is changing core values so clear out computed values for target windowVO
-        // at the moment, *any* user input should cause EPC and EPH to be cleared out,
+        // at the moment, *any* user input should cause heatingRating and coolingRating to be cleared out (set to zero),
 		// unless the user changes the values but then sets back before focusing out.
         Logger.debug("event.reason: " + event.reason);
         Logger.debug("field: " + field);
@@ -449,8 +449,8 @@ public class WindowListViewPM extends EventDispatcher {
 		var newValue:String = Utils.infiltrationFormatter.format(Number(event.currentTarget.itemEditorInstance.text));
 		
 		if (prevValue != newValue){
-			vo.epc = 0;
-			vo.eph = 0;
+			vo.coolingRating = 0;
+			vo.heatingRating = 0;
 		}
 		
 		libraryController.saveWindow(vo);
