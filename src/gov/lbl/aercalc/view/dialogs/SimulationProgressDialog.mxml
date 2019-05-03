@@ -95,7 +95,7 @@
                 </s:fill>
             </s:Rect>
 
-            <s:Label text="ENERGYPLUS OUTPUT:"
+            <s:Label text="WINCOVER-CALC OUTPUT:"
                      color="#658ac7"
                      fontSize="9"
                      left="10"

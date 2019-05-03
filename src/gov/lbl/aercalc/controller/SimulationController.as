@@ -256,7 +256,6 @@ public class SimulationController {
             }
 		}
 
-
         dbManager.save(simulationModel.currSimulationWindow);
         libraryModel.windowsAC.refresh();
         doNextSimulation();

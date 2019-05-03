@@ -41,9 +41,6 @@ public class WincoverCalcDelegate extends EventDispatcher {
     [Inject]
     public var applicationModel:ApplicationModel;
 
-    [Dispatcher]
-    public var dispatcher:IEventDispatcher;
-
     [PostConstruct]
     public function init():void
     {
@@ -121,7 +118,7 @@ public class WincoverCalcDelegate extends EventDispatcher {
         var txt_to_remove:String = Utils.makeUsableAsAFilename(_currentWindowVO.name) + "_";
         evt.statusMessage = text;
         Logger.debug("Wincover-calc output:" + text);
-        dispatcher.dispatchEvent(evt);
+        dispatchEvent(evt);
     }
 
     /*  Handle errors arriving via stderror. Since we handle process error once the process has exited,
@@ -222,7 +219,7 @@ public class WincoverCalcDelegate extends EventDispatcher {
             Logger.error("Couldn't load results.json file: " + err, this);
             var evt:WincoverCalcOutputEvent = new WincoverCalcOutputEvent(WincoverCalcOutputEvent.RUN_WINCOVER_CALC_FINISHED, true);
             evt.error = "Couldn't load WincovER-Calc results.json. See log for details.";
-            dispatcher.dispatchEvent(evt);
+            dispatchEvent(evt);
             return;
         }
 
@@ -236,7 +233,7 @@ public class WincoverCalcDelegate extends EventDispatcher {
             Logger.error("Couldn't read results.json: " + err, this);
             var evt:WincoverCalcOutputEvent = new WincoverCalcOutputEvent(WincoverCalcOutputEvent.RUN_WINCOVER_CALC_FINISHED, true);
             evt.error = "Couldn't read WincovER-Calc results.json. See log for details.";
-            dispatcher.dispatchEvent(evt);
+            dispatchEvent(evt);
             return;
         }
 
@@ -248,7 +245,7 @@ public class WincoverCalcDelegate extends EventDispatcher {
         evt.heatingRating = heatingRating;
         evt.coolingValue = coolingValue;
         evt.coolingRating = coolingRating;
-        dispatcher.dispatchEvent(evt);
+        dispatchEvent(evt);
 
         _currentWindowVO = null;
     }
