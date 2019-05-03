@@ -41,6 +41,9 @@ public class WincoverCalcDelegate extends EventDispatcher {
     [Inject]
     public var applicationModel:ApplicationModel;
 
+    [Dispatcher]
+    public var dispatcher:IEventDispatcher;
+
     [PostConstruct]
     public function init():void
     {
@@ -118,7 +121,7 @@ public class WincoverCalcDelegate extends EventDispatcher {
         var txt_to_remove:String = Utils.makeUsableAsAFilename(_currentWindowVO.name) + "_";
         evt.statusMessage = text;
         Logger.debug("Wincover-calc output:" + text);
-        dispatchEvent(evt);
+        dispatcher.dispatchEvent(evt);
     }
 
     /*  Handle errors arriving via stderror. Since we handle process error once the process has exited,
