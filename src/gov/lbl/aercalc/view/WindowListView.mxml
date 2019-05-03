@@ -298,7 +298,7 @@
 										   editable="false"/>
 
 				<mx:AdvancedDataGridColumn dataField="cgdbVersion"
-										   width="90"
+										   width="60"
 										   showDataTips="true"
 										   dataTipField="cgdbVersion"
 										   headerText="CGDB Version"
@@ -314,7 +314,7 @@
 										   editable="false"/>
 				
 				<mx:AdvancedDataGridColumn dataField="WINDOWVersion"
-										   width="100"
+										   width="50"
 										   headerText="W7 Version"
 										   textAlign="center"
 										   dataTipField="WINDOWVersion"
@@ -370,7 +370,7 @@
 				<mx:AdvancedDataGridColumn dataField="heatingRating"
 										   headerText="Heating Rating"
 										   showDataTips="false"
-										   width="50"
+										   width="60"
 										   labelFunction="{windowListViewPM.heatingRatingLabelFunction}"
 										   textAlign="right"
 										   editable="false"/>
@@ -378,7 +378,7 @@
 				<mx:AdvancedDataGridColumn dataField="coolingRating"
 										   headerText="Cooling Rating"
 										   showDataTips="false"
-										   width="50"
+										   width="60"
 										   labelFunction="{windowListViewPM.coolingRatingLabelFunction}"
 										   textAlign="right"
 										   editable="false"/>

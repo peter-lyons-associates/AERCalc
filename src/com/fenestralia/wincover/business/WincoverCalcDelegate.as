@@ -1,4 +1,7 @@
 package com.fenestralia.wincover.business {
+import com.fenestralia.wincover.events.WincoverCalcOutputEvent;
+import com.fenestralia.wincover.model.WincoverCalcInputVO;
+
 import gov.lbl.aercalc.events.SimulationEvent;
 import gov.lbl.aercalc.util.Utils;
 import flash.events.EventDispatcher;
@@ -8,9 +11,8 @@ import mx.core.Application;
 public class WincoverCalcDelegate extends EventDispatcher {
 
     import flash.desktop.NativeApplication;
-    import flash.desktop.NativeProcess;
     import flash.desktop.NativeProcessStartupInfo;
-    import flash.events.Event;
+    import flash.desktop.NativeProcess;
     import flash.events.EventDispatcher;
     import flash.events.IEventDispatcher;
     import flash.events.NativeProcessExitEvent;
@@ -18,15 +20,11 @@ public class WincoverCalcDelegate extends EventDispatcher {
     import flash.filesystem.File;
     import flash.filesystem.FileMode;
     import flash.filesystem.FileStream;
-    import mx.events.DynamicEvent;
-
     import gov.lbl.aercalc.model.ApplicationModel;
     import gov.lbl.aercalc.model.domain.WindowVO;
     import gov.lbl.aercalc.util.Logger;
     import gov.lbl.aercalc.error.FileMissingError;
-
-    public static const RUN_WINCOVER_CALC_FAILED:String = "WincovERCalcFailed";
-    public static const RUN_WINCOVER_CALC_FINISHED:String = "WincovERCalcFinished";
+    import gov.lbl.aercalc.error.SimulationError;
 
     //Subdirectory conventions for using WincovER-Calc
     public static const WC_INPUT_DIR:String = "input";
@@ -63,11 +61,24 @@ public class WincoverCalcDelegate extends EventDispatcher {
 
     public function calculateRatings(window:WindowVO){
 
+        if (window==null){
+            throw new Error("window cannot be null");
+        }
+
+        _currentWindowVO = window;
+
         //TODO: Write window properties to input.json
         try {
-            createInputFileJSON(window);
+            var inputFile:File = createInputFileJSON(window);
         } catch(error:Error){
             Logger.error("Couldn't write input.json file for WincovER. Error"+ error.messages, this);
+            // TODO: This should fail gracefully with message, not throw error
+            throw new Error(error.message);
+        }
+        try {
+            runWincoverCalc(inputFile);
+        } catch (error:Error){
+            Logger.error("Couldn't run WincovER-Calc Error"+ error.messages, this);
             // TODO: This should fail gracefully with message, not throw error
             throw new Error(error.message);
         }
@@ -96,7 +107,7 @@ public class WincoverCalcDelegate extends EventDispatcher {
     {
         Logger.info("WincovER-Calc completed successfully. Reading output...",this);
         removeAllProcessEventListeners();
-        _readWincoverCalcOutput();
+        readWincoverCalcResults();
     }
 
     /*  Handle stdout messages arriving from WincovER-Calc. Launches a status
@@ -109,7 +120,7 @@ public class WincoverCalcDelegate extends EventDispatcher {
         // Groom incoming text so we can show it properly in progress dialog
         var txt_to_remove:String = Utils.makeUsableAsAFilename(_currentWindowVO.name) + "_";
         evt.statusMessage = text;
-        Logger.debug(text);
+        Logger.debug("Wincover-calc output:" + text);
         dispatcher.dispatchEvent(evt);
     }
 
@@ -130,7 +141,7 @@ public class WincoverCalcDelegate extends EventDispatcher {
     /* Creates a string for the input file, formatted in the JSON structure
        as expected by wincover-calc. Then writes that to the approprate sub directory.
     */
-    protected function createInputFileJSON(wVO:WindowVO):void {
+    protected function createInputFileJSON(wVO:WindowVO):File {
 
         var inputObject:WincoverCalcInputVO = new WincoverCalcInputVO();
         inputObject.name = wVO.name;
@@ -143,37 +154,104 @@ public class WincoverCalcDelegate extends EventDispatcher {
             var msg:String = "Missing idf file: " + w7IdfFile.nativePath;
             throw new FileMissingError(msg);
         }
-
-
-        inputObject.bsdf_path = w7IdfFile.nativePath;
+        var path:String = w7IdfFile.nativePath;
+        inputObject.bsdf_path = path.replace( /\\/g, '/');
         inputObject.shgc = wVO.SHGC;
-        inputObject.uValue = wVO.UvalWinter;
+        inputObject.uvalue = wVO.UvalWinter;
         var input_file_json:String = JSON.stringify(inputObject);
         input_file_json = "{ \"windows\": [ " + input_file_json + "] }";
         Logger.debug("Input file json is: " + input_file_json);
 
-        var inputFile:File = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINCOVER_CALC_INPUT_SUBDIR).resolvePath("input.json");
+        var inputFile:File = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINCOVER_CALC_SUBDIR).resolvePath(ApplicationModel.WINCOVER_CALC_INPUT_FILENAME);
         var stream:FileStream = new FileStream();
         stream.open(inputFile, FileMode.WRITE);
         stream.writeUTFBytes(input_file_json);
         stream.close();
+
+        return inputFile;
     }
 
 
-    protected function _readWincoverCalcOutput():void{
-        // TODO: Read output and return event with ratings for window
-        // TODO: Notify of error if can't ready output
+    protected function runWincoverCalc(inputFile:File):void {
 
+        if (_wincoverCalcProcess) {
+            _wincoverCalcProcess.exit(true);
+            removeAllProcessEventListeners();
+        }
+        _wincoverCalcProcess = new NativeProcess();
+        _wincoverCalcProcess.addEventListener(NativeProcessExitEvent.EXIT, onWincoverCalcProcessFinished);
+        _wincoverCalcProcess.addEventListener(ProgressEvent.STANDARD_OUTPUT_DATA, onWincoverCalcStandardOutput);
+        _wincoverCalcProcess.addEventListener(ProgressEvent.STANDARD_ERROR_DATA, onWincoverCalcStandardError);
 
-        var msg:DynamicEvent = new DynamicEvent(WincoverCalcDelegate.RUN_WINCOVER_CALC_FINISHED, true);
+        var processArgs:Vector.<String> = new Vector.<String>();
+        processArgs.push(inputFile.nativePath);
+        processArgs.push("--verbose");
 
+        var startupInfo:NativeProcessStartupInfo = new NativeProcessStartupInfo();
+        var wincoverCalcExe:File = _wincoverCalcDir.resolvePath(ApplicationModel.WINCOVER_CALC_EXE_FILE_NAME);
+        startupInfo.executable = wincoverCalcExe;
+        startupInfo.workingDirectory = _wincoverCalcDir;
+        startupInfo.arguments = processArgs;
+
+        try
+        {
+            _wincoverCalcProcess.start(startupInfo)
+        }
+        catch (err:Error)
+        {
+            //Since we haven't gone async yet, this should be a regular error, not an error event
+            var msg:String = "Cannot start EnergyPlus. " + err.errorID + " : " + err.message;
+            throw new SimulationError(msg);
+        }
     }
 
-    protected function _runWincoverCalc():void {
-        // TODO
+
+    protected function readWincoverCalcResults():void{
+        // TODO: Read output results and return event with ratings for window
+        // TODO: Notify of error if can't read results.
+
+        var errorMsg:String = null;
+
+        try {
+            var resultsFile:File = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINCOVER_CALC_OUTPUT_SUBDIR).resolvePath(ApplicationModel.WINCOVER_CALC_OUTPUT_FILENAME);
+            var stream:FileStream = new FileStream();
+            stream.open(resultsFile, FileMode.READ);
+            var resultsText:String = stream.readUTFBytes(stream.bytesAvailable);
+            stream.close();
+        } catch (err:Error) {
+            Logger.error("Couldn't load results.json file: " + err, this);
+            var evt:WincoverCalcOutputEvent = new WincoverCalcOutputEvent(WincoverCalcOutputEvent.RUN_WINCOVER_CALC_FINISHED, true);
+            evt.error = "Couldn't load WincovER-Calc results.json. See log for details.";
+            dispatcher.dispatchEvent(evt);
+            return;
+        }
+
+        try{
+            var results:Object = JSON.parse(resultsText)[0];
+            var heatingValue:Number = results.heating_value;
+            var heatingRating:Number = results.heating_rating;
+            var coolingValue:Number = results.cooling_value;
+            var coolingRating:Number = results.cooling_rating;
+        } catch (err:Error) {
+            Logger.error("Couldn't read results.json: " + err, this);
+            var evt:WincoverCalcOutputEvent = new WincoverCalcOutputEvent(WincoverCalcOutputEvent.RUN_WINCOVER_CALC_FINISHED, true);
+            evt.error = "Couldn't read WincovER-Calc results.json. See log for details.";
+            dispatcher.dispatchEvent(evt);
+            return;
+        }
+
+        //TODO: validate results
+
+        var evt:WincoverCalcOutputEvent = new WincoverCalcOutputEvent(WincoverCalcOutputEvent.RUN_WINCOVER_CALC_FINISHED, true);
+        evt.windowID = _currentWindowVO.id;
+        evt.heatingValue = heatingValue;
+        evt.heatingRating = heatingRating;
+        evt.coolingValue = coolingValue;
+        evt.coolingRating = coolingRating;
+        dispatcher.dispatchEvent(evt);
+
+        _currentWindowVO = null;
     }
-
-
 
 
     public function removeAllProcessEventListeners():void

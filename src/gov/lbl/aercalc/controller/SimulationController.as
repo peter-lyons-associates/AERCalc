@@ -1,6 +1,8 @@
 package gov.lbl.aercalc.controller {
 
 
+import com.fenestralia.wincover.events.WincoverCalcOutputEvent;
+
 import flash.events.IEventDispatcher;
 import flash.events.TimerEvent;
 import flash.filesystem.File;
@@ -53,8 +55,8 @@ public class SimulationController {
 
     [PostConstruct]
     public function onPostConstruct():void {
-        wincoverCalcDelegate.addEventListener(WincoverCalcDelegate.RUN_WINCOVER_CALC_FINISHED, onWincoverCalcFinished);
-        wincoverCalcDelegate.addEventListener(WincoverCalcDelegate.RUN_WINCOVER_CALC_FAILED, onWincoverCalcFailed);
+        wincoverCalcDelegate.addEventListener(WincoverCalcOutputEvent.RUN_WINCOVER_CALC_FINISHED, onWincoverCalcFinished);
+        wincoverCalcDelegate.addEventListener(WincoverCalcOutputEvent.RUN_WINCOVER_CALC_FAILED, onWincoverCalcFailed);
     }
 	
 	
@@ -274,19 +276,18 @@ public class SimulationController {
 	/* WINCOVERCALC LISTENERS */
     /* ~~~~~~~~~~~~~~~~~~~~~~~*/
 	
-	protected function onWincoverCalcFinished(event:DynamicEvent):void
+	protected function onWincoverCalcFinished(event:WincoverCalcOutputEvent):void
 	{
 		/* TODO: Read heating and cooling ratings and assign to current window */
-        //simulationModel.currSimulationWindow.heatingRating = event.heatingRating;
-        //simulationModel.currSimulationWindow.coolingRather = event.coolingRating;
+        simulationModel.currSimulationWindow.heatingRating = event.heatingRating;
+        simulationModel.currSimulationWindow.coolingRating = event.coolingRating;
         onSingleSimulationComplete();
 	}
 	
-	protected function onWincoverCalcFailed(event:DynamicEvent):void {
+	protected function onWincoverCalcFailed(event:WincoverCalcOutputEvent):void {
 		var errorMsg:String = event.error;
 		onSingleSimulationFailed(errorMsg);
 	}
-
 
     /* ~~~~~~~~~~~~~~~~~~~~~~~*/
 	/*   VALIDATION METHODS   */

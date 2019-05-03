@@ -36,10 +36,12 @@ package gov.lbl.aercalc.model
 		public static const VERSION_THERM:String				= "7.7.01";
 
 		public static const BASE_STORAGE_PATH_DIRNAME:String 	= "AppData/Local/WincovER/";
-		public static const WINCOVER_CALC_SUBDIR:String 		= "WincovER-Calc/";
-        public static const WINCOVER_CALC_INPUT_SUBDIR:String 	= WINCOVER_CALC_SUBDIR + "input/";
+		public static const WINCOVER_CALC_SUBDIR:String 		= "WincovER_Calc/";
         public static const WINCOVER_CALC_OUTPUT_SUBDIR:String 	= WINCOVER_CALC_SUBDIR + "output/";
-		public static const WINCOVER_CALC_EXE_FILE_NAME:String 	= "wincover-calc.exe";
+		public static const WINCOVER_CALC_EXE_FILE_NAME:String 	= "wincover_calc.exe";
+		public static const WINCOVER_CALC_INPUT_FILENAME:String = "input.json";
+        public static const WINCOVER_CALC_OUTPUT_FILENAME:String = "results.json";
+
 		public static const ENERGY_PLUS_SUBDIR:String 			= "EnergyPlus/";
 		public static const ENERGY_PLUS_MAC_SUBDIR:String		= "EnergyPlusMac/";
 		public static const ENERGY_PLUS_INC_DIR:String 			= ENERGY_PLUS_SUBDIR + "IncFiles/";
