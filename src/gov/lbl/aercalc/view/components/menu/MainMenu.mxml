@@ -51,7 +51,7 @@
 
 
 	<menu:MenuItem label="Help">
-		<menu:MenuItem label="About AERCalc" command="{Commands.ABOUT}"  controlKey="true" key="p"/>
+		<menu:MenuItem label="About WincovER" command="{Commands.ABOUT}"  controlKey="true" key="p"/>
 	</menu:MenuItem>
 
 	

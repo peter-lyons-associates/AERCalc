@@ -140,9 +140,9 @@
 			
 			<s:HGroup left="10" right="10" top="10" verticalAlign="middle" >
 				
-				<s:VGroup paddingBottom="10"  paddingLeft="10">
-					<s:Image source="@Embed('/assets/img/logo.png')" width="400" height="45" cacheAsBitmap="true" smooth="true"/>
-					<s:Label text="by Lawrence Berkeley National Laboratory" fontSize="9" color="#ffffff"/>
+				<s:VGroup paddingBottom="10"  paddingLeft="10" horizontalAlign="left">
+					<s:Image source="@Embed('/assets/img/logo.png')" width="150"  smooth="true"/>
+					<s:Label text="by the Blind Manufacturers' Association of Australia" fontSize="9" color="#ffffff"/>
 				</s:VGroup>
 				
 				<s:Spacer width="100%"/>

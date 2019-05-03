@@ -8,7 +8,7 @@
 			   close="onCloseWindow()"
 			   horizontalCenter="0"
 			   verticalCenter="0"
-			   title="About AERCalc"
+			   title="About WincovER"
 >
 	
 	<s:layout>
@@ -28,7 +28,6 @@
 		
 		import gov.lbl.aercalc.model.ApplicationModel;
 		import gov.lbl.aercalc.util.AboutInfo;
-		import gov.lbl.aercalc.util.AERCalcResources;
 		import gov.lbl.aercalc.util.Utils;
 
 
@@ -74,11 +73,11 @@
 
 		<s:HGroup left="0" right="20" verticalAlign="top" verticalCenter="0" paddingTop="20">
 
-			<s:VGroup paddingBottom="10"  paddingLeft="10" gap="0" width="580">
-				<s:Image source="@Embed('/assets/img/logo.png')" width="400" height="41"/>
-				<s:VGroup paddingLeft="10">
+			<s:VGroup paddingBottom="10"  paddingLeft="10" gap="0" width="580" horizontalAlign="left">
+				<s:Image source="@Embed('/assets/img/logo.png')" width="200" height="41"/>
+				<s:VGroup paddingLeft="20">
 					<s:Spacer height="5"/>
-					<s:Label text="by Peter Lyons &amp; Associates" fontSize="16" color="#ffffff"/>
+					<s:Label text="by BMAA" fontSize="16" color="#ffffff"/>
 					<s:Label text="{'Version ' + AboutInfo.applicationVersion}" fontSize="16" color="#FFFFFF"/>
 					<s:Spacer height="20"/>
 				</s:VGroup>
