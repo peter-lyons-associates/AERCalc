@@ -195,7 +195,7 @@ public class SimulationController {
 		}
 			
 		//window is valid for simulation. Try starting EPlus simulation and catch and report any errors
-		Logger.debug("window " + simulationModel.currSimulationWindow.name + " is valid. Starting WincovER-Calc...", this);
+		Logger.debug("window " + simulationModel.currSimulationWindow.name + " is valid. Starting WincovER_Calc...", this);
 		var statusMsg:String = "Running Simulation " + (simulationModel.currWindowIndex + 1) + "/" +
 								simulationModel.getNumWindows() + File.lineEnding +
 								simulationModel.currSimulationWindow.name;
@@ -209,16 +209,16 @@ public class SimulationController {
 			errorMsg = "Couldn't run simulation because a required file is missing. " + error.message;
 		}
 		catch(error:SimulationError){
-			errorMsg = "Error encountered when starting the WincovER-Calc simulation. " + error.message;
+			errorMsg = "Error encountered when starting the WincovER_Calc simulation. " + error.message;
 		}
 		catch(error:Error)
 		{
 			//catchall error. We're not sure what failed in this one...
-			errorMsg = "Error running WincovER-Calc. " + error.errorID + " : " + error.message;
+			errorMsg = "Error running WincovER_Calc. " + error.errorID + " : " + error.message;
 		}
 
 		if (errorMsg){
-            Alert.show(errorMsg,"WincovER-Calc Error");
+            Alert.show(errorMsg,"WincovER_Calc Error");
             cancelSimulation();
 		} else {
             // Do nothing.

@@ -39,7 +39,7 @@
 
 
 		private function onCC():void{
-			var t:Timer = new Timer(20000, 1);
+			var t:Timer = new Timer(3000, 1);
 			t.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete);
 			t.start()
 		}
