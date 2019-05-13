@@ -61,8 +61,8 @@ package gov.lbl.aercalc.model
 
 		public static var WINDOW_EXE_FILE_PATH:String 			= WINDOW_SUBDIR + "W7.exe";
 		public static var WINDOW_LOGS_FILE_PATH:String 			=  WINDOW_SUBDIR + "W7.log";
-		public static var WINDOW_MDB_FILE_PATH:String 			=  WINDOW_SUBDIR + "AERCalSample.mdb";
-		public static var WINDOW_MDB_LOCK_FILE_PATH:String 		= WINDOW_SUBDIR + "AERCalSample.ldb";
+		public static var WINDOW_MDB_FILE_PATH:String 			=  WINDOW_SUBDIR + "WincovER_sample.mdb";
+		public static var WINDOW_MDB_LOCK_FILE_PATH:String 		= WINDOW_SUBDIR + "WincovER_sample.ldb";
 		public static var WINDOW_INI_FILE_PATH:String 			=  WINDOW_SUBDIR + "W7.ini";
 		public static var WINDOW_INI_TEMPLATE_FILE_PATH:String 	=  WINDOW_SUBDIR + "W7_template.ini";
 		public static var WINDOW_DEFAULT_MDB_FILE_PATH:String 	=  WINDOW_SUBDIR + "AERCalSample.mdb";
