@@ -103,6 +103,10 @@ Home Page: https://windows.lbl.gov/software/therm
 The following images are used by AERCalc
 ================================================================
 
+Splash Screen:
+ - URL: https://pixabay.com/illustrations/background-desktop-texture-design-2817945/
+ - License: https://pixabay.com/service/license/
+
 Warning Icon (warning-33364.svg)
  - URL: https://pixabay.com/en/warning-signs-risk-danger-caution-33364/
  - License: CC0 Public Domain
