@@ -250,7 +250,7 @@
 				<mx:AdvancedDataGridColumn id="versionStatus"
 										   dataField="versionStatus"
 										   width="50"
-										   headerText="Error Status"
+										   headerText="Version Status"
 										   showDataTips="true"
 										   editable="false"
 										   textAlign="center"

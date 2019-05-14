@@ -35,6 +35,7 @@ public class WincoverCalcDelegate extends EventDispatcher {
     protected var _outputDir:File;
     protected var _wincoverCalcProcess:NativeProcess;
     protected var _currentWindowVO:WindowVO;
+    protected var _errorText:String;
 
     protected var _wincoverCalcDir:File = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINCOVER_CALC_SUBDIR);
 
@@ -107,7 +108,15 @@ public class WincoverCalcDelegate extends EventDispatcher {
     {
         Logger.info("WincovER_Calc completed successfully. Reading output...",this);
         removeAllProcessEventListeners();
-        readWincoverCalcResults();
+
+        if (event.exitCode > 0){
+            Logger.error("WincovER-Calc exited with an error : " + event.exitCode);
+            var evt:WincoverCalcOutputEvent = new WincoverCalcOutputEvent(WincoverCalcOutputEvent.RUN_WINCOVER_CALC_FAILED, true);
+            evt.error = "WincovER-Calc exited with an error. See log for details.";
+            dispatchEvent(evt);
+        } else {
+            readWincoverCalcResults();
+        }
     }
 
     /*  Handle stdout messages arriving from WincovER_Calc. Launches a status
@@ -129,8 +138,8 @@ public class WincoverCalcDelegate extends EventDispatcher {
      */
     public function onWincoverCalcStandardError(event:ProgressEvent):void
     {
-        var text:String = _wincoverCalcProcess.standardError.readUTFBytes(_wincoverCalcProcess.standardError.bytesAvailable);
-        Logger.error(text);
+        _errorText = _wincoverCalcProcess.standardError.readUTFBytes(_wincoverCalcProcess.standardError.bytesAvailable);
+        Logger.error(_errorText);
     }
 
 
@@ -173,6 +182,8 @@ public class WincoverCalcDelegate extends EventDispatcher {
 
 
     protected function runWincoverCalc(inputFile:File):void {
+
+        _errorText = null;
 
         if (_wincoverCalcProcess) {
             _wincoverCalcProcess.exit(true);
