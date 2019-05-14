@@ -559,18 +559,18 @@ public class ApplicationController
             // are present in user directory (they might have deleted one or all)
             // Also check for some key files themselves in case user deleted file
             // not subdirectory
-            if (Utils.isMac) {
-                var weather_dir:String = ApplicationModel.ENERGY_PLUS_MAC_SUBDIR;
-            } else {
-                weather_dir = ApplicationModel.ENERGY_PLUS_SUBDIR;
-            }
+            //if (Utils.isMac) {
+            //    var weather_dir:String = ApplicationModel.ENERGY_PLUS_MAC_SUBDIR;
+            //} else {
+            //    weather_dir = ApplicationModel.ENERGY_PLUS_SUBDIR;
+            //}
 
             var helperFiles:Array = [
-                weather_dir,
+                //weather_dir,
                 ApplicationModel.DB_SUBDIR,
                 ApplicationModel.DEFAULT_DB_PATH,
                 ApplicationModel.WINDOW_SUBDIR,
-                ApplicationModel.ENERGY_PLUS_SUBDIR,
+                //ApplicationModel.ENERGY_PLUS_SUBDIR,
                 ApplicationModel.WINCOVER_CALC_SUBDIR,
                 ApplicationModel.BSDF_SUBDIR,
                 ApplicationModel.THERM_SUBDIR,

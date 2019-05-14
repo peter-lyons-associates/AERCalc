@@ -51,7 +51,7 @@ public class ExportController {
         // default to documents directory
         // TODO: remember last export directory and open browseForFile there.
         var exportDirectory:File = File.documentsDirectory;
-        var exportFile:File = exportDirectory.resolvePath("aercalc-export.csv");
+        var exportFile:File = exportDirectory.resolvePath("wincover-export.csv");
         exportFile.browseForSave("Export to csv");
         exportFile.addEventListener(Event.SELECT, onDoExportToCSV, false, 0, true);
         exportFile.addEventListener(Event.CANCEL, onCancel, false, 0, true);

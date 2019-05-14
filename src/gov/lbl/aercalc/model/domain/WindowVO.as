@@ -145,8 +145,8 @@ package gov.lbl.aercalc.model.domain
                 var currWincovERCalcVersion:String = ApplicationModel.VERSION_WINCOVER_CALC;
                 var isOldESCalcImport:Boolean = Utils.compareVersions(currWincovERCalcVersion, _WincovERCalcVersion) == Utils.FIRST_ARG_HIGHER;
                 if (isOldESCalcImport){
-                    msg += "Simulated with old WincovER-Calc : " + _WincovERCalcVersion + "\n";
-                    msg += "Current version of WincovER-Calc : " + currWincovERCalcVersion + "\n";
+                    msg += "Simulated with old WincovER_Calc : " + _WincovERCalcVersion + "\n";
+                    msg += "Current version of WincovER_Calc : " + currWincovERCalcVersion + "\n";
                 }
 			}
 

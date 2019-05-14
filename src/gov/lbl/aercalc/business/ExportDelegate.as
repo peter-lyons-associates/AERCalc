@@ -143,13 +143,6 @@ public class ExportDelegate {
             blankIfZero: true
         },
         {
-            title: "EPh",
-            varName: "ephNormalized",
-            escapeDelimiter: false,
-            includeInParentRow: true,
-            blankIfZero: true
-        },
-        {
             title: "WINDOW Origin DB Filepath",
             varName: "WINDOWOriginDB",
             escapeDelimiter: false,

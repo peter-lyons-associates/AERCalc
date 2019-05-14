@@ -26,7 +26,7 @@ public class WincoverCalcDelegate extends EventDispatcher {
     import gov.lbl.aercalc.error.FileMissingError;
     import gov.lbl.aercalc.error.SimulationError;
 
-    //Subdirectory conventions for using WincovER-Calc
+    //Subdirectory conventions for using WincovER_Calc
     public static const WC_INPUT_DIR:String = "input";
     public static const WC_OUTPUT_DIR:String = "output";
 
@@ -35,6 +35,7 @@ public class WincoverCalcDelegate extends EventDispatcher {
     protected var _outputDir:File;
     protected var _wincoverCalcProcess:NativeProcess;
     protected var _currentWindowVO:WindowVO;
+    protected var _errorText:String;
 
     protected var _wincoverCalcDir:File = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINCOVER_CALC_SUBDIR);
 
@@ -78,7 +79,7 @@ public class WincoverCalcDelegate extends EventDispatcher {
         try {
             runWincoverCalc(inputFile);
         } catch (error:Error){
-            Logger.error("Couldn't run WincovER-Calc Error"+ error.messages, this);
+            Logger.error("Couldn't run WincovER_Calc Error"+ error.messages, this);
             // TODO: This should fail gracefully with message, not throw error
             throw new Error(error.message);
         }
@@ -105,12 +106,20 @@ public class WincoverCalcDelegate extends EventDispatcher {
      */
     public function onWincoverCalcProcessFinished(event:NativeProcessExitEvent):void
     {
-        Logger.info("WincovER-Calc completed successfully. Reading output...",this);
+        Logger.info("WincovER_Calc completed successfully. Reading output...",this);
         removeAllProcessEventListeners();
-        readWincoverCalcResults();
+
+        if (event.exitCode > 0){
+            Logger.error("WincovER-Calc exited with an error : " + event.exitCode);
+            var evt:WincoverCalcOutputEvent = new WincoverCalcOutputEvent(WincoverCalcOutputEvent.RUN_WINCOVER_CALC_FAILED, true);
+            evt.error = "WincovER-Calc exited with an error. See log for details.";
+            dispatchEvent(evt);
+        } else {
+            readWincoverCalcResults();
+        }
     }
 
-    /*  Handle stdout messages arriving from WincovER-Calc. Launches a status
+    /*  Handle stdout messages arriving from WincovER_Calc. Launches a status
         message with any text that arrives from stdout.
      */
     public function onWincoverCalcStandardOutput(event:ProgressEvent):void
@@ -129,8 +138,8 @@ public class WincoverCalcDelegate extends EventDispatcher {
      */
     public function onWincoverCalcStandardError(event:ProgressEvent):void
     {
-        var text:String = _wincoverCalcProcess.standardError.readUTFBytes(_wincoverCalcProcess.standardError.bytesAvailable);
-        Logger.error(text);
+        _errorText = _wincoverCalcProcess.standardError.readUTFBytes(_wincoverCalcProcess.standardError.bytesAvailable);
+        Logger.error(_errorText);
     }
 
 
@@ -173,6 +182,8 @@ public class WincoverCalcDelegate extends EventDispatcher {
 
 
     protected function runWincoverCalc(inputFile:File):void {
+
+        _errorText = null;
 
         if (_wincoverCalcProcess) {
             _wincoverCalcProcess.exit(true);
@@ -221,7 +232,7 @@ public class WincoverCalcDelegate extends EventDispatcher {
         } catch (err:Error) {
             Logger.error("Couldn't load results.json file: " + err, this);
             var evt:WincoverCalcOutputEvent = new WincoverCalcOutputEvent(WincoverCalcOutputEvent.RUN_WINCOVER_CALC_FINISHED, true);
-            evt.error = "Couldn't load WincovER-Calc results.json. See log for details.";
+            evt.error = "Couldn't load WincovER_Calc results.json. See log for details.";
             dispatchEvent(evt);
             return;
         }
@@ -235,7 +246,7 @@ public class WincoverCalcDelegate extends EventDispatcher {
         } catch (err:Error) {
             Logger.error("Couldn't read results.json: " + err, this);
             var evt:WincoverCalcOutputEvent = new WincoverCalcOutputEvent(WincoverCalcOutputEvent.RUN_WINCOVER_CALC_FINISHED, true);
-            evt.error = "Couldn't read WincovER-Calc results.json. See log for details.";
+            evt.error = "Couldn't read WincovER_Calc results.json. See log for details.";
             dispatchEvent(evt);
             return;
         }
