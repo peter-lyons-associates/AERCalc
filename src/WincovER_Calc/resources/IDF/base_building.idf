@@ -1906,7 +1906,7 @@ WindowThermalModel:Params,
 
 !         Complex Fenestration State
 Construction:ComplexFenestrationState,
-    AERC_Baseline_B_GlzSys_DoubleClear,  !- Name
+    WINCOVER_BASELINE_D_GLZSYS,  !- Name
     LBNLWindow,              !- Basis Type
     None,                    !- Basis Symmetry Type
     AERC_Baseline_B_ThermParam,  !- Window Thermal Model
@@ -3089,12 +3089,12 @@ BuildingSurface:Detailed,
 FenestrationSurface:Detailed,
     Window_ldf1_1_Bot.unit1, !- Name
     Window,                  !- Surface Type
-    AERC_Baseline_B_GlzSys_DoubleClear,  !- Construction Name
+    WINCOVER_BASELINE_D_GLZSYS,  !- Construction Name
     Wall_ldf1_1.unit1,       !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     ,                        !- View Factor to Ground
     ,                        !- Shading Control Name
-    AERC_Baseline_B_Frame,   !- Frame and Divider Name
+    WINCOVER_BASELINE_D_FRAME,   !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
     2.500000000000,          !- Vertex 1 X-coordinate {m}
@@ -3113,12 +3113,12 @@ FenestrationSurface:Detailed,
 FenestrationSurface:Detailed,
     Window_ldf1_1_Top.unit1, !- Name
     Window,                  !- Surface Type
-    AERC_Baseline_B_GlzSys_DoubleClear,  !- Construction Name
+    WINCOVER_BASELINE_D_GLZSYS,  !- Construction Name
     Wall_ldf1_1.unit1,       !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     ,                        !- View Factor to Ground
     ,                        !- Shading Control Name
-    AERC_Baseline_B_Frame,   !- Frame and Divider Name
+    WINCOVER_BASELINE_D_FRAME,   !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
     2.500000000000,          !- Vertex 1 X-coordinate {m}
@@ -3137,12 +3137,12 @@ FenestrationSurface:Detailed,
 FenestrationSurface:Detailed,
     Window_ldf1_2_Bot.unit1, !- Name
     Window,                  !- Surface Type
-    AERC_Baseline_B_GlzSys_DoubleClear,  !- Construction Name
+    WINCOVER_BASELINE_D_GLZSYS,  !- Construction Name
     Wall_ldf1_1.unit1,       !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     ,                        !- View Factor to Ground
     ,                        !- Shading Control Name
-    AERC_Baseline_B_Frame,   !- Frame and Divider Name
+    WINCOVER_BASELINE_D_FRAME,   !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
     6.600000000000,          !- Vertex 1 X-coordinate {m}
@@ -3161,12 +3161,12 @@ FenestrationSurface:Detailed,
 FenestrationSurface:Detailed,
     Window_ldf1_2_Top.unit1, !- Name
     Window,                  !- Surface Type
-    AERC_Baseline_B_GlzSys_DoubleClear,  !- Construction Name
+    WINCOVER_BASELINE_D_GLZSYS,  !- Construction Name
     Wall_ldf1_1.unit1,       !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     ,                        !- View Factor to Ground
     ,                        !- Shading Control Name
-    AERC_Baseline_B_Frame,   !- Frame and Divider Name
+    WINCOVER_BASELINE_D_FRAME,   !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
     6.600000000000,          !- Vertex 1 X-coordinate {m}
@@ -3185,12 +3185,12 @@ FenestrationSurface:Detailed,
 FenestrationSurface:Detailed,
     Window_ldb1_1_Bot.unit1, !- Name
     Window,                  !- Surface Type
-    AERC_Baseline_B_GlzSys_DoubleClear,  !- Construction Name
+    WINCOVER_BASELINE_D_GLZSYS,  !- Construction Name
     Wall_ldb1_1.unit1,       !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     ,                        !- View Factor to Ground
     ,                        !- Shading Control Name
-    AERC_Baseline_B_Frame,   !- Frame and Divider Name
+    WINCOVER_BASELINE_D_FRAME,   !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
     8.000000000000,          !- Vertex 1 X-coordinate {m}
@@ -3209,12 +3209,12 @@ FenestrationSurface:Detailed,
 FenestrationSurface:Detailed,
     Window_ldb1_1_Top.unit1, !- Name
     Window,                  !- Surface Type
-    AERC_Baseline_B_GlzSys_DoubleClear,  !- Construction Name
+    WINCOVER_BASELINE_D_GLZSYS,  !- Construction Name
     Wall_ldb1_1.unit1,       !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     ,                        !- View Factor to Ground
     ,                        !- Shading Control Name
-    AERC_Baseline_B_Frame,   !- Frame and Divider Name
+    WINCOVER_BASELINE_D_FRAME,   !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
     8.000000000000,          !- Vertex 1 X-coordinate {m}
@@ -3233,12 +3233,12 @@ FenestrationSurface:Detailed,
 FenestrationSurface:Detailed,
     Window_ldb1_2_Bot.unit1, !- Name
     Window,                  !- Surface Type
-    AERC_Baseline_B_GlzSys_DoubleClear,  !- Construction Name
+    WINCOVER_BASELINE_D_GLZSYS,  !- Construction Name
     Wall_ldb1_1.unit1,       !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     ,                        !- View Factor to Ground
     ,                        !- Shading Control Name
-    AERC_Baseline_B_Frame,   !- Frame and Divider Name
+    WINCOVER_BASELINE_D_FRAME,   !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
     3.900000000000,          !- Vertex 1 X-coordinate {m}
@@ -3257,12 +3257,12 @@ FenestrationSurface:Detailed,
 FenestrationSurface:Detailed,
     Window_ldb1_2_Top.unit1, !- Name
     Window,                  !- Surface Type
-    AERC_Baseline_B_GlzSys_DoubleClear,  !- Construction Name
+    WINCOVER_BASELINE_D_GLZSYS,  !- Construction Name
     Wall_ldb1_1.unit1,       !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     ,                        !- View Factor to Ground
     ,                        !- Shading Control Name
-    AERC_Baseline_B_Frame,   !- Frame and Divider Name
+    WINCOVER_BASELINE_D_FRAME,   !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
     3.900000000000,          !- Vertex 1 X-coordinate {m}
@@ -3281,12 +3281,12 @@ FenestrationSurface:Detailed,
 FenestrationSurface:Detailed,
     Window_sdr1_1_Bot.unit1, !- Name
     Window,                  !- Surface Type
-    AERC_Baseline_B_GlzSys_DoubleClear,  !- Construction Name
+    WINCOVER_BASELINE_D_GLZSYS,  !- Construction Name
     Wall_sdr1_1.unit1,       !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     ,                        !- View Factor to Ground
     ,                        !- Shading Control Name
-    AERC_Baseline_B_Frame,   !- Frame and Divider Name
+    WINCOVER_BASELINE_D_FRAME,   !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
     10.558580000000,         !- Vertex 1 X-coordinate {m}
@@ -3305,12 +3305,12 @@ FenestrationSurface:Detailed,
 FenestrationSurface:Detailed,
     Window_sdr1_1_Top.unit1, !- Name
     Window,                  !- Surface Type
-    AERC_Baseline_B_GlzSys_DoubleClear,  !- Construction Name
+    WINCOVER_BASELINE_D_GLZSYS,  !- Construction Name
     Wall_sdr1_1.unit1,       !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     ,                        !- View Factor to Ground
     ,                        !- Shading Control Name
-    AERC_Baseline_B_Frame,   !- Frame and Divider Name
+    WINCOVER_BASELINE_D_FRAME,   !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
     10.558580000000,         !- Vertex 1 X-coordinate {m}
@@ -3329,12 +3329,12 @@ FenestrationSurface:Detailed,
 FenestrationSurface:Detailed,
     Window_sdr1_2_Bot.unit1, !- Name
     Window,                  !- Surface Type
-    AERC_Baseline_B_GlzSys_DoubleClear,  !- Construction Name
+    WINCOVER_BASELINE_D_GLZSYS,  !- Construction Name
     Wall_sdr1_1.unit1,       !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     ,                        !- View Factor to Ground
     ,                        !- Shading Control Name
-    AERC_Baseline_B_Frame,   !- Frame and Divider Name
+    WINCOVER_BASELINE_D_FRAME,   !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
     10.558580000000,         !- Vertex 1 X-coordinate {m}
@@ -3353,12 +3353,12 @@ FenestrationSurface:Detailed,
 FenestrationSurface:Detailed,
     Window_sdr1_2_Top.unit1, !- Name
     Window,                  !- Surface Type
-    AERC_Baseline_B_GlzSys_DoubleClear,  !- Construction Name
+    WINCOVER_BASELINE_D_GLZSYS,  !- Construction Name
     Wall_sdr1_1.unit1,       !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     ,                        !- View Factor to Ground
     ,                        !- Shading Control Name
-    AERC_Baseline_B_Frame,   !- Frame and Divider Name
+    WINCOVER_BASELINE_D_FRAME,   !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
     10.558580000000,         !- Vertex 1 X-coordinate {m}
@@ -3377,12 +3377,12 @@ FenestrationSurface:Detailed,
 FenestrationSurface:Detailed,
     Window_sdl1_1_Bot.unit1, !- Name
     Window,                  !- Surface Type
-    AERC_Baseline_B_GlzSys_DoubleClear,  !- Construction Name
+    WINCOVER_BASELINE_D_GLZSYS,  !- Construction Name
     Wall_sdl1_1.unit1,       !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     ,                        !- View Factor to Ground
     ,                        !- Shading Control Name
-    AERC_Baseline_B_Frame,   !- Frame and Divider Name
+    WINCOVER_BASELINE_D_FRAME,   !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
     0.000000000000,          !- Vertex 1 X-coordinate {m}
@@ -3401,12 +3401,12 @@ FenestrationSurface:Detailed,
 FenestrationSurface:Detailed,
     Window_sdl1_1_Top.unit1, !- Name
     Window,                  !- Surface Type
-    AERC_Baseline_B_GlzSys_DoubleClear,  !- Construction Name
+    WINCOVER_BASELINE_D_GLZSYS,  !- Construction Name
     Wall_sdl1_1.unit1,       !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     ,                        !- View Factor to Ground
     ,                        !- Shading Control Name
-    AERC_Baseline_B_Frame,   !- Frame and Divider Name
+    WINCOVER_BASELINE_D_FRAME,   !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
     0.000000000000,          !- Vertex 1 X-coordinate {m}
@@ -3425,12 +3425,12 @@ FenestrationSurface:Detailed,
 FenestrationSurface:Detailed,
     Window_sdl1_2_Bot.unit1, !- Name
     Window,                  !- Surface Type
-    AERC_Baseline_B_GlzSys_DoubleClear,  !- Construction Name
+    WINCOVER_BASELINE_D_GLZSYS,  !- Construction Name
     Wall_sdl1_1.unit1,       !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     ,                        !- View Factor to Ground
     ,                        !- Shading Control Name
-    AERC_Baseline_B_Frame,   !- Frame and Divider Name
+    WINCOVER_BASELINE_D_FRAME,   !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
     0.000000000000,          !- Vertex 1 X-coordinate {m}
@@ -3449,12 +3449,12 @@ FenestrationSurface:Detailed,
 FenestrationSurface:Detailed,
     Window_sdl1_2_Top.unit1, !- Name
     Window,                  !- Surface Type
-    AERC_Baseline_B_GlzSys_DoubleClear,  !- Construction Name
+    WINCOVER_BASELINE_D_GLZSYS,  !- Construction Name
     Wall_sdl1_1.unit1,       !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     ,                        !- View Factor to Ground
     ,                        !- Shading Control Name
-    AERC_Baseline_B_Frame,   !- Frame and Divider Name
+    WINCOVER_BASELINE_D_FRAME,   !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
     0.000000000000,          !- Vertex 1 X-coordinate {m}
@@ -3473,12 +3473,12 @@ FenestrationSurface:Detailed,
 FenestrationSurface:Detailed,
     Window_ldf2_1_Bot.unit1, !- Name
     Window,                  !- Surface Type
-    AERC_Baseline_B_GlzSys_DoubleClear,  !- Construction Name
+    WINCOVER_BASELINE_D_GLZSYS,  !- Construction Name
     Wall_ldf1_2.unit1,       !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     ,                        !- View Factor to Ground
     ,                        !- Shading Control Name
-    AERC_Baseline_B_Frame,   !- Frame and Divider Name
+    WINCOVER_BASELINE_D_FRAME,   !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
     2.500000000000,          !- Vertex 1 X-coordinate {m}
@@ -3497,12 +3497,12 @@ FenestrationSurface:Detailed,
 FenestrationSurface:Detailed,
     Window_ldf2_1_Top.unit1, !- Name
     Window,                  !- Surface Type
-    AERC_Baseline_B_GlzSys_DoubleClear,  !- Construction Name
+    WINCOVER_BASELINE_D_GLZSYS,  !- Construction Name
     Wall_ldf1_2.unit1,       !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     ,                        !- View Factor to Ground
     ,                        !- Shading Control Name
-    AERC_Baseline_B_Frame,   !- Frame and Divider Name
+    WINCOVER_BASELINE_D_FRAME,   !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
     2.500000000000,          !- Vertex 1 X-coordinate {m}
@@ -3521,12 +3521,12 @@ FenestrationSurface:Detailed,
 FenestrationSurface:Detailed,
     Window_ldf2_2_Bot.unit1, !- Name
     Window,                  !- Surface Type
-    AERC_Baseline_B_GlzSys_DoubleClear,  !- Construction Name
+    WINCOVER_BASELINE_D_GLZSYS,  !- Construction Name
     Wall_ldf1_2.unit1,       !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     ,                        !- View Factor to Ground
     ,                        !- Shading Control Name
-    AERC_Baseline_B_Frame,   !- Frame and Divider Name
+    WINCOVER_BASELINE_D_FRAME,   !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
     6.600000000000,          !- Vertex 1 X-coordinate {m}
@@ -3545,12 +3545,12 @@ FenestrationSurface:Detailed,
 FenestrationSurface:Detailed,
     Window_ldf2_2_Top.unit1, !- Name
     Window,                  !- Surface Type
-    AERC_Baseline_B_GlzSys_DoubleClear,  !- Construction Name
+    WINCOVER_BASELINE_D_GLZSYS,  !- Construction Name
     Wall_ldf1_2.unit1,       !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     ,                        !- View Factor to Ground
     ,                        !- Shading Control Name
-    AERC_Baseline_B_Frame,   !- Frame and Divider Name
+    WINCOVER_BASELINE_D_FRAME,   !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
     6.600000000000,          !- Vertex 1 X-coordinate {m}
@@ -3569,12 +3569,12 @@ FenestrationSurface:Detailed,
 FenestrationSurface:Detailed,
     Window_ldb2_1_Bot.unit1, !- Name
     Window,                  !- Surface Type
-    AERC_Baseline_B_GlzSys_DoubleClear,  !- Construction Name
+    WINCOVER_BASELINE_D_GLZSYS,  !- Construction Name
     Wall_ldb1_2.unit1,       !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     ,                        !- View Factor to Ground
     ,                        !- Shading Control Name
-    AERC_Baseline_B_Frame,   !- Frame and Divider Name
+    WINCOVER_BASELINE_D_FRAME,   !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
     8.000000000000,          !- Vertex 1 X-coordinate {m}
@@ -3593,12 +3593,12 @@ FenestrationSurface:Detailed,
 FenestrationSurface:Detailed,
     Window_ldb2_1_Top.unit1, !- Name
     Window,                  !- Surface Type
-    AERC_Baseline_B_GlzSys_DoubleClear,  !- Construction Name
+    WINCOVER_BASELINE_D_GLZSYS,  !- Construction Name
     Wall_ldb1_2.unit1,       !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     ,                        !- View Factor to Ground
     ,                        !- Shading Control Name
-    AERC_Baseline_B_Frame,   !- Frame and Divider Name
+    WINCOVER_BASELINE_D_FRAME,   !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
     8.000000000000,          !- Vertex 1 X-coordinate {m}
@@ -3617,12 +3617,12 @@ FenestrationSurface:Detailed,
 FenestrationSurface:Detailed,
     Window_ldb2_2_Bot.unit1, !- Name
     Window,                  !- Surface Type
-    AERC_Baseline_B_GlzSys_DoubleClear,  !- Construction Name
+    WINCOVER_BASELINE_D_GLZSYS,  !- Construction Name
     Wall_ldb1_2.unit1,       !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     ,                        !- View Factor to Ground
     ,                        !- Shading Control Name
-    AERC_Baseline_B_Frame,   !- Frame and Divider Name
+    WINCOVER_BASELINE_D_FRAME,   !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
     3.900000000000,          !- Vertex 1 X-coordinate {m}
@@ -3641,12 +3641,12 @@ FenestrationSurface:Detailed,
 FenestrationSurface:Detailed,
     Window_ldb2_2_Top.unit1, !- Name
     Window,                  !- Surface Type
-    AERC_Baseline_B_GlzSys_DoubleClear,  !- Construction Name
+    WINCOVER_BASELINE_D_GLZSYS,  !- Construction Name
     Wall_ldb1_2.unit1,       !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     ,                        !- View Factor to Ground
     ,                        !- Shading Control Name
-    AERC_Baseline_B_Frame,   !- Frame and Divider Name
+    WINCOVER_BASELINE_D_FRAME,   !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
     3.900000000000,          !- Vertex 1 X-coordinate {m}
@@ -3665,12 +3665,12 @@ FenestrationSurface:Detailed,
 FenestrationSurface:Detailed,
     Window_sdr2_1_Bot.unit1, !- Name
     Window,                  !- Surface Type
-    AERC_Baseline_B_GlzSys_DoubleClear,  !- Construction Name
+    WINCOVER_BASELINE_D_GLZSYS,  !- Construction Name
     Wall_sdr1_2.unit1,       !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     ,                        !- View Factor to Ground
     ,                        !- Shading Control Name
-    AERC_Baseline_B_Frame,   !- Frame and Divider Name
+    WINCOVER_BASELINE_D_FRAME,   !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
     10.558580000000,         !- Vertex 1 X-coordinate {m}
@@ -3689,12 +3689,12 @@ FenestrationSurface:Detailed,
 FenestrationSurface:Detailed,
     Window_sdr2_1_Top.unit1, !- Name
     Window,                  !- Surface Type
-    AERC_Baseline_B_GlzSys_DoubleClear,  !- Construction Name
+    WINCOVER_BASELINE_D_GLZSYS,  !- Construction Name
     Wall_sdr1_2.unit1,       !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     ,                        !- View Factor to Ground
     ,                        !- Shading Control Name
-    AERC_Baseline_B_Frame,   !- Frame and Divider Name
+    WINCOVER_BASELINE_D_FRAME,   !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
     10.558580000000,         !- Vertex 1 X-coordinate {m}
@@ -3713,12 +3713,12 @@ FenestrationSurface:Detailed,
 FenestrationSurface:Detailed,
     Window_sdr2_2_Bot.unit1, !- Name
     Window,                  !- Surface Type
-    AERC_Baseline_B_GlzSys_DoubleClear,  !- Construction Name
+    WINCOVER_BASELINE_D_GLZSYS,  !- Construction Name
     Wall_sdr1_2.unit1,       !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     ,                        !- View Factor to Ground
     ,                        !- Shading Control Name
-    AERC_Baseline_B_Frame,   !- Frame and Divider Name
+    WINCOVER_BASELINE_D_FRAME,   !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
     10.558580000000,         !- Vertex 1 X-coordinate {m}
@@ -3737,12 +3737,12 @@ FenestrationSurface:Detailed,
 FenestrationSurface:Detailed,
     Window_sdr2_2_Top.unit1, !- Name
     Window,                  !- Surface Type
-    AERC_Baseline_B_GlzSys_DoubleClear,  !- Construction Name
+    WINCOVER_BASELINE_D_GLZSYS,  !- Construction Name
     Wall_sdr1_2.unit1,       !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     ,                        !- View Factor to Ground
     ,                        !- Shading Control Name
-    AERC_Baseline_B_Frame,   !- Frame and Divider Name
+    WINCOVER_BASELINE_D_FRAME,   !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
     10.558580000000,         !- Vertex 1 X-coordinate {m}
@@ -3761,12 +3761,12 @@ FenestrationSurface:Detailed,
 FenestrationSurface:Detailed,
     Window_sdl2_1_Bot.unit1, !- Name
     Window,                  !- Surface Type
-    AERC_Baseline_B_GlzSys_DoubleClear,  !- Construction Name
+    WINCOVER_BASELINE_D_GLZSYS,  !- Construction Name
     Wall_sdl1_2.unit1,       !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     ,                        !- View Factor to Ground
     ,                        !- Shading Control Name
-    AERC_Baseline_B_Frame,   !- Frame and Divider Name
+    WINCOVER_BASELINE_D_FRAME,   !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
     0.000000000000,          !- Vertex 1 X-coordinate {m}
@@ -3785,12 +3785,12 @@ FenestrationSurface:Detailed,
 FenestrationSurface:Detailed,
     Window_sdl2_1_Top.unit1, !- Name
     Window,                  !- Surface Type
-    AERC_Baseline_B_GlzSys_DoubleClear,  !- Construction Name
+    WINCOVER_BASELINE_D_GLZSYS,  !- Construction Name
     Wall_sdl1_2.unit1,       !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     ,                        !- View Factor to Ground
     ,                        !- Shading Control Name
-    AERC_Baseline_B_Frame,   !- Frame and Divider Name
+    WINCOVER_BASELINE_D_FRAME,   !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
     0.000000000000,          !- Vertex 1 X-coordinate {m}
@@ -3809,12 +3809,12 @@ FenestrationSurface:Detailed,
 FenestrationSurface:Detailed,
     Window_sdl2_2_Bot.unit1, !- Name
     Window,                  !- Surface Type
-    AERC_Baseline_B_GlzSys_DoubleClear,  !- Construction Name
+    WINCOVER_BASELINE_D_GLZSYS,  !- Construction Name
     Wall_sdl1_2.unit1,       !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     ,                        !- View Factor to Ground
     ,                        !- Shading Control Name
-    AERC_Baseline_B_Frame,   !- Frame and Divider Name
+    WINCOVER_BASELINE_D_FRAME,   !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
     0.000000000000,          !- Vertex 1 X-coordinate {m}
@@ -3833,12 +3833,12 @@ FenestrationSurface:Detailed,
 FenestrationSurface:Detailed,
     Window_sdl2_2_Top.unit1, !- Name
     Window,                  !- Surface Type
-    AERC_Baseline_B_GlzSys_DoubleClear,  !- Construction Name
+    WINCOVER_BASELINE_D_GLZSYS,  !- Construction Name
     Wall_sdl1_2.unit1,       !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     ,                        !- View Factor to Ground
     ,                        !- Shading Control Name
-    AERC_Baseline_B_Frame,   !- Frame and Divider Name
+    WINCOVER_BASELINE_D_FRAME,   !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
     0.000000000000,          !- Vertex 1 X-coordinate {m}
@@ -3907,7 +3907,7 @@ FenestrationSurface:Detailed,
 
 !       Window Frames and Dividers Data
 WindowProperty:FrameAndDivider,
-    AERC_Baseline_B_Frame,   !- Name
+    WINCOVER_BASELINE_D_FRAME,   !- Name
     0.038395,                !- Frame Width {m}
     ,                        !- Frame Outside Projection {m}
     ,                        !- Frame Inside Projection {m}

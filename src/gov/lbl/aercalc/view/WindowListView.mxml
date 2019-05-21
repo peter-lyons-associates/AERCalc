@@ -371,7 +371,6 @@
 										   headerText="Heating Rating"
 										   showDataTips="false"
 										   width="60"
-										   labelFunction="{windowListViewPM.heatingRatingLabelFunction}"
 										   textAlign="right"
 										   editable="false"/>
 				
@@ -379,7 +378,6 @@
 										   headerText="Cooling Rating"
 										   showDataTips="false"
 										   width="60"
-										   labelFunction="{windowListViewPM.coolingRatingLabelFunction}"
 										   textAlign="right"
 										   editable="false"/>
 				

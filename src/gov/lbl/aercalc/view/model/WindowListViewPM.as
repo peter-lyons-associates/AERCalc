@@ -335,20 +335,16 @@ public class WindowListViewPM extends EventDispatcher {
 	}
 	
 
+    /* Uncomment and implement if we need to transform the heating and cooling rating values before display
 	public function heatingRatingLabelFunction(item:Object, column:AdvancedDataGridColumn):String{
         var value:Number = item[column.dataField];
-        if (value==0){
-            return "";
-        }
-		return Utils.normalizeEPValue(value);
+        return value.toString();
 	}
     public function coolingRatingLabelFunction(item:Object, column:AdvancedDataGridColumn):String{
         var value:Number = item[column.dataField];
-        if (value==0){
-            return "";
-        }
-        return Utils.normalizeEPValue(value);
+        return value.toString();
     }
+    */
 
 	/* We need this so we can add isParent to the first row (so we can sort the column)
 	but we don't want to actually show the value */
@@ -356,10 +352,7 @@ public class WindowListViewPM extends EventDispatcher {
 		return "";
 	}
 	
-	
-	
-	
-	
+
 
     private function deleteSelectedWindows():void {
 

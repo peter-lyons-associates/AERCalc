@@ -124,13 +124,18 @@ public class WincoverCalcDelegate extends EventDispatcher {
      */
     public function onWincoverCalcStandardOutput(event:ProgressEvent):void
     {
-        var text:String = _wincoverCalcProcess.standardOutput.readUTFBytes(_wincoverCalcProcess.standardOutput.bytesAvailable);
-        var evt:SimulationEvent = new SimulationEvent(SimulationEvent.SIMULATION_STATUS, true);
-        // Groom incoming text so we can show it properly in progress dialog
-        var txt_to_remove:String = Utils.makeUsableAsAFilename(_currentWindowVO.name) + "_";
-        evt.statusMessage = text;
-        Logger.debug("Wincover-calc output:" + text);
-        dispatcher.dispatchEvent(evt);
+        // Sometimes output will arrive after simulation is complete,
+        // so use presence of local ref to currentWindow as a flag,
+        // since it will be set to null after the simulation results are received.
+        if (_currentWindowVO){
+            var text:String = _wincoverCalcProcess.standardOutput.readUTFBytes(_wincoverCalcProcess.standardOutput.bytesAvailable);
+            var evt:SimulationEvent = new SimulationEvent(SimulationEvent.SIMULATION_STATUS, true);
+            // Groom incoming text so we can show it properly in progress dialog
+            var txt_to_remove:String = Utils.makeUsableAsAFilename(_currentWindowVO.name) + "_";
+            evt.statusMessage = text;
+            Logger.debug("Wincover-calc output:" + text);
+            dispatcher.dispatchEvent(evt);
+        }
     }
 
     /*  Handle errors arriving via stderror. Since we handle process error once the process has exited,
