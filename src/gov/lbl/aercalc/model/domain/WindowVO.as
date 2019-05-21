@@ -92,6 +92,13 @@ package gov.lbl.aercalc.model.domain
 		protected var _TvT:Number = 0;
 		protected var _heatingRating:Number = 0;
 		protected var _coolingRating:Number = 0;
+
+		[Transient]
+		public var heatingValue:Number = 0;
+
+		[Transient]
+		public var coolingValue:Number = 0;
+
 		protected var _name:String = "";
 		protected var _airInfiltration:Number = ApplicationModel.AIR_INFILTRATION_DEFAULT;
 		//protected var _airInfiltrationCold:Number = ApplicationModel.AIR_INFILTRATION_COLD_DEFAULT;

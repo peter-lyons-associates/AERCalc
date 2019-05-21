@@ -366,9 +366,23 @@
 										   textAlign="right"
 										   editable="true"
 										   width="70"/>
-								
+
+				<mx:AdvancedDataGridColumn dataField="heatingValue"
+										   headerText="Heating Value"
+										   showDataTips="false"
+										   width="60"
+										   textAlign="right"
+										   editable="false"/>
+
 				<mx:AdvancedDataGridColumn dataField="heatingRating"
 										   headerText="Heating Rating"
+										   showDataTips="false"
+										   width="60"
+										   textAlign="right"
+										   editable="false"/>
+
+				<mx:AdvancedDataGridColumn dataField="coolingValue"
+										   headerText="Cooling Value"
 										   showDataTips="false"
 										   width="60"
 										   textAlign="right"
