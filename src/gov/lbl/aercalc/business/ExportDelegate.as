@@ -129,8 +129,8 @@ public class ExportDelegate {
             blankIfZero: false
         },
         {
-            title: "Cooling Rating",
-            varName: "coolingRating",
+            title: "Heating Value",
+            varName: "heatingValue",
             escapeDelimiter: false,
             includeInParentRow: true,
             blankIfZero: true
@@ -138,6 +138,20 @@ public class ExportDelegate {
         {
             title: "Heating Rating",
             varName: "heatingRating",
+            escapeDelimiter: false,
+            includeInParentRow: true,
+            blankIfZero: true
+        },
+        {
+            title: "Cooling Value",
+            varName: "coolingValue",
+            escapeDelimiter: false,
+            includeInParentRow: true,
+            blankIfZero: true
+        },
+        {
+            title: "Cooling Rating",
+            varName: "coolingRating",
             escapeDelimiter: false,
             includeInParentRow: true,
             blankIfZero: true

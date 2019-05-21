@@ -218,7 +218,7 @@
 			<mx:columns>
 
 				<!-- we need a blank column to handle the accordion controls -->
-				
+
 				<mx:AdvancedDataGridColumn headerText="" width="30" editable="false"/>
 
 				<mx:AdvancedDataGridColumn id="windowID_display"
@@ -229,7 +229,7 @@
 										   headerText="ID"
 										   visible="{settingsModel.appSettings.showIDColumn}"
 										   editable="false"/>
-				
+
 				<mx:AdvancedDataGridColumn id="windowName"
 										   dataField="name"
 										   dataTipField="name"
@@ -246,7 +246,7 @@
 										   textAlign="center"
 										   itemRenderer="gov.lbl.aercalc.view.item_renderers.BSDFStatusRenderer"
 											/>
-				
+
 				<mx:AdvancedDataGridColumn id="versionStatus"
 										   dataField="versionStatus"
 										   width="50"
@@ -280,7 +280,7 @@
 										   textAlign="center"
 										   width="70"
 										   editable="false"/>
-				
+
 				<mx:AdvancedDataGridColumn dataField="W7GlzSysID"
 										   width="70"
 										   showDataTips="true"
@@ -312,28 +312,28 @@
 										   showDataTips="true"
 										   dataTipField="WINDOWOriginDB"
 										   editable="false"/>
-				
+
 				<mx:AdvancedDataGridColumn dataField="WINDOWVersion"
 										   width="50"
 										   headerText="W7 Version"
 										   textAlign="center"
 										   dataTipField="WINDOWVersion"
 										   editable="false"/>
-				
+
 				<mx:AdvancedDataGridColumn dataField="shadingSystemType"
 										   headerText="Window Attachment"
 										   width="80"
 										   showDataTips="false"
 										   textAlign="center"
 										   editable="false"/>
-				
+
 				<mx:AdvancedDataGridColumn dataField="baseWindowType"
 										   headerText="Baseline Window"
 										   width="70"
 										   showDataTips="false"
 										   textAlign="center"
 										   editable="false"/>
-				
+
 				<mx:AdvancedDataGridColumn dataField="UvalWinter"
 										   headerText="{windowListViewPM.uFactorHeader}"
 										   wordWrap="true"
@@ -342,7 +342,7 @@
 										   showDataTips="false"
 										   editable="false"
 										   width="85"/>
-				
+
 				<mx:AdvancedDataGridColumn dataField="SHGC"
 										   headerText="SHGC"
 										   labelFunction="{windowListViewPM.windowValueLabelFunction}"
@@ -350,7 +350,7 @@
 										   showDataTips="false"
 										   editable="false"
 										   width="50"/>
-				
+
 				<mx:AdvancedDataGridColumn dataField="Tvis"
 										   headerText="TVIS"
 										   showDataTips="false"
@@ -358,7 +358,7 @@
 										   textAlign="right"
 										   editable="false"
 										   width="50"/>
-				
+
 				<mx:AdvancedDataGridColumn dataField="airInfiltration"
 										   showDataTips="false"
 										   headerText="{windowListViewPM.airInfiltrationHeader}"
@@ -366,21 +366,36 @@
 										   textAlign="right"
 										   editable="true"
 										   width="70"/>
-								
+
+				<mx:AdvancedDataGridColumn dataField="heatingValue"
+										   headerText="Heating Value"
+										   showDataTips="false"
+										   width="60"
+										   textAlign="right"
+										   editable="false"/>
+
 				<mx:AdvancedDataGridColumn dataField="heatingRating"
 										   headerText="Heating Rating"
 										   showDataTips="false"
 										   width="60"
 										   textAlign="right"
 										   editable="false"/>
-				
+
+				<!-- // TODO: TEMPORARY CODE Remove this after Peter is finished with calculations -->
+				<mx:AdvancedDataGridColumn dataField="coolingValue"
+										   headerText="Cooling Value"
+										   showDataTips="false"
+										   width="60"
+										   textAlign="right"
+										   editable="false"/>
+
 				<mx:AdvancedDataGridColumn dataField="coolingRating"
 										   headerText="Cooling Rating"
 										   showDataTips="false"
 										   width="60"
 										   textAlign="right"
 										   editable="false"/>
-				
+
 			</mx:columns>
 			
 			

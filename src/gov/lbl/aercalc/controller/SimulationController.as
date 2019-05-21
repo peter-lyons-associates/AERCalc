@@ -280,6 +280,10 @@ public class SimulationController {
 		/* TODO: Read heating and cooling ratings and assign to current window */
         simulationModel.currSimulationWindow.heatingRating = event.heatingRating;
         simulationModel.currSimulationWindow.coolingRating = event.coolingRating;
+
+		// TODO: TEMPORARY CODE -- Remove this after Peter is finished with calculations
+        simulationModel.currSimulationWindow.heatingValue = event.heatingValue;
+        simulationModel.currSimulationWindow.coolingValue = event.coolingValue;
         onSingleSimulationComplete();
 	}
 	

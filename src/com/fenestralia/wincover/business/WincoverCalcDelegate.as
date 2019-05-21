@@ -255,7 +255,7 @@ public class WincoverCalcDelegate extends EventDispatcher {
             var heatingValue:Number = results.heating_value;
             var heatingRating:Number = results.heating_rating;
             var coolingValue:Number = results.cooling_value;
-            var coolingRating:Number = results.cooling_rating;
+           var coolingRating:Number = results.cooling_rating;
         } catch (err:Error) {
             Logger.error("Couldn't read results.json: " + err, this);
             var evt:WincoverCalcOutputEvent = new WincoverCalcOutputEvent(WincoverCalcOutputEvent.RUN_WINCOVER_CALC_FINISHED, true);
