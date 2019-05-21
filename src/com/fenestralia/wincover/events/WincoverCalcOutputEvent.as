@@ -8,6 +8,7 @@ public class WincoverCalcOutputEvent extends Event {
     public static const RUN_WINCOVER_CALC_FAILED:String = "wincovercalc_output_failed";
 
     public var windowID:int;
+    public var windowName:String;
     public var heatingValue:Number;
     public var heatingRating:Number;
     public var coolingValue:Number;

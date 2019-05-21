@@ -3,6 +3,7 @@ import com.fenestralia.wincover.events.WincoverCalcOutputEvent;
 import com.fenestralia.wincover.model.WincoverCalcInputVO;
 
 import gov.lbl.aercalc.events.SimulationEvent;
+import gov.lbl.aercalc.model.domain.SimulationResultVO;
 import gov.lbl.aercalc.util.Utils;
 import flash.events.EventDispatcher;
 
@@ -34,7 +35,9 @@ public class WincoverCalcDelegate extends EventDispatcher {
     protected var _inputDir:File;
     protected var _outputDir:File;
     protected var _wincoverCalcProcess:NativeProcess;
-    protected var _currentWindowVO:WindowVO;
+    protected var _windowID:int;
+    protected var _windowName:String;
+    protected var _simulationInProgress:Boolean = false;
     protected var _errorText:String;
 
     protected var _wincoverCalcDir:File = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINCOVER_CALC_SUBDIR);
@@ -66,7 +69,13 @@ public class WincoverCalcDelegate extends EventDispatcher {
             throw new Error("window cannot be null");
         }
 
-        _currentWindowVO = window;
+        // Hold on to window ID info for eventual
+        // return via result VO
+        _windowID = window.id;
+        _windowName = window.name;
+
+        // Set 'in process' flag
+        _simulationInProgress = true;
 
         //TODO: Write window properties to input.json
         try {
@@ -94,6 +103,7 @@ public class WincoverCalcDelegate extends EventDispatcher {
             _wincoverCalcProcess.standardInput.writeUTFBytes("Exit\n");
         }
         removeAllProcessEventListeners();
+        _simulationInProgress = false;
     }
 
 
@@ -107,6 +117,7 @@ public class WincoverCalcDelegate extends EventDispatcher {
     public function onWincoverCalcProcessFinished(event:NativeProcessExitEvent):void
     {
         Logger.info("WincovER_Calc completed successfully. Reading output...",this);
+        _simulationInProgress = false;
         removeAllProcessEventListeners();
 
         if (event.exitCode > 0){
@@ -124,14 +135,11 @@ public class WincoverCalcDelegate extends EventDispatcher {
      */
     public function onWincoverCalcStandardOutput(event:ProgressEvent):void
     {
-        // Sometimes output will arrive after simulation is complete,
-        // so use presence of local ref to currentWindow as a flag,
-        // since it will be set to null after the simulation results are received.
-        if (_currentWindowVO){
+        if (_simulationInProgress){
             var text:String = _wincoverCalcProcess.standardOutput.readUTFBytes(_wincoverCalcProcess.standardOutput.bytesAvailable);
             var evt:SimulationEvent = new SimulationEvent(SimulationEvent.SIMULATION_STATUS, true);
             // Groom incoming text so we can show it properly in progress dialog
-            var txt_to_remove:String = Utils.makeUsableAsAFilename(_currentWindowVO.name) + "_";
+            var txt_to_remove:String = Utils.makeUsableAsAFilename(_windowName) + "_";
             evt.statusMessage = text;
             Logger.debug("Wincover-calc output:" + text);
             dispatcher.dispatchEvent(evt);
@@ -218,6 +226,7 @@ public class WincoverCalcDelegate extends EventDispatcher {
             //Since we haven't gone async yet, this should be a regular error, not an error event
             var msg:String = "Cannot start EnergyPlus. " + err.errorID + " : " + err.message;
             throw new SimulationError(msg);
+            _simulationInProgress = false;
         }
     }
 
@@ -225,7 +234,6 @@ public class WincoverCalcDelegate extends EventDispatcher {
     protected function readWincoverCalcResults():void{
         // TODO: Read output results and return event with ratings for window
         // TODO: Notify of error if can't read results.
-
         var errorMsg:String = null;
 
         try {
@@ -259,14 +267,14 @@ public class WincoverCalcDelegate extends EventDispatcher {
         //TODO: validate results
 
         var evt:WincoverCalcOutputEvent = new WincoverCalcOutputEvent(WincoverCalcOutputEvent.RUN_WINCOVER_CALC_FINISHED, true);
-        evt.windowID = _currentWindowVO.id;
+        evt.windowID = _windowID;
+        evt.windowName = _windowName;
         evt.heatingValue = heatingValue;
         evt.heatingRating = heatingRating;
         evt.coolingValue = coolingValue;
         evt.coolingRating = coolingRating;
         dispatchEvent(evt);
 
-        _currentWindowVO = null;
     }
 
 
