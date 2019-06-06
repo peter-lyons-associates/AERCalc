@@ -38,6 +38,8 @@ public class Utils
 		public static var infiltrationFormatter:NumberFormatter = new NumberFormatter();
 		public static var basicFormatter:NumberFormatter = new NumberFormatter();
 		public static var dateTimeFormmater:DateTimeFormatter = new DateTimeFormatter();
+        public static var heatingCoolingValueFormatter:NumberFormatter = new NumberFormatter();
+		public static var heatingCoolingRatingFormatter:NumberFormatter = new NumberFormatter();
 
 
 
@@ -115,7 +117,15 @@ public class Utils
 			Utils.basicFormatter.precision = 2;
 
 			Utils.dateTimeFormmater.dateTimePattern = "hh:mm a, MM/dd/yyyy";
+
+            // Adding these for WincovER-specific fields
+            // Starting by rounding to 2....we may change at a later date.
+            Utils.heatingCoolingValueFormatter.rounding = NumberBaseRoundType.NEAREST;
+            Utils.heatingCoolingValueFormatter.precision = 1;
+            Utils.heatingCoolingRatingFormatter.rounding = NumberBaseRoundType.NEAREST;
+            Utils.heatingCoolingRatingFormatter.precision = 1;
 		}
+
 
 		/*
 		 Update formatters to have correct precision

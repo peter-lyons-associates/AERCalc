@@ -287,7 +287,14 @@ public class WindowListViewPM extends EventDispatcher {
 		return "";
 	}
 
-	
+    public function heatingCoolingValueLabelFunction(item:Object, column:AdvancedDataGridColumn):String {
+        return Utils.heatingCoolingValueFormatter.format(item[column.dataField]);
+    }
+
+    public function heatingCoolingRatingLabelFunction(item:Object, column:AdvancedDataGridColumn):String {
+        return Utils.heatingCoolingRatingFormatter.format(item[column.dataField]);
+    }
+
 	// Callback to define which icons to show in grid
 	public function myIconFunc(item:Object, depth:int):Class {
 		if(depth == 1 && item.isParent)

@@ -370,12 +370,14 @@
 				<mx:AdvancedDataGridColumn dataField="heatingValue"
 										   headerText="Heating Value"
 										   showDataTips="false"
+										   labelFunction="{windowListViewPM.heatingCoolingValueLabelFunction}"
 										   width="60"
 										   textAlign="right"
 										   editable="false"/>
 
 				<mx:AdvancedDataGridColumn dataField="heatingRating"
 										   headerText="Heating Rating"
+										   labelFunction="{windowListViewPM.heatingCoolingRatingLabelFunction}"
 										   showDataTips="false"
 										   width="60"
 										   textAlign="right"
@@ -383,6 +385,7 @@
 
 				<mx:AdvancedDataGridColumn dataField="coolingValue"
 										   headerText="Cooling Value"
+										   labelFunction="{windowListViewPM.heatingCoolingValueLabelFunction}"
 										   showDataTips="false"
 										   width="60"
 										   textAlign="right"
@@ -390,6 +393,7 @@
 				
 				<mx:AdvancedDataGridColumn dataField="coolingRating"
 										   headerText="Cooling Rating"
+										   labelFunction="{windowListViewPM.heatingCoolingRatingLabelFunction}"
 										   showDataTips="false"
 										   width="60"
 										   textAlign="right"
