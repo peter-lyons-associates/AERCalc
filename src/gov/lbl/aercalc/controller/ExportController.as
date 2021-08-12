@@ -2,6 +2,7 @@
  * Created by danie on 27/02/2017.
  */
 package gov.lbl.aercalc.controller {
+import gov.lbl.aercalc.util.ExcelCSV;
 import gov.lbl.aercalc.util.Logger;
 
 import flash.events.Event;
@@ -55,7 +56,6 @@ public class ExportController {
         exportFile.browseForSave("Export to csv");
         exportFile.addEventListener(Event.SELECT, onDoExportToCSV, false, 0, true);
         exportFile.addEventListener(Event.CANCEL, onCancel, false, 0, true);
-
     }
 
     private function onDoExportToCSV(event:Event):void{
@@ -88,8 +88,9 @@ public class ExportController {
             return;
         }
 
-        Alert.show("CSV file export complete. The file was saved here: " + targetFile.nativePath, "Export complete", Alert.OK);
-
+        var alert:Alert = Alert.show("CSV file export complete. The file was saved here: " + targetFile.nativePath, "Export complete", Alert.OK);
+        _csv = targetFile;
+        alert.addEventListener(Event.CLOSE, onAlertClose)
         //Let everyone know we're done.
         var completeEvt:ExportEvent = new ExportEvent(ExportEvent.EXPORT_WINDOWS_COMPLETE);
         dispatcher.dispatchEvent(completeEvt);
@@ -100,6 +101,18 @@ public class ExportController {
         // do nothing at this point.
 
 
+    }
+
+    private var _csv:File;
+    private function onAlertClose(event:Event):void{
+        //GD - added this because it is much easier for testing/comparing the results to expected values when they are automatically launched in Excel.
+        if (ExcelCSV.hasKnownExcel) {
+            try{
+                ExcelCSV.launchCSV(_csv);
+            }catch (e:Error) {
+
+            }
+        }
     }
 
 }

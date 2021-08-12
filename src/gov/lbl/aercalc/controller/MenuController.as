@@ -54,7 +54,7 @@ public class MenuController
 		public function onMenuCommand(event:MenuEvent):void
 		{
 			var cmd:String = event.command;
-			if (applicationModel.menuEnabled == false) return;
+			if (!applicationModel.menuEnabled) return;
 
 			switch (cmd)
 			{

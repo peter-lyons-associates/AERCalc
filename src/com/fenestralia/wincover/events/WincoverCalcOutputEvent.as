@@ -9,11 +9,13 @@ public class WincoverCalcOutputEvent extends Event {
 
     public var windowID:int;
     public var windowName:String;
-    public var heatingValue:Number;
+   /* public var heatingValue:Number;
     public var heatingRating:Number;
     public var coolingValue:Number;
-    public var coolingRating:Number;
+    public var coolingRating:Number;*/
     public var error:String;
+
+    public var results:Array;
 
     public function WincoverCalcOutputEvent(type:String, bubbles:Boolean = false, cancelable:Boolean = false)
     {

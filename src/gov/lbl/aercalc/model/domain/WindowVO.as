@@ -1,16 +1,19 @@
 package gov.lbl.aercalc.model.domain
 {
+import com.fenestralia.wincover.model.WindowApplicationVO;
+import com.fenestralia.wincover.model.util.WindowUtil;
+
+import gov.lbl.aercalc.business.IDbProcessable;
 	import gov.lbl.aercalc.util.Conversions;
 	
 	import gov.lbl.aercalc.model.ApplicationModel;
 	import gov.lbl.aercalc.util.Logger;
 	import gov.lbl.aercalc.util.Utils;
-	
-	import mx.collections.ArrayList;
+
 
 	[Bindable]
-	[Table(name="windows")]
-	public class WindowVO extends AERCalcVO
+	[Table(name="windows2")]
+	public class WindowVO extends AERCalcVO implements IDbProcessable
 	{
 		
 		public static const STATUS_INVALID:String = "invalid";
@@ -24,14 +27,14 @@ package gov.lbl.aercalc.model.domain
 		[Transient]
 		public var selected:Boolean;
 
-        private var _isOpen:Boolean = false;
+    //    private var _isOpen:Boolean = false;
 
-        [Transient]
-		public var children:Array = [];
+    //    [Transient]
+	//	public var children:Array = [];
 
 		// Indicate whether this row was created
 		// to hold child WindowVOs for different slat angles
-		public var isParent:Boolean = false;
+	//	public var isParent:Boolean = false;
 
         public var shadingSystemManufacturer:String  = "";
 
@@ -46,6 +49,23 @@ package gov.lbl.aercalc.model.domain
 		[Transient]
 		public var hasBSDF:Boolean;
 
+		//User toggle for operation types
+		private var _fixed:Object; // null is 'unset' false
+
+		//[Transient]
+		public function get Fixed():Boolean{
+			return _fixed;
+		}
+		public function set Fixed(value:Boolean):void{
+			if (value != _fixed) {
+				_fixed = value;
+			}
+		}
+		[Transient]
+		public var WincovER_ID:String = "";
+
+		public var slatCondition:String = "";
+
 		// Flag to indicate whether row is
 		// outdated b/c of helper program
 		// versioning
@@ -54,7 +74,7 @@ package gov.lbl.aercalc.model.domain
 
 		// The original name as defined in W7
 		// Used to match re-imports
-		public var W7Name:String ="";
+	//	public var W7Name:String ="";
 		// W7 Window and Glz Sys IDs
 		public var W7ID:String = "";
 		public var W7GlzSysID:String = "";
@@ -64,15 +84,15 @@ package gov.lbl.aercalc.model.domain
 		public var THERMFiles:String = "";
 		protected var _WincovERVersion:String = "";
         protected var _WINDOWVersion:String = "";
-        protected var _EPlusVersion:String = "";
+   //     protected var _EPlusVersion:String = "";
         protected var _WincovERCalcVersion:String = "";
 
-		protected var _userID:String = null;
+	//	protected var _userID:String = null;
 		public var shadingSystemType:String = "";
 		public var attachmentPosition:String = "";
 		public var baseWindowType:String = "";
 
-		public var parent_id:uint = 0;
+	//	public var parent_id:uint = 0;
 
 		//Public vars. These have SI/IP values
 		//so getters/setters will convert
@@ -82,25 +102,26 @@ package gov.lbl.aercalc.model.domain
 
 
         public var Tsol:Number = 0;
-        public var Emishin:Number = 0;
-        public var Emishout:Number = 0;
+    //    public var Emishin:Number = 0;
+    //    public var Emishout:Number = 0;
 
 		//Protected vars. Getters/Setters
 		//don't convert values
 		protected var _Tvis:Number = 0;
 		//TvT represents 'material variability'
-		protected var _TvT:Number = 0;
-		protected var _heatingRating:Number = 0;
-		protected var _coolingRating:Number = 0;
+	//	protected var _TvT:Number = 0;
+	//	protected var _heatingRating:Number = 0;
+	//	protected var _coolingRating:Number = 0;
 
-		[Transient]
+	/*	[Transient]
 		public var heatingValue:Number = 0;
 
 		[Transient]
-		public var coolingValue:Number = 0;
+		public var coolingValue:Number = 0;*/
+
 
 		protected var _name:String = "";
-		protected var _airInfiltration:Number = ApplicationModel.AIR_INFILTRATION_DEFAULT;
+		//protected var _airInfiltration:Number = ApplicationModel.AIR_INFILTRATION_DEFAULT;
 		//protected var _airInfiltrationCold:Number = ApplicationModel.AIR_INFILTRATION_COLD_DEFAULT;
 
 		protected var _SHGC:Number = 0;
@@ -115,34 +136,34 @@ package gov.lbl.aercalc.model.domain
 		public function setVersionStatus():void {
 
 			var msg:String = "";
-			var childrenImportedWithOldVersion = "";
+			var childrenImportedWithOldVersion:String = "";
 			var currWINDOWVersion:String = ApplicationModel.VERSION_WINDOW;
 			var isOldW7Import:Boolean = false;
-			if (isParent){				
+			/*if (isParent){
 				for each(var child:WindowVO in children){
 					if(Utils.compareVersions(currWINDOWVersion, child._WINDOWVersion) == Utils.FIRST_ARG_HIGHER){
 						//childrenImportedWithOldVersion += "\t" + child.name + ": " + child._WINDOWVersion + "\n";
 						isOldW7Import = true;
 					}						
 				}
-			}
-			else{
+			}*/
+		//	else{
 				isOldW7Import = Utils.compareVersions(currWINDOWVersion, _WINDOWVersion) == Utils.FIRST_ARG_HIGHER;	
-			}
+		//	}
 						
 			if (isOldW7Import){
-				if (isParent){
+				/*if (isParent){
 					msg += "Child records imported with old W7\n";
 				}
-				else{
+				else{*/
 					msg += "Imported with old W7 : " + _WINDOWVersion + "\n";	
-				}				
+				//}
                 msg += "Current version of W7 : " + currWINDOWVersion + "\n";
 			}
-
+//@todo review if EPlusVersion needs to be stored/checked
 			if (this.isSimulated()){
 
-                var currEPlusVersion:String = ApplicationModel.VERSION_ENERGYPLUS;
+                /*var currEPlusVersion:String = ApplicationModel.VERSION_ENERGYPLUS;
                 var isOldEPlusImport:Boolean = Utils.compareVersions(currEPlusVersion, _EPlusVersion) == Utils.FIRST_ARG_HIGHER;
                 if (isOldEPlusImport){
                     msg += "Simulated with old E+ : " + _EPlusVersion + "\n";
@@ -154,7 +175,8 @@ package gov.lbl.aercalc.model.domain
                 if (isOldESCalcImport){
                     msg += "Simulated with old WincovER_Calc : " + _WincovERCalcVersion + "\n";
                     msg += "Current version of WincovER_Calc : " + currWincovERCalcVersion + "\n";
-                }
+                }*/
+
 			}
 
 			this.versionStatus = msg;
@@ -162,34 +184,34 @@ package gov.lbl.aercalc.model.domain
 
 		//TODO Need better way to know row has been simulated
 		public function isSimulated():Boolean {
-			return (this.coolingRating>0 || this.heatingRating>0);
+			return _simulationResults && _simulationResults.length;
 		}
 		
-		
+		/*
 		// Convenience method, mainly for csv output
 		[Transient]
 		public function get parentChildType():String {
-			if (isParent){
+			/!*if (isParent){
 				return "P";
 			}
 			else if (isChild()){
 				return "C";
-			}
+			}*!/
 			return "";
 		}
 
-        /* Helper property that allows us to export
+        /!* Helper property that allows us to export
            only parents are expanded to show child rows.
-         */
-		[Transient]
-		public var isOpen:Boolean = false;
+         *!/
+	/!*	[Transient]
+		public var isOpen:Boolean = false;*!/
 
 		public function isChild():Boolean {
-			return parent_id > 0;
+			return false;//parent_id > 0;
 		}
 		
 
-		public function addChild(child:WindowVO):void {
+		/!*public function addChild(child:WindowVO):void {
 			if (!child){
 				throw new Error("WindowVO: Invalid child");
 			}
@@ -205,109 +227,109 @@ package gov.lbl.aercalc.model.domain
 				child.isParent = false;
 				children.push(child);
 			}
-		}
+		}*!/
 
-		/*  Return attachment position of children.
-			If they are various return "(various)"  */
+		/!*  Return attachment position of children.
+			If they are various return "(various)"  *!/
 		public function getChildAttachmentPosition():String {
 			var attachmentPosition:String = "";
-            for (var index:uint=0;index<children.length;index++){
+            /!*for (var index:uint=0;index<children.length;index++){
 				var childAttachmentPosition:String = WindowVO(children[index]).attachmentPosition;
 				if (attachmentPosition !="" && attachmentPosition!=childAttachmentPosition){
 					return "(various)";
 				}
 				attachmentPosition = childAttachmentPosition;
-            }
+            }*!/
             return attachmentPosition;
 		}
 
-        /*  Return shading system manufacturer of children.
-        If they are various return "(various)"  */
+        /!*  Return shading system manufacturer of children.
+        If they are various return "(various)"  *!/
         public function getChildShadingSystemManufacturer():String {
             var shdSysManufacturer:String = "";
-            for (var index:uint=0;index<children.length;index++){
+            /!*for (var index:uint=0;index<children.length;index++){
                 var childShdSysManufacturer:String =  WindowVO(children[index]).shadingSystemManufacturer;
                 if (shdSysManufacturer !="" && shdSysManufacturer!=childShdSysManufacturer){
                     return "(various)";
                 }
                 shdSysManufacturer = childShdSysManufacturer;
-            }
+            }*!/
             return shdSysManufacturer;
         }
 
-        /*  Return shading material manufacturer of children.
-             If they are various return "(various)"  */
+        /!*  Return shading material manufacturer of children.
+             If they are various return "(various)"  *!/
         public function getChildShadingMaterialManufacturer():String {
             var shdMatManufacturer:String = "";
-            for (var index:uint=0;index<children.length;index++){
+            /!*for (var index:uint=0;index<children.length;index++){
                 var childShdMatsManufacturer:String =  WindowVO(children[index]).shadingMaterialManufacturer;
                 if (shdMatManufacturer !="" && shdMatManufacturer!=childShdMatsManufacturer){
                     return "(various)";
                 }
                 shdMatManufacturer = childShdMatsManufacturer;
-            }
+            }*!/
             return shdMatManufacturer;
         }
 
 
 
 		public function getChildIDs():Array {
-			if (children.length==0){
+			/!*if (children.length==0){
 				return [];
-			}
+			}*!/
 			var idsArr:Array = []
-			for (var index:uint=0;index<children.length;index++){
+			/!*for (var index:uint=0;index<children.length;index++){
 				idsArr.push(children[index].id);
-			}
+			}*!/
 			return idsArr;
 		}
 		
 		
 		public function getChildByID(windowID:uint):WindowVO {
-			for (var index:uint=0;index<children.length;index++){
+			/!*for (var index:uint=0;index<children.length;index++){
 				if (children[index].id == windowID){
 					return children[index] as WindowVO
 				}
-			}
+			}*!/
 			return null;
 		}
 		
 		
 		public function numChildren():uint {
-			if (this.children){
+			/!*if (this.children){
 				return children.length;
-			}
+			}*!/
 			return 0;
 		}
 		
 		
 		public function getChildByW7Name(w7Name:String):WindowVO{
-			for (var index:uint=0;index<children.length;index++){
+			/!*for (var index:uint=0;index<children.length;index++){
 				if (children[index].W7Name==w7Name){
 					return children[index] as WindowVO;
 				}
-			}
+			}*!/
 			return null;
 		}
 		
 
 		public function removeChild(o:Object):void {
-			if (o==null){
+		//	if (o==null){
 				throw new Error("Invalid object");
-			}
-			if (parent_id > 0){
+		//	}
+			/!*if (parent_id > 0){
 				throw new Error("WindowVO: Can't remove child from child WindowVO");
 			}
 			var index:int = children.indexOf(o);
 			if(index > -1){
 				children.removeAt(index);
-			}
+			}*!/
 		}
 
 		
 		public function removeAllChildren():void {
-			children = [];
-		}
+			//children = [];
+		}*/
 
 
 		public function set name(value:String):void
@@ -321,7 +343,7 @@ package gov.lbl.aercalc.model.domain
 		}
 		
 
-		public function set userID(value:String):void{
+		/*public function set userID(value:String):void{
 			//We have a unique index constraint on userID column
 			//in db, so we can't have empty strings, they must
 			//be nulls
@@ -335,7 +357,7 @@ package gov.lbl.aercalc.model.domain
 				return "";
 			}
 			return _userID;
-		}
+		}*/
 
 
         public function set WincovERVersion(value:String):void {
@@ -362,7 +384,7 @@ package gov.lbl.aercalc.model.domain
 		}
 
 
-        public function set EPlusVersion(value:String):void {
+        /*public function set EPlusVersion(value:String):void {
             if (value==null || value==""){
                 value = "0.0.0";
             }
@@ -371,7 +393,7 @@ package gov.lbl.aercalc.model.domain
         }
         public function get EPlusVersion():String {
             return _EPlusVersion;
-        }
+        }*/
 
 
         public function set WincovERCalcVersion(value:String):void {
@@ -478,14 +500,14 @@ package gov.lbl.aercalc.model.domain
 			_Tvis = value
 		}
 
-        public function get TvT():Number
+        /*public function get TvT():Number
         {
             return _TvT
         }
         public function set TvT(value:Number):void
         {
             _TvT = value
-        }
+        }*/
 
 		public function get SHGC():Number
 		{
@@ -494,20 +516,50 @@ package gov.lbl.aercalc.model.domain
 		public function set SHGC(value:Number):void
 		{
 			_SHGC = value
-		}		
+		}
 
 
-		public function set coolingRating(value:Number):void
+		/*public function get productType():String{
+			return _winApplicationVO ? _winApplicationVO.productType : '';
+		}
+
+		public function get position():String{
+			return _winApplicationVO ? _winApplicationVO.position : '';
+		}*/
+
+		public var productName:String;
+
+
+		private var _winApplicationVO:WindowApplicationVO;
+
+		[Transient]
+		public function set winApplicationVO(value:WindowApplicationVO):void{
+			_winApplicationVO = value;
+			if (value) {
+				attachmentPosition = value.position;
+				shadingSystemType = value.productType;
+			} else {
+				attachmentPosition = '';
+				shadingSystemType = '';
+			}
+		}
+
+		public function get winApplicationVO():WindowApplicationVO{
+			return _winApplicationVO;
+		}
+
+
+		/*public function set coolingRating(value:Number):void
 		{
 			_coolingRating = value
 		}
 		public function get coolingRating():Number
 		{
 			return _coolingRating
-		}
+		}*/
 
 
-		public function set airInfiltration(value:Number):void
+		/*public function set airInfiltration(value:Number):void
 		{
 			if (isNaN(value)){
 				Logger.error("Invalid Air Infiltration value: " + value + ". Setting to 0.");
@@ -530,20 +582,69 @@ package gov.lbl.aercalc.model.domain
 			} else {
 				return Conversions.m3PerSecondM2ToCFMPerFt2(_airInfiltration);
 			}
-		}
+		}*/
 
 
 
-		public function set heatingRating(value:Number):void
+		/*public function set heatingRating(value:Number):void
 		{
 			_heatingRating = value
 		}
 		public function get heatingRating():Number
 		{
 			return _heatingRating
+		}*/
+
+		private var _simulationResults:Array;
+		[Transient]
+		public function get simulationResults():Array{
+			return _simulationResults
+		}
+		public function set simulationResults(value:Array):void{
+			_simulationResults = value;
 		}
 
 
+		//flat data:
+		public var manualCoolingStars:Number;
+		public var manualHeatingStars:Number;
+		public var manualCoolingPC:Number;
+		public var manualHeatingPC:Number;
+		public var timerCoolingStars:Number;
+		public var timerHeatingStars:Number;
+		public var timerCoolingPC:Number;
+		public var timerHeatingPC:Number;
+		public var sensorCoolingStars:Number;
+		public var sensorHeatingStars:Number;
+		public var sensorCoolingPC:Number;
+		public var sensorHeatingPC:Number;
+		public var fixedCoolingStars:Number;
+		public var fixedHeatingStars:Number;
+		public var fixedCoolingPC:Number;
+		public var fixedHeatingPC:Number;
 
+
+		//IDbProcessable:
+		public function onConstructedFromDb():void{
+			//either we have 'fixed' or a manual/timer/sensor combo
+			//or null? null by default
+			var nested:Array = null;
+			if (fixedCoolingStars || fixedCoolingPC || fixedHeatingPC || fixedHeatingStars) {
+				_fixed = true;
+				nested=[SimulationResultVO.createFromWindowVO(SimulationResultVO.TYPE_FIXED, this)];
+			} else {
+				if (manualCoolingStars || manualCoolingPC || manualHeatingPC || manualHeatingStars
+					|| timerCoolingStars || timerCoolingPC || timerHeatingPC || timerHeatingStars
+					|| sensorCoolingStars || sensorCoolingPC || sensorHeatingPC || sensorHeatingStars) {
+					_fixed = false;
+					nested = [];
+					nested.push(SimulationResultVO.createFromWindowVO(SimulationResultVO.TYPE_MANUAL, this));
+					nested.push(SimulationResultVO.createFromWindowVO(SimulationResultVO.TYPE_TIMER, this));
+					nested.push(SimulationResultVO.createFromWindowVO(SimulationResultVO.TYPE_AUTOMATED, this));
+				}
+			}
+			_simulationResults = nested;
+			WindowUtil.parseDBName(this.name, this);
+		}
 	}
 }

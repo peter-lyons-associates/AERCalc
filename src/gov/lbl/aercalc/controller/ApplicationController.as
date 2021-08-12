@@ -2,6 +2,9 @@ package gov.lbl.aercalc.controller
 {
 
 
+import com.fenestralia.wincover.config.ConfigFile;
+import com.fenestralia.wincover.model.WindowApplicationVO;
+
 import flash.events.ErrorEvent;
 import flash.events.Event;
 import flash.events.IEventDispatcher;
@@ -43,6 +46,8 @@ import gov.lbl.aercalc.util.Logger;
 import gov.lbl.aercalc.util.Utils;
 import gov.lbl.aercalc.view.ErrorView;
 import gov.lbl.aercalc.view.dialogs.MigrationMessageDialog;
+
+import spark.components.WindowedApplication;
 
 
 public class ApplicationController
@@ -134,6 +139,12 @@ public class ApplicationController
 			t.addEventListener(TimerEvent.TIMER, onStartInitApp);
 			t.start()
 		}
+
+		private function configureLookups():void{
+			var productTypes:ConfigFile = new ConfigFile(FlexGlobals.topLevelApplication as WindowedApplication,'prod_types');
+			WindowApplicationVO.populate(productTypes.readContent());
+
+		}
 		
 
 		public function onStartInitApp(event:TimerEvent):void
@@ -149,6 +160,8 @@ public class ApplicationController
 				
 			// Make sure all files are in order
 			checkAndUpdateHelperFiles();
+
+			configureLookups();
 
             var defaultProjectDir:File = ApplicationModel.baseStorageDir;
 			var defaultDB:File = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.DEFAULT_DB_PATH);
@@ -569,6 +582,7 @@ public class ApplicationController
                 //weather_dir,
                 ApplicationModel.DB_SUBDIR,
                 ApplicationModel.DEFAULT_DB_PATH,
+				ApplicationModel.CONFIG_SUBDIR,
                 ApplicationModel.WINDOW_SUBDIR,
                 //ApplicationModel.ENERGY_PLUS_SUBDIR,
                 ApplicationModel.WINCOVER_CALC_SUBDIR,

@@ -15,7 +15,7 @@
             imgIcon.visible = false;
             if (value){
                 var vo:WindowVO = value as WindowVO;
-                if (!vo.isParent) {
+              //  if (!vo.isParent) {
                     if (vo.hasBSDF){
                         imgIcon.source = AERCalcResources.TickIcon;
                         imgIcon.toolTip = "The BDSF for this product is present."
@@ -25,7 +25,7 @@
                     }
                     imgIcon.includeInLayout = true;
                     imgIcon.visible = true;
-                }
+                //}
             }
         }
 

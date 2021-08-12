@@ -32,18 +32,19 @@ public class LibraryDelegate
 			
 			// setup data structures to parse and hold flat data into hierarchical structure
 			var lookup:Object = {} //for quick sorting below
-			var hierWindowsArr:Array = new Array();
+			var hierWindowsArr:Array = [];
 			
 			// load table data from WincovER db
 			var dbWindowsAC:ArrayCollection = dbManager.findAll(WindowVO);
 			
 			// The window data in windows table is flat.
 			// So now create hierarchical format within our model layer
-			
+			var wIndex:uint;
+			var wVO:WindowVO;
 			// First capture parents...
 			var len:uint = dbWindowsAC.length;
-			for (var wIndex:uint=0;wIndex<len;wIndex++){
-				var wVO:Object = dbWindowsAC[wIndex];
+			/*for (var wIndex:uint=0;wIndex<len;wIndex++){
+				var wVO:WindowVO = dbWindowsAC[wIndex];
 				if (wVO.parent_id == 0){
 					hierWindowsArr.push(wVO);
 					lookup[wVO.id] = wVO;
@@ -56,14 +57,14 @@ public class LibraryDelegate
 				if (wVO.parent_id>0){
 					lookup[wVO.parent_id].addChild(wVO);
 				}
-			}
+			}*/
 			
 			for (wIndex=0;wIndex<len;wIndex++){
 				wVO = dbWindowsAC[wIndex];
 				wVO.setVersionStatus();
 			}
 
-			libraryModel.windowsAC = new ArrayCollection(hierWindowsArr);
+			libraryModel.windowsAC =dbWindowsAC;// new ArrayCollection(hierWindowsArr);
 		
 			var stopTime:Date = new Date();
 			Logger.debug("finished database loading in : " + ((stopTime.time - startTime.time)/1000)+ " seconds", this)
@@ -87,18 +88,18 @@ public class LibraryDelegate
             var len:uint = windowsArr.length;
             for (var wIndex:uint=0;wIndex<len;wIndex++){
                 var wVO:WindowVO = windowsArr[wIndex];
-				if (wVO.children && wVO.children.length>0){
+				/*if (wVO.children && wVO.children.length>0){
                     missingCount += checkForBSDFFiles(bsdfFileNames, wVO.children);
 				}
 				else{
-					if (wVO.isParent==false){
+					if (wVO.isParent==false){*/
 						var expectedName:String = libraryModel.getBSDFName(wVO.name);
                         wVO.hasBSDF = (bsdfFileNames.indexOf(expectedName)>=0);
 						if(!wVO.hasBSDF){
 							missingCount++;
 						}
-					}
-				}
+					/*}
+				}*/
             }
 			return missingCount;
 		}

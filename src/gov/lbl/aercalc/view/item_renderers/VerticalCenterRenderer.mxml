@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<s:MXAdvancedDataGridItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009"
+								  xmlns:s="library://ns.adobe.com/flex/spark"
+								  xmlns:mx="library://ns.adobe.com/flex/mx"
+
+								  >
+
+	<fx:Script>
+		<![CDATA[
+		import mx.controls.advancedDataGridClasses.AdvancedDataGridItemRenderer;
+		import mx.controls.listClasses.BaseListData;
+
+		//GD - this is a very hack-ish approach to get around the limitations of the default renderer.
+
+		var _renderer:AdvancedDataGridItemRenderer;
+
+		private function addChildLocal(child:DisplayObject):DisplayObject
+		{
+			var formerParent:DisplayObjectContainer = child.parent;
+			if (formerParent && !(formerParent is Loader))
+				formerParent.removeChild(child);
+
+			// If there is an overlay, place the child underneath it.
+			var index:int = mx_internal::effectOverlayReferenceCount && child != mx_internal::effectOverlay ?
+					Math.max(0, super.numChildren - 1) :
+					super.numChildren;
+
+			// Do anything that needs to be done before the child is added.
+			// When adding a child to UIComponent, this will set the child's
+			// virtual parent, its nestLevel, its document, etc.
+			// When adding a child to a Container, the override will also
+			// invalidate the container, adjust its content/chrome partitions,
+			// etc.
+			mx_internal::addingChild(child);
+
+			// Call a low-level player method in DisplayObjectContainer which
+			// actually attaches the child to this component.
+			// The player dispatches an "added" event from the child just after
+			// it is attached, so all "added" handlers execute during this call.
+			// UIComponent registers an addedHandler() in its constructor,
+			// which makes it runs before any other "added" handlers except
+			// capture-phase ones; it sets up the child's styles.
+			mx_internal::$addChildAt(child, index);
+
+			// Do anything that needs to be done after the child is added
+			// and after all "added" handlers have executed.
+			// This is where
+			mx_internal::childAdded(child);
+
+			return child;
+		}
+
+		override protected function childrenCreated():void {
+			_renderer = new AdvancedDataGridItemRenderer();
+			addChildLocal(_renderer);
+			if (listData) {
+				_renderer.listData = listData;
+				_renderer.data = data;
+			}
+			super.childrenCreated();
+		}
+
+		override public function set listData(value:BaseListData):void {
+			super.listData = value;
+			if (_renderer) {
+				_renderer.listData = value;
+			}
+		}
+
+
+		override public function set data(value:Object):void {
+			super.data = value;
+			if (_renderer) {
+				_renderer.data = value;
+			}
+		}
+
+		override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
+			super.updateDisplayList(unscaledWidth, unscaledHeight);
+			if (_renderer) {
+				_renderer.height = 21;
+				_renderer.width = unscaledWidth;
+				_renderer.y = unscaledHeight/2 - _renderer.height/2
+			}
+		}
+		]]>
+	</fx:Script>
+
+</s:MXAdvancedDataGridItemRenderer>

@@ -1,6 +1,7 @@
 package gov.lbl.aercalc.model
 {
-	import flash.filesystem.File;
+import flash.desktop.NativeApplication;
+import flash.filesystem.File;
 	import flash.system.Capabilities;
 	
 	import mx.logging.LogEventLevel;
@@ -19,6 +20,13 @@ package gov.lbl.aercalc.model
 		// THESE MUST BE UPDATED AT EACH RELEASE
 			
 		// WincovER version itself is in AboutInfo: AboutInfo.applicationVersion
+
+		private static function getStorageFolderName():String{
+			var appXML:XML = NativeApplication.nativeApplication.applicationDescriptor;
+			var air:Namespace = appXML.namespaceDeclarations()[0];
+			var folderName:String = "" + appXML.air::id;
+			return folderName;
+		}
 		
 		
 		//Even though we get W7 version from import
@@ -26,11 +34,11 @@ package gov.lbl.aercalc.model
 		//so we can immediately flag rows without having
 		//to do an initial import and parse the xml
 		public static const VERSION_WINDOW:String				= "7.7.01";
-		public static const VERSION_ENERGYPLUS:String			= "8.5.0";
+		public static const VERSION_ENERGYPLUS:String			= "9.1.0";
 		public static const VERSION_WINCOVER_CALC:String		= "0.0.1";
 		public static const VERSION_THERM:String				= "7.7.01";
 
-		public static const BASE_STORAGE_PATH_DIRNAME:String 	= "AppData/Local/WincovER/";
+		public static const BASE_STORAGE_PATH_DIRNAME:String 	= "AppData/Local/"+getStorageFolderName()+"/";
 		public static const WINCOVER_CALC_SUBDIR:String 		= "WincovER_Calc/";
         public static const WINCOVER_CALC_OUTPUT_SUBDIR:String 	= WINCOVER_CALC_SUBDIR + "output/";
 		public static const WINCOVER_CALC_EXE_FILE_NAME:String 	= "wincover_calc.exe";
@@ -44,6 +52,7 @@ package gov.lbl.aercalc.model
 		public static const ENERGY_PLUS_WEATHER_DIR:String 		= ENERGY_PLUS_SUBDIR + "weather/";
 		public static const ENERGY_PLUS_OUTPUT_DIR:String 		= ENERGY_PLUS_SUBDIR + "Output/";
 		public static const BSDF_SUBDIR:String 					= "bsdf/";
+		public static const CONFIG_SUBDIR:String 				= "config";
 		public static const WINDOW_SUBDIR:String 				= "W7/";	 //setting to var so we can switch to W7 during development
 		public static const THERM_SUBDIR:String 				= "THERM/";
         public static const THERM_FILES_SUBDIR:String 			= "WincovER_sample_THERM_files/";
@@ -51,16 +60,19 @@ package gov.lbl.aercalc.model
 		//Used on first startup to find DB within Application directory,
 		//then full path is saved to DBManager.dbPath
         public static const DB_SUBDIR:String 					= "db/";
-		public static const DEFAULT_DB_NAME:String 				= "wincover.sqlite";
+		public static const DEFAULT_DB_NAME:String 				= "wincoverV2.sqlite";
         public static const DEFAULT_DB_PATH:String 				= DB_SUBDIR + DEFAULT_DB_NAME;
+
+		private static const __SAMPLE_DB:String = "W7_7_db_for_WincovER_import_testing.mdb";
+		//private static const __SAMPLE_DB:String = "WincovER_sample.mdb";
 
 		public static var WINDOW_EXE_FILE_PATH:String 			= WINDOW_SUBDIR + "W7.exe";
 		public static var WINDOW_LOGS_FILE_PATH:String 			=  WINDOW_SUBDIR + "W7.log";
-		public static var WINDOW_MDB_FILE_PATH:String 			=  WINDOW_SUBDIR + "WincovER_sample.mdb";
-		public static var WINDOW_MDB_LOCK_FILE_PATH:String 		= WINDOW_SUBDIR + "WincovER_sample.ldb";
+		public static var WINDOW_MDB_FILE_PATH:String 			=  WINDOW_SUBDIR + __SAMPLE_DB;//"WincovER_sample.mdb";
+		public static var WINDOW_MDB_LOCK_FILE_PATH:String 		= WINDOW_SUBDIR + __SAMPLE_DB.substr(0, __SAMPLE_DB.lastIndexOf('.')) + '.ldb';//"WincovER_sample.ldb";
 		public static var WINDOW_INI_FILE_PATH:String 			=  WINDOW_SUBDIR + "W7.ini";
 		public static var WINDOW_INI_TEMPLATE_FILE_PATH:String 	=  WINDOW_SUBDIR + "W7_template.ini";
-		public static var WINDOW_DEFAULT_MDB_FILE_PATH:String 	=  WINDOW_SUBDIR + "WincovER_sample.mdb";
+		public static var WINDOW_DEFAULT_MDB_FILE_PATH:String 	=  WINDOW_SUBDIR + __SAMPLE_DB;//"WincovER_sample.mdb";
 		
 		public static var THERM_EXE_FILE_PATH:String 			= THERM_SUBDIR + "THERM7.exe";
 

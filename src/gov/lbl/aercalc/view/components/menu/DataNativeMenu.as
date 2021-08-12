@@ -29,7 +29,7 @@ package gov.lbl.aercalc.view.components.menu
 
         protected function keyEquivalentModifiers(item:Object):Array
         {
-            var result:Array = new Array();
+            var result:Array = [];
 
             var keyEquivField:String = keyEquivalentField;
             var altKeyField:String;

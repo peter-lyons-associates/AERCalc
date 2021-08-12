@@ -1,0 +1,62 @@
+{
+	"CEL": {
+		"product_type": "Cellular Blinds",
+		"position": "Internal"
+	},
+	"PLB": {
+		"product_type": "Pleated Blinds",
+		"position": "Internal"
+	},
+	"ILS": {
+		"product_type": "Indoor Louvre Plantation Shutters",
+		"position": "Internal"
+	},
+	"ROL": {
+		"product_type": "Indoor Roller Blinds",
+		"position": "Internal"
+	},
+	"SHB": {
+		"product_type": "Indoor Sheer Blinds",
+		"position": "Internal"
+	},
+	"VEN": {
+		"product_type": "Indoor Venetian Blinds",
+		"position": "Internal"
+	},
+	"PTR": {
+		"product_type": "Panel Track Blinds",
+		"position": "Internal"
+	},
+	"ROM": {
+		"product_type": "Roman Blinds",
+		"position": "Internal"
+	},
+	"VER": {
+		"product_type": "Vertical Blinds",
+		"position": "Internal"
+	},
+	"EVB": {
+		"product_type": "External Venetian Blinds",
+		"position": "External"
+	},
+	"FSC": {
+		"product_type": "Fixed Screens",
+		"position": "External"
+	},
+	"LOV": {
+		"product_type": "Louvre Panels",
+		"position": "External"
+	},
+	"ELS": {
+		"product_type": "Outdoor Louvre Plantation Shutters",
+		"position": "External"
+	},
+	"ERB": {
+		"product_type": "Outdoor Roller Blinds",
+		"position": "External"
+	},
+	"RSH": {
+		"product_type": "Roller Shutters",
+		"position": "External"
+	}
+}

@@ -27,10 +27,10 @@ public class ExportDelegate {
             title: "WincovER Record ID",
             varName: "id",
             escapeDelimiter: false,
-            includeInParentRow: true,
+           /* includeInParentRow: true,*/
             blankIfZero: false
         },
-        {
+       /* {
             title: "Parent ID",
             varName: "parent_id",
             escapeDelimiter: false,
@@ -43,226 +43,425 @@ public class ExportDelegate {
             escapeDelimiter: false,
             includeInParentRow: true,
             blankIfZero: false
-        },
+        },*/
         {
-            title: "CGDB Version",
-            varName: "cgdbVersion",
-            escapeDelimiter: false,
-            includeInParentRow: false,
-            blankIfZero: false
-        },
-        {
-            title: "Simulated Product Name",
+            title: "Name", // this is full w7 name
             varName: "name",
             escapeDelimiter: true,
-            includeInParentRow: true,
+            /* includeInParentRow: true,*/
             blankIfZero: false
         },
         {
-            title: "W7 ID",
-            varName: "W7ID",
-            escapeDelimiter: false,
-            includeInParentRow: false,
+            title: "Width",
+            varName: "width",
+            escapeDelimiter: true,
+            /* includeInParentRow: true,*/
             blankIfZero: false
         },
         {
-            title: "W7 Glz Sys ID",
-            varName: "W7GlzSysID",
-            escapeDelimiter: false,
-            includeInParentRow: false,
-            blankIfZero: false
-        },
-        {
-            title: "CGDB ID",
-            varName: "W7ShdSysID",
-            escapeDelimiter: false,
-            includeInParentRow: false,
-            blankIfZero: false
-        },
-        {
-            title: "Shading System Type",
-            varName: "shadingSystemType",
-            escapeDelimiter: false,
-            includeInParentRow: false,
-            blankIfZero: false
-        },
-        {
-            title: "AERC Baseline Window Type",
-            varName: "baseWindowType",
-            escapeDelimiter: false,
-            includeInParentRow: false,
+            title: "Height",
+            varName: "height",
+            escapeDelimiter: true,
+            /* includeInParentRow: true,*/
             blankIfZero: false
         },
         {
             title: "U-factor",
             varName: "UvalWinter",
             escapeDelimiter: false,
-            includeInParentRow: false,
+            /* includeInParentRow: false,*/
             blankIfZero: false
         },
         {
             title: "SHGC",
             varName: "SHGC",
             escapeDelimiter: false,
-            includeInParentRow: false,
+            /* includeInParentRow: false,*/
             blankIfZero: false
         },
         {
-            title: "VT",
+            title: "Tvis",
             varName: "Tvis",
             escapeDelimiter: false,
-            includeInParentRow: false,
+            /* includeInParentRow: false,*/
             blankIfZero: false
         },
         {
-            title: "TvT",
-            varName: "TvT",
+            title: "Fixed ?",
+            varName: "Fixed",
             escapeDelimiter: false,
-            includeInParentRow: false,
-            blankIfZero: true
-        },
-        {
-            title: "AL",
-            varName: "airInfiltration",
-            escapeDelimiter: false,
-            includeInParentRow: false,
+            /* includeInParentRow: true,*/
             blankIfZero: false
         },
         {
-            title: "Heating Value",
-            varName: "heatingValue",
+            title: "Shading System Type",
+            varName: "shadingSystemType",
             escapeDelimiter: false,
-            includeInParentRow: true,
-            blankIfZero: true
-        },
-        {
-            title: "Heating Rating",
-            varName: "heatingRating",
-            escapeDelimiter: false,
-            includeInParentRow: true,
-            blankIfZero: true
-        },
-        {
-            title: "Cooling Value",
-            varName: "coolingValue",
-            escapeDelimiter: false,
-            includeInParentRow: true,
-            blankIfZero: true
-        },
-        {
-            title: "Cooling Rating",
-            varName: "coolingRating",
-            escapeDelimiter: false,
-            includeInParentRow: true,
-            blankIfZero: true
-        },
-        {
-            title: "WINDOW Origin DB Filepath",
-            varName: "WINDOWOriginDB",
-            escapeDelimiter: false,
-            includeInParentRow: false,
-            blankIfZero: false
-
-        },
-        {
-            title: "THERM Files",
-            varName: "THERMFiles",
-            escapeDelimiter: false,
-            includeInParentRow: false,
-            blankIfZero: false
-        },
-        {
-            title: "Manufacturer",
-            varName: "shadingSystemManufacturer",
-            escapeDelimiter: true,
-            includeInParentRow: true,
-            blankIfZero: false
-        },
-        {
-            title: "Material Manufacturer",
-            varName: "shadingMaterialManufacturer",
-            escapeDelimiter: false,
-            includeInParentRow: true,
-            blankIfZero: false
-        },
-        {
-            title: "WincovER Version",
-            varName: "WincovERVersion",
-            escapeDelimiter: false,
-            includeInParentRow: false,
-            blankIfZero: false
-        },
-        {
-            title: "WINDOW Version",
-            varName: "WINDOWVersion",
-            escapeDelimiter: false,
-            includeInParentRow: false,
-            blankIfZero: false
-        },
-        {
-            title: "EnergyPlus Version",
-            varName: "EPlusVersion",
-            escapeDelimiter: false,
-            includeInParentRow: false,
-            blankIfZero: false
-        },
-        {
-            title: "ESCalc Version",
-            varName: "WincovERCalcVersion",
-            escapeDelimiter: false,
-            includeInParentRow: false,
-            blankIfZero: false
-        },
-        {
-            title: "BSDF",
-            varName: "hasBSDF",
-            escapeDelimiter: false,
-            includeInParentRow: false,
-            blankIfZero: false
-        },
-        {
-            title: "Status",
-            varName: "versionStatus",
-            escapeDelimiter: true,
-            includeInParentRow: false,
-            blankIfZero: false
-        },
-        {
-            title: "AERC ID",
-            varName: "userID",
-            escapeDelimiter: false,
-            includeInParentRow: true,
-            blankIfZero: false
-        },
-        {
-            title: "Emissivity Front",
-            varName: "Emishout",
-            escapeDelimiter: false,
-            includeInParentRow: false,
-            blankIfZero: false
-        },
-        {
-            title: "Emissivity Back",
-            varName: "Emishin",
-            escapeDelimiter: false,
-            includeInParentRow: false,
-            blankIfZero: false
-        },
-        {
-            title: "Tsol",
-            varName: "Tsol",
-            escapeDelimiter: false,
-            includeInParentRow: false,
+            /* includeInParentRow: false,*/
             blankIfZero: false
         },
         {
             title: "Attachment Position",
             varName: "attachmentPosition",
             escapeDelimiter: true,
-            includeInParentRow: true,
+            /* includeInParentRow: true,*/
             blankIfZero: false
+        },
+        {
+            title: "Slat Condition",
+            varName: "slatCondition",
+            escapeDelimiter: true,
+            /* includeInParentRow: true,*/
+            blankIfZero: false
+        },
+        {
+            title: "Product Name",
+            varName: "productName",
+            escapeDelimiter: true,
+            /* includeInParentRow: true,*/
+            blankIfZero: false
+        },
+        {
+            title: "W7 ID",
+            varName: "W7ID",
+            escapeDelimiter: false,
+            /* includeInParentRow: false,*/
+            blankIfZero: false
+        },
+        {
+            title: "W7 Glz Sys ID",
+            varName: "W7GlzSysID",
+            escapeDelimiter: false,
+           /* includeInParentRow: false,*/
+            blankIfZero: false
+        },
+        {
+            title: "Baseline Window Type",
+            varName: "baseWindowType",
+            escapeDelimiter: false,
+            /* includeInParentRow: false,*/
+            blankIfZero: false
+        },
+        {
+            title: "WINDOW Origin DB Filepath",
+            varName: "WINDOWOriginDB",
+            escapeDelimiter: false,
+            /* includeInParentRow: false,*/
+            blankIfZero: false
+
+        },
+        {
+            title: "CGDB Version",
+            varName: "cgdbVersion",
+            escapeDelimiter: false,
+            /* includeInParentRow: false,*/
+            blankIfZero: false
+        },
+        {
+            title: "CGDB ID",
+            varName: "W7ShdSysID",
+            escapeDelimiter: false,
+           /* includeInParentRow: false,*/
+            blankIfZero: false
+        },
+        {
+            title: "WINDOW Version",
+            varName: "WINDOWVersion",
+            escapeDelimiter: false,
+            /* includeInParentRow: false,*/
+            blankIfZero: false
+        },
+        {
+            title: "Manufacturer",
+            varName: "shadingSystemManufacturer",
+            escapeDelimiter: true,
+            /* includeInParentRow: true,*/
+            blankIfZero: false
+        },
+        {
+            title: "Material Manufacturer",
+            varName: "shadingMaterialManufacturer",
+            escapeDelimiter: false,
+            /* includeInParentRow: true,*/
+            blankIfZero: false
+        },
+
+        {
+            title: "WincovER Version",
+            varName: "WincovERVersion",
+            escapeDelimiter: false,
+            /* includeInParentRow: false,*/
+            blankIfZero: false
+        },
+        {
+            title: "ESCalc Version",
+            varName: "WincovERCalcVersion",
+            escapeDelimiter: false,
+            /* includeInParentRow: false,*/
+            blankIfZero: false
+        },
+        {
+            title: "THERM Files",
+            varName: "THERMFiles",
+            escapeDelimiter: false,
+            /* includeInParentRow: false,*/
+            blankIfZero: false
+        },
+        {
+            title: "Tsol",
+            varName: "Tsol",
+            escapeDelimiter: false,
+            /* includeInParentRow: false,*/
+            blankIfZero: false
+        },
+        /*{
+            title: "TvT",
+            varName: "TvT",
+            escapeDelimiter: false,
+           /!* includeInParentRow: false,*!/
+            blankIfZero: true
+        },*/
+        /*{
+            title: "AL",
+            varName: "airInfiltration",
+            escapeDelimiter: false,
+           /!* includeInParentRow: false,*!/
+            blankIfZero: false
+        },*/
+        /*{
+            title: "Heating Value",
+            varName: "heatingValue",
+            escapeDelimiter: false,
+           /!* includeInParentRow: true,*!/
+            blankIfZero: true
+        },
+        {
+            title: "Heating Rating",
+            varName: "heatingRating",
+            escapeDelimiter: false,
+           /!* includeInParentRow: true,*!/
+            blankIfZero: true
+        },*/
+        /*{
+            title: "Cooling Value",
+            varName: "coolingValue",
+            escapeDelimiter: false,
+           /!* includeInParentRow: true,*!/
+            blankIfZero: true
+        },
+        {
+            title: "Cooling Rating",
+            varName: "coolingRating",
+            escapeDelimiter: false,
+           /!* includeInParentRow: true,*!/
+            blankIfZero: true
+        },*/
+
+
+
+
+
+        /*{
+            title: "EnergyPlus Version",
+            varName: "EPlusVersion",
+            escapeDelimiter: false,
+           /!* includeInParentRow: false,*!/
+            blankIfZero: false
+        },*/
+
+       /* {
+            title: "BSDF",
+            varName: "hasBSDF",
+            escapeDelimiter: false,
+           /!* includeInParentRow: false,*!/
+            blankIfZero: false
+        },
+        {
+            title: "Status",
+            varName: "versionStatus",
+            escapeDelimiter: true,
+           /!* includeInParentRow: false,*!/
+            blankIfZero: false
+        },*/
+       /* {
+            title: "AERC ID",
+            varName: "userID",
+            escapeDelimiter: false,
+           /!* includeInParentRow: true,*!/
+            blankIfZero: false
+        },*/
+        /*{
+            title: "Emissivity Front",
+            varName: "Emishout",
+            escapeDelimiter: false,
+           /!* includeInParentRow: false,*!/
+            blankIfZero: false
+        },
+        {
+            title: "Emissivity Back",
+            varName: "Emishin",
+            escapeDelimiter: false,
+           /!* includeInParentRow: false,*!/
+            blankIfZero: false
+        },*/
+
+
+        {
+            title: "Manual Cooling Stars",
+            varName: "manualCoolingStars",
+            escapeDelimiter: false,
+            /* includeInParentRow: true,*/
+            blankIfZero: blankIfZeroDependingFixed(false)
+        },
+        {
+            title: "Manual Heating Stars",
+            varName: "manualHeatingStars",
+            escapeDelimiter: false,
+            /* includeInParentRow: true,*/
+            blankIfZero: blankIfZeroDependingFixed(false)
+        },
+        {
+            title: "Manual Cooling PC",
+            varName: "manualCoolingPC",
+            escapeDelimiter: false,
+            /* includeInParentRow: true,*/
+            blankIfZero: blankIfZeroDependingFixed(false)
+        },
+        {
+            title: "Manual Heating PC",
+            varName: "manualHeatingPC",
+            escapeDelimiter: false,
+            /* includeInParentRow: true,*/
+            blankIfZero: blankIfZeroDependingFixed(false)
+        },
+        {
+            title: "Timer Cooling Stars",
+            varName: "timerCoolingStars",
+            escapeDelimiter: false,
+            /* includeInParentRow: true,*/
+            blankIfZero: blankIfZeroDependingFixed(false)
+        },
+        {
+            title: "Timer Heating Stars",
+            varName: "timerHeatingStars",
+            escapeDelimiter: false,
+            /* includeInParentRow: true,*/
+            blankIfZero: blankIfZeroDependingFixed(false)
+        },
+        {
+            title: "Timer Cooling PC",
+            varName: "timerCoolingPC",
+            escapeDelimiter: false,
+            /* includeInParentRow: true,*/
+            blankIfZero: blankIfZeroDependingFixed(false)
+        },
+        {
+            title: "Timer Heating PC",
+            varName: "timerHeatingPC",
+            escapeDelimiter: false,
+            /* includeInParentRow: true,*/
+            blankIfZero: blankIfZeroDependingFixed(false)
+        },
+
+
+        {
+            title: "Sensor Cooling Stars",
+            varName: "sensorCoolingStars",
+            escapeDelimiter: false,
+            /* includeInParentRow: true,*/
+            blankIfZero: blankIfZeroDependingFixed(false)
+        },
+        {
+            title: "Sensor Heating Stars",
+            varName: "sensorHeatingStars",
+            escapeDelimiter: false,
+            /* includeInParentRow: true,*/
+            blankIfZero: blankIfZeroDependingFixed(false)
+        },
+        {
+            title: "Sensor Cooling PC",
+            varName: "sensorCoolingPC",
+            escapeDelimiter: false,
+            /* includeInParentRow: true,*/
+            blankIfZero: blankIfZeroDependingFixed(false)
+        },
+        {
+            title: "Sensor Heating PC",
+            varName: "sensorHeatingPC",
+            escapeDelimiter: false,
+            /* includeInParentRow: true,*/
+            blankIfZero: blankIfZeroDependingFixed(false)
+        },
+        {
+            title: "Fixed Cooling Stars",
+            varName: "fixedCoolingStars",
+            escapeDelimiter: false,
+            /* includeInParentRow: true,*/
+            blankIfZero: blankIfZeroDependingFixed(true)
+        },
+        {
+            title: "Fixed Heating Stars",
+            varName: "fixedHeatingStars",
+            escapeDelimiter: false,
+            /* includeInParentRow: true,*/
+            blankIfZero: blankIfZeroDependingFixed(true)
+        },
+        {
+            title: "Fixed Cooling PC",
+            varName: "fixedCoolingPC",
+            escapeDelimiter: false,
+            /* includeInParentRow: true,*/
+            blankIfZero: blankIfZeroDependingFixed(true)
+        },
+        {
+            title: "Fixed Heating PC",
+            varName: "fixedHeatingPC",
+            escapeDelimiter: false,
+            /* includeInParentRow: true,*/
+            blankIfZero: blankIfZeroDependingFixed(true)
         }
+
     ];
+
+
+    private static function isFixed(winVO:WindowVO):Boolean{
+        return winVO && winVO.Fixed && (winVO.fixedHeatingStars || winVO.fixedHeatingPC || winVO.fixedCoolingPC || winVO.fixedCoolingStars);
+    }
+
+    private static function isNotFixed(winVO:WindowVO):Boolean{
+        return winVO && !winVO.Fixed && (
+                winVO.manualHeatingStars || winVO.manualHeatingPC || winVO.manualCoolingPC || winVO.manualCoolingStars
+                ||  winVO.timerHeatingStars || winVO.timerHeatingPC || winVO.timerCoolingPC || winVO.timerCoolingStars
+                ||  winVO.sensorHeatingStars || winVO.sensorHeatingPC || winVO.sensorCoolingPC || winVO.sensorCoolingStars
+        );
+    }
+
+    private static function blankIfZeroDependingFixed(fixedState:Boolean):Function{
+        return function(winVO:WindowVO):Boolean{
+            if (fixedState && isFixed(winVO)) return false;
+            if (!fixedState && isNotFixed(winVO)) return false;
+            return true;
+        }
+    }
+
+    /*
+    public var manualCoolingStars:Number;
+		public var manualHeatingStars:Number;
+		public var manualCoolingPC:Number;
+		public var manualHeatingPC:Number;
+		public var timerCoolingStars:Number;
+		public var timerHeatingStars:Number;
+		public var timerCoolingPC:Number;
+		public var timerHeatingPC:Number;
+		public var sensorCoolingStars:Number;
+		public var sensorHeatingStars:Number;
+		public var sensorCoolingPC:Number;
+		public var sensorHeatingPC:Number;
+		public var fixedCoolingStars:Number;
+		public var fixedHeatingStars:Number;
+		public var fixedCoolingPC:Number;
+		public var fixedHeatingPC:Number;
+     */
 
 	public function getColumnsDefs():Array {
 		return _exportColumns
@@ -337,12 +536,12 @@ public class ExportDelegate {
             var rowData:String = "";
             var currWindow:WindowVO = windowsAC[rowIndex]as WindowVO;
             exportStr += writeWindowAsCSVLine(currWindow);
-            if (currWindow.isParent && currWindow.isOpen){
+            /*if (currWindow.isParent && currWindow.isOpen){
 				var numChildren:uint = currWindow.children.length;
                 for (var childRowIndex:uint = 0; childRowIndex < numChildren; childRowIndex++){
                     exportStr += writeWindowAsCSVLine(currWindow.children[childRowIndex]);
                 }
-            }
+            }*/
         }
 
         return exportStr;
@@ -359,7 +558,7 @@ public class ExportDelegate {
             var colData:Object = _exportColumns[colIndex];
             var value:String = currWindow[colData.varName];
 
-            if (currWindow.isParent){
+            /*if (currWindow.isParent){
                 if (colData.varName == "attachmentPosition"){
                     var value:String = currWindow.getChildAttachmentPosition();
                 }
@@ -372,10 +571,16 @@ public class ExportDelegate {
                 if (colData.includeInParentRow==false) {
                     value = "";
                 }
-            }
+            }*/
 
-            if (value=="0" && colData.blankIfZero){
-                value= "";
+            if (value=="0"){
+                var zeroFuncCheckBlank:Function = colData.blankIfZero as Function;
+                var zeroCheckBlank:Boolean;
+                if (zeroFuncCheckBlank != null) zeroCheckBlank = zeroFuncCheckBlank(currWindow);
+                else {
+                    zeroCheckBlank = colData.blankIfZero;
+                }
+                if (zeroCheckBlank) value= "";
             }
 
             if (value!="" && colData.escapeDelimiter) {

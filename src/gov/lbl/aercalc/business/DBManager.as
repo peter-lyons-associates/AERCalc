@@ -403,7 +403,7 @@ import mx.controls.Alert;
 
 		protected function loadMetadata(c:Class):void
 		{			
-			_map[c] = new Object();
+			_map[c] = {};
 			var xml:XML = describeType(new c());
 			var table:String = xml.metadata.(@name=="Table").arg.(@key=="name").@value;
 			_map[c].table = table;
@@ -439,7 +439,8 @@ import mx.controls.Alert;
 						column = field;					
 					}
 				}
-				_map[c].fields.addItem({field: field, column: column});
+				var readOnly:Boolean = variables[i].(@access=="readonly").length();
+				_map[c].fields.addItem({field: field, column: column, localReadOnly:readOnly });
 				
 				if (variables[i].metadata.(@name=="Id").length()>0)
 				{
@@ -558,6 +559,9 @@ import mx.controls.Alert;
 			{
 				var item:Object = fields.getItemAt(i);
 				instance[item.field] = o[item.column];	
+			}
+			if (instance is IDbProcessable) {
+				IDbProcessable(instance).onConstructedFromDb();
 			}
 			return instance;
 		}

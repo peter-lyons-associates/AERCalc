@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<s:MXAdvancedDataGridItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009"
+								  xmlns:s="library://ns.adobe.com/flex/spark"
+								  xmlns:mx="library://ns.adobe.com/flex/mx"
+								  >
+	<fx:Script>
+		<![CDATA[
+		import gov.lbl.aercalc.model.domain.SimulationResultVO;
+		import gov.lbl.aercalc.model.domain.WindowVO;
+		import gov.lbl.aercalc.util.Utils;
+
+		import mx.controls.AdvancedDataGrid;
+
+		import mx.controls.advancedDataGridClasses.AdvancedDataGridColumn;
+
+		import mx.controls.advancedDataGridClasses.AdvancedDataGridListData;
+
+		import mx.controls.listClasses.BaseListData;
+		import mx.events.PropertyChangeEvent;
+
+		import spark.components.Label;
+
+		private var _results:Array;
+		private var _customDataField:String;
+		private var _col:AdvancedDataGridColumn;
+
+		override public function set listData(value:BaseListData):void {
+			super.listData = value;
+			if (value is AdvancedDataGridListData) {
+				_customDataField = AdvancedDataGridListData(value).dataField;
+				var col:AdvancedDataGridColumn = AdvancedDataGrid(AdvancedDataGridListData(value).owner).columns[AdvancedDataGridListData(value).columnIndex]
+				if (col && col.labelFunction!= null) {
+					_col = col
+				} else _col = null;
+			}
+		}
+
+		override public function set data(value:Object):void {
+			var winVO:WindowVO = value as WindowVO
+			if (value == super.data) {
+				if (winVO) {
+					if (_results == winVO.simulationResults) return;
+				} else return;
+			}
+			adjustListener(super.data as WindowVO, false)
+			super.data = value;
+			_results = winVO ? winVO.simulationResults : null;
+			adjustListener(winVO, true)
+			processResults();
+		}
+
+		private function adjustListener(forVO:WindowVO, on:Boolean = true):void {
+			if (forVO) {
+				if (on) {
+					forVO.addEventListener(PropertyChangeEvent.PROPERTY_CHANGE, onPropertyChange,false,0,true);
+				} else {
+					forVO.removeEventListener(PropertyChangeEvent.PROPERTY_CHANGE, onPropertyChange);
+				}
+			}
+		}
+
+
+		private static const labelHeight:uint = 18;
+		private function processResults():void {
+			removeAllElements();
+			var content:Array = _results;
+			var l:uint = content ? content.length : 0;
+			var lbl:Label;
+			for (var i:uint = 0; i < l; i++) {
+				var resultVO:SimulationResultVO = content[i];
+				if (resultVO) {
+					if (_col != null) {
+						val = _col.labelFunction(resultVO,_col);
+					} else {
+						if (!_customDataField || !(_customDataField in resultVO)) throw new Error('Bad configuration at Column ' + this.listData.columnIndex);
+
+						var val:Object = resultVO[_customDataField];
+						if (val is Number) {
+							//using
+							val = Utils.basicFormatter.format(val);
+						}
+					}
+
+					lbl = createLabel(val+'', i, 4);
+				}
+			}
+
+		}
+
+		private function createLabel(textContent:String, idx:uint, offset:uint):Label {
+			var lbl:Label = new Label();
+			var h:uint = labelHeight;
+			lbl.y = offset + idx * h;
+			lbl.height = h;
+			lbl.left = 5;
+			lbl.right = 5;
+			lbl.setStyle('paddingRight', 5)
+			//lbl.setStyle('backgroundColor','#ff0000')
+
+			if (textContent) lbl.text = textContent;
+			addElement(lbl);
+			return lbl;
+		}
+
+		private function onPropertyChange(event:PropertyChangeEvent):void {
+			if (event.property == 'simulationResults') {
+				data = data as WindowVO;
+			}
+		}
+		]]>
+	</fx:Script>
+
+</s:MXAdvancedDataGridItemRenderer>

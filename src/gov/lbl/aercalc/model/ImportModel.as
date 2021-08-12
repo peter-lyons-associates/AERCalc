@@ -152,14 +152,16 @@ import gov.lbl.aercalc.view.dialogs.ImportW7WindowsDialog;
 
 		/* public instance functions */
 		public function getShadingSystemName(shadingSystemType:String):String{
-			var len:uint = shadingSystemTypes.length;
+			//GD changed to return raw value:
+			return shadingSystemType || '';
+			/*var len:uint = shadingSystemTypes.length;
 			for (var index:uint=0; index<len; index++){
 				var obj:Object= shadingSystemTypes[index];
 				if (obj.data == shadingSystemType){
 					return obj.label;
 				}
 			}
-			return "";
+			return "";*/
 		}
 	}
 }

@@ -63,7 +63,7 @@ public class VariableSettingsModel
         }
 
         if (varGroupsArr[varSettingsVO.type] == null) {
-            varGroupsArr[varSettingsVO.type] = new Array();
+            varGroupsArr[varSettingsVO.type] = [];
         }
 
         varGroupsArr[varSettingsVO.type][varSettingsVO.name] =  varSettingsVO;

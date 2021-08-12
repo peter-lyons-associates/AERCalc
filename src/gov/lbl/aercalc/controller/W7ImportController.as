@@ -96,7 +96,7 @@ public class W7ImportController {
                 throw new Error();
             }
         }
-        catch(error){
+        catch(error:Error){
             var msg:String =    "Can't find the WINDOW database specified in settings. \n\n" +
                                 "Please open File > Preferences, select the WINDOW7 tab and then browse to a valid WINDOW database.\n";
             Alert.show(msg, "WINDOW database not found", Alert.OK);
@@ -175,8 +175,8 @@ public class W7ImportController {
         importModel.currImportIndex = 0;
         importModel.numBSDFImportFailures = 0;
         var glzSysVO:W7WindowImportVO = importModel.importGlazingSystemAC.getItemAt(_currImportIndex) as W7WindowImportVO;
-        wDelegate.getBSDF(glzSysVO.W7ID, glzSysVO.name);
-
+        wDelegate.getBSDF(glzSysVO.W7ID, glzSysVO.W7Name);
+        //wDelegate.getBSDF(glzSysVO.W7GlzSysID, glzSysVO.W7Name);
     }
 
 
@@ -305,14 +305,14 @@ public class W7ImportController {
 		
 		var w7Name:String = importGlzSysVO.name;
 		var w7BaseName:String = importGlzSysVO.getBaseName();
-		
-        if (importGlzSysVO.isBlind()) {
+        var windowVO:WindowVO;
+        //if (importGlzSysVO.isBlind()) {
 
 			// Look for existing parent...
 			// Parents are always named with the W7 base name
             parentWindowVO = libraryModel.getWindowByName(w7BaseName, true);
-
-            if (parentWindowVO){
+//throw new Error('WORK IN PROGRESS.... CHECK THIS');
+            /*if (parentWindowVO){
 				var windowVO:WindowVO = parentWindowVO.getChildByW7Name(w7Name);
             }
 			else {
@@ -332,25 +332,28 @@ public class W7ImportController {
 				windowVO.name = importGlzSysVO.name;
 				parentWindowVO.addChild(windowVO);
 				dbManager.save(windowVO);
-			}
-        } else {
+			}*/
+       /* } else {*/
 			//This is not a blind, therefore not a parent<>child window
 			windowVO = libraryModel.getWindowByW7Name(w7Name);
 			if (!windowVO){
 				windowVO = new WindowVO();
-				windowVO.W7Name = importGlzSysVO.name;
-				windowVO.name = importGlzSysVO.name;
-				windowVO.isParent = false;
+			//	windowVO.W7Name = importGlzSysVO.W7Name;
+				windowVO.name = importGlzSysVO.W7Name;
+                windowVO.productName = importGlzSysVO.name;
+			//	windowVO.isParent = false;
 				dbManager.save(windowVO);
 				libraryModel.addWindow(windowVO);
-			}
+			//}
 		}
 
         // UPDATE DATA
 		
 		// Zero out existing EPc and EPh value when importing
-		windowVO.coolingRating = 0;
-		windowVO.heatingRating = 0;
+	//	windowVO.coolingRating = 0;
+	//	windowVO.heatingRating = 0;
+        windowVO.simulationResults = null;
+
         // We just generated a bsdf
 		windowVO.hasBSDF = true;
         windowVO.WINDOWVersion = ApplicationModel.VERSION_WINDOW;
@@ -376,7 +379,7 @@ public class W7ImportController {
                                         "_UvalWinter",
                                         "SHGC",
                                         "Tvis",
-                                        "TvT",
+                                        /*"TvT",*/
                                         "shadingSystemType",
                                         "shadingSystemManufacturer",
                                         "shadingMaterialManufacturer",
@@ -388,9 +391,12 @@ public class W7ImportController {
                                         "cgdbVersion",
                                         "WINDOWVersion",
                                         "THERMFiles",
-                                        "Tsol",
+                                        "Tsol"/*,
                                         "Emishin",
-                                        "Emishout"
+                                        "Emishout"*/
+                                        ,"winApplicationVO"
+                                        ,"WincovER_ID"
+                                        ,"slatCondition"
                                     ];
 
         var len:uint = commonVarNames.length;
@@ -406,7 +412,7 @@ public class W7ImportController {
 
         }
 		//clear out any existing user IDs.
-		windowVO.userID = null;
+	//	windowVO.userID = null;
         dbManager.save(windowVO);
         libraryModel.windowsAC.refresh();
 

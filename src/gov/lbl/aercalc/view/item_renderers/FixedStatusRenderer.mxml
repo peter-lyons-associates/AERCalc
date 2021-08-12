@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<s:MXAdvancedDataGridItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009"
+                                  xmlns:s="library://ns.adobe.com/flex/spark"
+                                  click="clickHandler(event)">
+
+    <fx:Script>
+        <![CDATA[
+
+        import gov.lbl.aercalc.model.domain.WindowVO;
+        import gov.lbl.aercalc.util.AERCalcResources;
+
+        private static const cache:Dictionary = new Dictionary(true);
+
+        override public function set data(value:Object):void
+        {
+            /*imgIcon.source = null;
+            imgIcon.includeInLayout = false;
+            imgIcon.visible = false;
+            if (value){
+                var vo:WindowVO = value as WindowVO;
+              //  if (!vo.isParent) {
+                    if (vo.Fixed){
+                        imgIcon.source = AERCalcResources.TickIcon;
+                        imgIcon.toolTip = "The Simulation for this product will assume it is 'fixed'."
+                    } else {
+                        imgIcon.source = AERCalcResources.CrossIcon;
+                        imgIcon.toolTip = "The Simulation for this product will assume it is 'non-fixed'."
+                    }
+                    imgIcon.includeInLayout = true;
+                    imgIcon.visible = true;
+                //}
+            }*/
+            super.data = value;
+            updateView(value as WindowVO);
+
+        }
+
+        private function updateView(via:WindowVO):void{
+            if(via) {
+                if (via.Fixed){
+                    imgIcon.source = AERCalcResources.TickIcon;
+                    imgIcon.toolTip = "The Simulation for this product will assume it is 'fixed'."
+                } else {
+                    imgIcon.source = AERCalcResources.CrossIcon;
+                    imgIcon.toolTip = "The Simulation for this product will assume it is 'non-fixed'."
+                }
+                imgIcon.includeInLayout = true;
+                imgIcon.visible = true;
+            } else {
+                imgIcon.source = null;
+                imgIcon.includeInLayout = false;
+                imgIcon.visible = false;
+            }
+        }
+
+        private function clickHandler(event:MouseEvent):void {
+            var winVO:WindowVO = data as WindowVO;
+            if (winVO) {
+                var cachedSettings:Object = cache[winVO] || (cache[winVO] = {'true':null, 'false':null});
+                if (winVO.simulationResults && winVO.simulationResults.length) {
+                    cachedSettings[winVO.Fixed] = winVO.simulationResults;
+                }
+                winVO.Fixed = !winVO.Fixed;
+                winVO.simulationResults = cachedSettings[winVO.Fixed];
+                updateView(winVO);
+            }
+        }
+
+        ]]></fx:Script>
+
+    <s:Image id="imgIcon"
+             includeInLayout="false"
+             visible="false"
+             horizontalCenter="0"
+             toolTip=""
+             verticalCenter="0"/>
+
+</s:MXAdvancedDataGridItemRenderer>

@@ -13,6 +13,10 @@
 		import gov.lbl.aercalc.events.MenuEvent;
 		import gov.lbl.aercalc.model.settings.SettingsModel;
 
+		import mx.collections.ArrayCollection;
+
+		import mx.collections.ICollectionView;
+
 		import mx.collections.IHierarchicalCollectionView;
 
 		import mx.events.AdvancedDataGridEvent;
@@ -99,8 +103,10 @@
 			 */
 			[EventHandler(event="ExportEvent.ON_EXPORT_WINDOWS")]
 			public function onExportWindows(event:ExportEvent):void {
-				var view:IHierarchicalCollectionView = adgWindows.dataProvider as IHierarchicalCollectionView;
-				windowListViewPM.doExportWindows( view.openNodes);
+				/*var view:IHierarchicalCollectionView = adgWindows.dataProvider as IHierarchicalCollectionView;
+				windowListViewPM.doExportWindows( view.openNodes);*/
+				var view:ArrayCollection = adgWindows.dataProvider as ArrayCollection;
+				windowListViewPM.doExportWindows(view ? view.source : null);
 			}
 
 
@@ -192,10 +198,11 @@
 		
 		<s:Spacer height="5"/>
 		
-		<mx:AdvancedDataGrid id="adgWindows" 
+		<mx:AdvancedDataGrid id="adgWindows"
+							 variableRowHeight="true"
 							 allowMultipleSelection="true" 
 							 selectionMode="multipleRows"
-							 editable="true"
+							 editable="false"
 							 width="100%"
 							 height="100%"
 							 defaultLeafIcon="{null}"
@@ -209,17 +216,19 @@
 							 keyUp="windowListViewPM.onDGKeyUp(event, adgWindows.selectedItems)"
 							 headerWordWrap="true"
 							 sortExpertMode="true"
+							 itemRenderer="gov.lbl.aercalc.view.item_renderers.VerticalCenterRenderer"
 							 headerRenderer="gov.lbl.aercalc.view.item_renderers.MyADGHeaderRenderer">
 			
 			<mx:dataProvider>
-				<mx:HierarchicalData source="{windowListViewPM.windowsAC}" childrenField="children"/>
+				<!--<mx:HierarchicalData source="{windowListViewPM.windowsAC}" />-->
+				{windowListViewPM.windowsAC}
 			</mx:dataProvider>
 
 			<mx:columns>
 
 				<!-- we need a blank column to handle the accordion controls -->
 				
-				<mx:AdvancedDataGridColumn headerText="" width="30" editable="false"/>
+				<!--<mx:AdvancedDataGridColumn headerText="" width="30" editable="false"/>-->
 
 				<mx:AdvancedDataGridColumn id="windowID_display"
 										   dataField="id"
@@ -235,7 +244,8 @@
 										   dataTipField="name"
 										   width="250"
 										   textAlign="left"
-										   headerText="Name"
+										   headerText="W7 Product Name"
+
 										   editable="false"/>
 
 				<mx:AdvancedDataGridColumn id="bsdfStatus"
@@ -246,8 +256,45 @@
 										   textAlign="center"
 										   itemRenderer="gov.lbl.aercalc.view.item_renderers.BSDFStatusRenderer"
 											/>
+
+				<mx:AdvancedDataGridColumn dataField="WincovER_ID"
+										   headerText="WincovER ID"
+										   showDataTips="false"
+										   textAlign="center"
+										   width="70"
+										   editable="false"/>
+
+				<mx:AdvancedDataGridColumn dataField="shadingSystemManufacturer"
+										   width="150"
+										   showDataTips="true"
+										   dataTipField="shadingSystemManufacturer"
+										   headerText="Manufacturer"
+
+										   textAlign="center"
+										   editable="false"/>
+
+				<mx:AdvancedDataGridColumn dataField="productName"
+										   headerText="Product Name"
+										   showDataTips="false"
+										   textAlign="center"
+										   width="70"
+										   editable="false"/>
+
+				<mx:AdvancedDataGridColumn dataField="shadingSystemType"
+										   headerText="Product Type"
+										   showDataTips="false"
+										   textAlign="center"
+										   width="70"
+										   editable="false"/>
+
+				<mx:AdvancedDataGridColumn dataField="attachmentPosition"
+										   headerText="Attachment Position"
+										   showDataTips="false"
+										   textAlign="center"
+										   width="70"
+										   editable="false"/>
 				
-				<mx:AdvancedDataGridColumn id="versionStatus"
+				<!--<mx:AdvancedDataGridColumn id="versionStatus"
 										   dataField="versionStatus"
 										   width="50"
 										   headerText="Version Status"
@@ -255,31 +302,39 @@
 										   editable="false"
 										   textAlign="center"
 										   itemRenderer="gov.lbl.aercalc.view.item_renderers.VersionStatusRenderer"
-										   />
+										   />-->
 
-				<mx:AdvancedDataGridColumn id="userID"
+				<mx:AdvancedDataGridColumn id="isFixed"
+										   dataField="Fixed"
+										   width="40"
+										   headerText="Fixed?"
+										   editable="false"
+										   textAlign="center"
+										   itemRenderer="gov.lbl.aercalc.view.item_renderers.FixedStatusRenderer"
+				/>
+
+				<mx:AdvancedDataGridColumn dataField="slatCondition"
+										   headerText="Slat Condition"
+										   showDataTips="false"
+										   textAlign="center"
+										   width="70"
+										   editable="false"/>
+
+				<!--<mx:AdvancedDataGridColumn id="userID"
 										   dataField="userID"
 										   dataTipField="userID"
 										   width="100"
 										   textAlign="center"
 										   headerText="WincovER ID"
-										   editable="true"/>
+										   editable="true"/>-->
 
-				<mx:AdvancedDataGridColumn dataField="shadingSystemManufacturer"
-										   width="150"
-										   showDataTips="true"
-										   dataTipField="shadingSystemManufacturer"
-										   headerText="Manufacturer"
-										   itemRenderer="gov.lbl.aercalc.view.item_renderers.ShadingSystemManufacturerRenderer"
-										   textAlign="center"
-										   editable="false"/>
 
-				<mx:AdvancedDataGridColumn dataField="W7ID"
+				<!--<mx:AdvancedDataGridColumn dataField="W7ID"
 										   headerText="W7 Product ID"
 										   showDataTips="false"
 										   textAlign="center"
 										   width="70"
-										   editable="false"/>
+										   editable="false"/>-->
 				
 				<mx:AdvancedDataGridColumn dataField="W7GlzSysID"
 										   width="70"
@@ -320,19 +375,19 @@
 										   dataTipField="WINDOWVersion"
 										   editable="false"/>
 				
-				<mx:AdvancedDataGridColumn dataField="shadingSystemType"
+				<!--<mx:AdvancedDataGridColumn dataField="shadingSystemType"
 										   headerText="Window Attachment"
 										   width="80"
 										   showDataTips="false"
 										   textAlign="center"
-										   editable="false"/>
+										   editable="false"/>-->
 				
-				<mx:AdvancedDataGridColumn dataField="baseWindowType"
+				<!--<mx:AdvancedDataGridColumn dataField="baseWindowType"
 										   headerText="Baseline Window"
 										   width="70"
 										   showDataTips="false"
 										   textAlign="center"
-										   editable="false"/>
+										   editable="false"/>-->
 				
 				<mx:AdvancedDataGridColumn dataField="UvalWinter"
 										   headerText="{windowListViewPM.uFactorHeader}"
@@ -344,7 +399,7 @@
 										   width="85"/>
 				
 				<mx:AdvancedDataGridColumn dataField="SHGC"
-										   headerText="SHGC"
+										   headerText="SHGCw"
 										   labelFunction="{windowListViewPM.windowValueLabelFunction}"
 										   textAlign="right"
 										   showDataTips="false"
@@ -352,20 +407,75 @@
 										   width="50"/>
 				
 				<mx:AdvancedDataGridColumn dataField="Tvis"
-										   headerText="TVIS"
+										   headerText="Tvw"
 										   showDataTips="false"
 										   labelFunction="{windowListViewPM.windowValueLabelFunction}"
 										   textAlign="right"
 										   editable="false"
 										   width="50"/>
-				
-				<mx:AdvancedDataGridColumn dataField="airInfiltration"
+
+				<mx:AdvancedDataGridColumn
+						headerText="Operation Type"
+						showDataTips="false"
+						dataField="operationType"
+						itemRenderer="gov.lbl.aercalc.view.item_renderers.SimulationResultsRenderer"
+						width="60"
+						textAlign="right"
+						editable="false"/>
+
+				<mx:AdvancedDataGridColumn
+						headerText="Cooling"
+						showDataTips="false"
+						dataField="coolingPC"
+						labelFunction="{windowListViewPM.heatingCoolingValueLabelFunction}"
+						itemRenderer="gov.lbl.aercalc.view.item_renderers.SimulationResultsRenderer"
+						width="60"
+						textAlign="right"
+						editable="false"/>
+
+				<mx:AdvancedDataGridColumn
+						headerText="Cooling Stars"
+						showDataTips="false"
+						dataField="coolingStars"
+						itemRenderer="gov.lbl.aercalc.view.item_renderers.SimulationResultsRenderer"
+						width="60"
+						textAlign="right"
+						editable="false"/>
+
+				<mx:AdvancedDataGridColumn
+						headerText="Heating"
+						showDataTips="false"
+						dataField="heatingPC"
+						labelFunction="{windowListViewPM.heatingCoolingValueLabelFunction}"
+						itemRenderer="gov.lbl.aercalc.view.item_renderers.SimulationResultsRenderer"
+						width="60"
+						textAlign="right"
+						editable="false"/>
+
+				<mx:AdvancedDataGridColumn
+						headerText="Heating Stars"
+						showDataTips="false"
+						dataField="heatingStars"
+						itemRenderer="gov.lbl.aercalc.view.item_renderers.SimulationResultsRenderer"
+						width="60"
+						textAlign="right"
+						editable="false"/>
+
+				<!--<mx:AdvancedDataGridColumn dataField="airInfiltration"
 										   showDataTips="false"
 										   headerText="{windowListViewPM.airInfiltrationHeader}"
 										   labelFunction="{windowListViewPM.windowValueLabelFunction}"
 										   textAlign="right"
 										   editable="true"
 										   width="70"/>
+
+				<mx:AdvancedDataGridColumn
+										   headerText="Operation Type"
+										   showDataTips="false"
+										   labelFunction="{windowListViewPM.operationTypeLabelFunction}"
+										   width="60"
+										   textAlign="right"
+										   editable="false"/>
 
 				<mx:AdvancedDataGridColumn dataField="heatingValue"
 										   headerText="Heating Value"
@@ -397,16 +507,16 @@
 										   showDataTips="false"
 										   width="60"
 										   textAlign="right"
-										   editable="false"/>
+										   editable="false"/>-->
 				
 			</mx:columns>
 			
 			
-			<mx:rendererProviders>
+			<!--<mx:rendererProviders>
 				<mx:AdvancedDataGridRendererProvider column="{windowName}"
 													 depth="2"
 													 renderer="gov.lbl.aercalc.view.item_renderers.WindowNameRenderer"/>
-			</mx:rendererProviders>
+			</mx:rendererProviders>-->
 			
 		</mx:AdvancedDataGrid>
 		

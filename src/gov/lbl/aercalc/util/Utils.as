@@ -79,7 +79,7 @@ public class Utils
             var windowNameArr:Array = getWindowNameArr(windowName);
             //make sure it's a valid shade type
             var attachmentPositionToken:String = windowNameArr[2];
-			var attachmentPositionLabel = ImportModel.getAttachmentPositionName(attachmentPositionToken);
+			var attachmentPositionLabel:String = ImportModel.getAttachmentPositionName(attachmentPositionToken);
             if (attachmentPositionLabel==null || attachmentPositionLabel==""){
                 var msg:String = 	"Invalid attachment position : " + attachmentPositionToken +
 									" for product name " + windowName + ". ";
@@ -121,7 +121,8 @@ public class Utils
             // Adding these for WincovER-specific fields
             // Starting by rounding to 2....we may change at a later date.
             Utils.heatingCoolingValueFormatter.rounding = NumberBaseRoundType.NEAREST;
-            Utils.heatingCoolingValueFormatter.precision = 1;
+            Utils.heatingCoolingValueFormatter.precision = 0;
+
             Utils.heatingCoolingRatingFormatter.rounding = NumberBaseRoundType.NEAREST;
             Utils.heatingCoolingRatingFormatter.precision = 1;
 		}

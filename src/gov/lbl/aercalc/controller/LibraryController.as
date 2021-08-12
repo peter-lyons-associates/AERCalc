@@ -57,18 +57,18 @@ public class LibraryController {
         // Gather all child and parent ids
         for (var windowIndex:uint=0;windowIndex<numWindowsToDelete;windowIndex++){
             var windowVO:WindowVO = deleteWindowVOs[windowIndex]as WindowVO;
-            if (windowVO.isChild()){
+            /*if (windowVO.isChild()){
                 deleteChildIDsArr.push(windowVO.id);
             } else if (windowVO.isParent){
                 deleteParentIDsArr.push(windowVO.id);
             }  else {
                 //don't need to index IDs of 'normal' WindowVOs
-            }
+            }*/
         }
         // Check for parents with all children marked for deletion
         for (windowIndex=0;windowIndex<numWindowsToDelete;windowIndex++){
             windowVO = deleteWindowVOs[windowIndex]as WindowVO;
-            if (windowVO.isChild()){
+            /*if (windowVO.isChild()){
                 var parentVO:WindowVO = libraryModel.getWindowByID(windowVO.parent_id);
                 var childrenWindowsArr:Array = parentVO.children;
                 var allChildrenMarked:Boolean = true;
@@ -81,7 +81,7 @@ public class LibraryController {
                 if (allChildrenMarked && deleteParentIDsArr.indexOf(parentVO.id)<0){
                     deleteWindowVOs.push(parentVO);
                 }
-            }
+            }*/
         }
 
         //make sure if a parent was selected, all child WindowVOs are on the delete list
@@ -90,7 +90,7 @@ public class LibraryController {
 			if (!windowVO){
 				continue;
 			}
-            if (windowVO.isParent) {
+            /*if (windowVO.isParent) {
                 var childVOsArr:Array = libraryModel.getChildWindows(windowVO.id);
                 for (childIndex=0;childIndex<childVOsArr.length;childIndex++){
                     var childVO:WindowVO = childVOsArr[childIndex] as WindowVO;
@@ -99,7 +99,7 @@ public class LibraryController {
                         deleteWindowVOs.push(childVO);
                     }
                 }
-            }
+            }*/
         }
 
         // We may now have a few extra windows...

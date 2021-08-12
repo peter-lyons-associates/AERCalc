@@ -11,7 +11,7 @@
 
     <!-- A universally unique application identifier. Must be unique across all AIR applications.
          Using a reverse DNS-style name as the id is recommended. (Eg. com.example.ExampleApplication.) Required. -->
-    <id>WincovER</id>
+    <id>WincovER.v2</id>
 
     <!-- Used as the filename for the application. Required. -->
     <filename>WincovER</filename>
@@ -23,7 +23,7 @@
          Values can also be 1-part or 2-part. It is not necessary to have a 3-part value.
          An updated version of application must have a versionNumber value higher than the previous version. Required for namespace >= 2.5.
          For iOS Apps, this represents build number. -->
-    <versionNumber>0.0.1</versionNumber>
+    <versionNumber>0.0.7</versionNumber>
 
     <!-- A string value (such as "v1", "2.5", or "Alpha 1") that represents the version of the application, as it should be shown to users.
          For iOS Apps, this represents application version number and format should be (<0-999>.<0-999>.<0-999>).
@@ -52,7 +52,7 @@
 
         <!-- The title of the main window. Optional. -->
         <!--<title></title>-->
-
+        <title>WincovER</title>
         <!-- The type of system chrome to use (either "standard" or "none"). Optional. Default standard. -->
         <!--<systemChrome></systemChrome>-->
 
@@ -60,7 +60,7 @@
         <!--<transparent></transparent>-->
 
         <!-- Whether the window is initially visible. Optional. Default false. -->
-        <visible>true</visible>
+
 
         <!-- Whether the user can minimize the window. Optional. Default true. -->
         <!--<minimizable></minimizable>-->
@@ -73,10 +73,10 @@
 
         <!-- The window's initial width in pixels. Optional. -->
         <!--<width></width>-->
-
+        <width>1200</width>
         <!-- The window's initial height in pixels. Optional. -->
         <!--<height></height>-->
-
+        <height>900</height>
         <!-- The window's initial x position. Optional. -->
         <!--<x></x>-->
 
@@ -109,12 +109,15 @@
 
         <!-- Display Resolution for the app (either "standard" or "high"). Optional, OSX-only. Default "standard" -->
         <!-- <requestedDisplayResolution></requestedDisplayResolution> -->
+        <autoOrients>false</autoOrients>
+        <fullScreen>false</fullScreen>
+        <visible>false</visible>
     </initialWindow>
 
     <!-- We recommend omitting the supportedProfiles element, which in turn permits your application to be deployed to all devices supported by AIR.
          If you wish to restrict deployment (i.e., to only mobile devices) then add this element and list only the profiles which your application does support. -->
     <!--<supportedProfiles>desktop extendedDesktop mobileDevice extendedMobileDevice</supportedProfiles>-->
-
+    <supportedProfiles>extendedDesktop</supportedProfiles>
     <!-- Languages supported by application. Only these languages can be specified -->
     <!--<supportedLanguages>en da de cs es fr it iw ja ko nb nl pl pt ru sv tr zh</supportedLanguages>-->
 

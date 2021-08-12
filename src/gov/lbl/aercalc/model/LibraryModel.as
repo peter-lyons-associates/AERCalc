@@ -40,12 +40,12 @@ public class LibraryModel
 		
 		public function addWindow(windowVO:WindowVO):void {
 			//if this is a child, add beneath parent
-			if (windowVO.isChild()){
+			/*if (windowVO.isChild()){
 				var parentIndex:int = getWindowIndex(windowVO.parent_id);
 				this.windowsAC.addItemAt(windowVO, parentIndex+1);
-			}else {
+			}else {*/
 				this.windowsAC.addItem(windowVO);
-			}
+			//}
 		}
 
 		
@@ -56,23 +56,24 @@ public class LibraryModel
 				if (vo.id==id){
 					return vo;
 				}
-				if (vo.isParent){
+				/*if (vo.isParent){
 					var childVO:WindowVO = vo.getChildByID(vo.id);
 					if (childVO) {
 						return childVO;
 					}
-				}
+				}*/
 			}
 			return null;
 		}
 
 		
 		public function getChildWindows(parentWindowID:uint):Array {
-			var parentWindowVO:WindowVO = getWindowByID(parentWindowID);
+			/*var parentWindowVO:WindowVO = getWindowByID(parentWindowID);
 			if (parentWindowVO==null){
 				return [];
 			}
-			return parentWindowVO.children;
+			return parentWindowVO.children;*/
+			return [];
 		}
 
 		
@@ -81,18 +82,18 @@ public class LibraryModel
 		   Throw a WindowDoesNotExist error if matching window exists. 
 		*/
 		public function removeWindow(windowVO:WindowVO):void{
-			if (windowVO.isChild()){
+			/*if (windowVO.isChild()){
 				var parentVO:WindowVO = this.getWindowByID(windowVO.parent_id);
 				if (parentVO){
 					parentVO.removeChild(windowVO);
 					return;
 				}
-			} else {
+			} else {*/
 				var wasRemoved:Boolean = windowsAC.removeItem(windowVO);
 				if (wasRemoved==false){
 					throw new WindowDoesNotExistError();
 				}
-			}
+			//}
 		}
 		
 		
@@ -100,10 +101,16 @@ public class LibraryModel
 			var len:uint = windowsAC.length;
 			for (var index:uint=0;index<len;index++){
 				var vo:WindowVO = windowsAC[index] as WindowVO;
-				if (vo.W7Name==W7Name){
+				/*if (vo.W7Name==W7Name){
+					return vo;
+				}*/
+				//@todo check this, W7Name is 'no more'
+				if (vo.name==W7Name){
 					return vo;
 				}
-				if (vo.isParent){
+
+
+				/*if (vo.isParent){
 					var numChildren:uint = vo.children.length;
 					for (var childIndex:uint=0;childIndex<numChildren;childIndex++){
 						var childVO:WindowVO = vo.children[childIndex] as WindowVO;
@@ -111,7 +118,7 @@ public class LibraryModel
 							return childVO;
 						}
 					}
-				}
+				}*/
 			}
 			return null;
 		}
@@ -124,7 +131,7 @@ public class LibraryModel
 				if (vo.name==name){
 					return vo;
 				}
-				if (vo.isParent && ignoreChildren==false){
+				/*if (vo.isParent && ignoreChildren==false){
 					var numChildren:uint = vo.children.length;
 					for (var childIndex:uint=0;childIndex<numChildren;childIndex++){
 						var childVO:WindowVO = vo.children[childIndex] as WindowVO;
@@ -132,7 +139,7 @@ public class LibraryModel
 							return childVO;
 						}
 					}
-				}
+				}*/
 			}
 			return null;
 		}

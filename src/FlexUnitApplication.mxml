@@ -13,7 +13,7 @@
 			
 			public function currentRunTestSuite():Array
 			{
-				var testsToRun:Array = new Array();
+				var testsToRun:Array = [];
 				testsToRun.push(flexUnitTests.AERCalcTestSuite);
 				return testsToRun;
 			}

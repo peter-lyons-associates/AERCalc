@@ -19,6 +19,7 @@ import gov.lbl.aercalc.events.SimulationEvent;
 import gov.lbl.aercalc.model.ApplicationModel;
 import gov.lbl.aercalc.model.LibraryModel;
 import gov.lbl.aercalc.model.SimulationModel;
+import gov.lbl.aercalc.model.domain.SimulationResultVO;
 import gov.lbl.aercalc.model.domain.WindowVO;
 import gov.lbl.aercalc.util.AboutInfo;
 import gov.lbl.aercalc.util.Logger;
@@ -98,11 +99,14 @@ public class SimulationController {
 		
         for (var index:uint=0;index<selectedItems.length;index++){
 			var selectedWindow:WindowVO = selectedItems[index];
-            if(selectedWindow.isChild()==false){
+            /*if(selectedWindow.isChild()==false){
 				selectedWindow.coolingRating = 0;
 				selectedWindow.heatingRating = 0;
                 simulationModel.selectedWindowsAL.addItem(selectedWindow);
-            }
+            }*/
+            //@todo review v2
+            selectedWindow.simulationResults = null;
+            simulationModel.selectedWindowsAL.addItem(selectedWindow);
         }
 		
 		
@@ -244,9 +248,9 @@ public class SimulationController {
 		//remember the version of helper apps used for simulation
         var vo:WindowVO = simulationModel.currSimulationWindow;
         vo.WincovERVersion = AboutInfo.applicationVersion;
-        vo.EPlusVersion = ApplicationModel.VERSION_ENERGYPLUS;
+    //    vo.EPlusVersion = ApplicationModel.VERSION_ENERGYPLUS;
         vo.WincovERCalcVersion = ApplicationModel.VERSION_WINCOVER_CALC;
-		if (vo.isParent){
+		/*if (vo.isParent){
             for(var index:uint=0;index<vo.children.length;index++){
                 var childVO:WindowVO = vo.children[index] as WindowVO;
                 childVO.WincovERVersion = AboutInfo.applicationVersion;
@@ -254,7 +258,7 @@ public class SimulationController {
                 childVO.WincovERCalcVersion = ApplicationModel.VERSION_WINCOVER_CALC;
                 dbManager.save(childVO);
             }
-		}
+		}*/
 
         dbManager.save(simulationModel.currSimulationWindow);
         libraryModel.windowsAC.refresh();
@@ -270,6 +274,35 @@ public class SimulationController {
         doNextSimulation();
     }
 	
+    private function resetFlattenedSimulationResults(forWindow:WindowVO):void{
+        forWindow.fixedCoolingPC = 0;
+        forWindow.fixedCoolingStars = 0;
+        forWindow.fixedHeatingPC = 0;
+        forWindow.fixedHeatingStars = 0;
+
+        forWindow.manualCoolingPC = 0;
+        forWindow.manualCoolingStars = 0;
+        forWindow.manualHeatingPC = 0;
+        forWindow.manualHeatingStars = 0;
+
+        forWindow.timerCoolingPC = 0;
+        forWindow.timerCoolingStars = 0;
+        forWindow.timerHeatingPC = 0;
+        forWindow.timerHeatingStars = 0;
+
+        forWindow.sensorCoolingPC = 0;
+        forWindow.sensorCoolingStars = 0;
+        forWindow.sensorHeatingPC = 0;
+        forWindow.sensorHeatingStars = 0;
+    }
+
+    private function updateFlattenedValues(forWindow:WindowVO, fromResult:SimulationResultVO):void{
+        var operation:String = fromResult.operationType;
+        forWindow[operation+"CoolingPC"] = fromResult.coolingPC;
+        forWindow[operation+"CoolingStars"] = fromResult.coolingStars;
+        forWindow[operation+"HeatingPC"] = fromResult.heatingPC;
+        forWindow[operation+"HeatingStars"] = fromResult.heatingStars;
+    }
 
 	/* ~~~~~~~~~~~~~~~~~~~~~~~*/
 	/* WINCOVERCALC LISTENERS */
@@ -278,12 +311,40 @@ public class SimulationController {
 	protected function onWincoverCalcFinished(event:WincoverCalcOutputEvent):void
 	{
 		/* TODO: Read heating and cooling ratings and assign to current window */
-        simulationModel.currSimulationWindow.heatingRating = event.heatingRating;
-        simulationModel.currSimulationWindow.coolingRating = event.coolingRating;
-
+      /*  simulationModel.currSimulationWindow.heatingRating = event.heatingRating;
+        simulationModel.currSimulationWindow.coolingRating = event.coolingRating;*/
+        var currentSimulationWindow:WindowVO = simulationModel.currSimulationWindow;
+        currentSimulationWindow.simulationResults = event.results;
+        //process the values into the 'flat' storage level fields
+        var simulationResults:Array = currentSimulationWindow.simulationResults;
+        resetFlattenedSimulationResults(currentSimulationWindow);
+        if (simulationResults && simulationResults.length) {
+            var l:uint = simulationResults.length;
+            var individualResult:SimulationResultVO;
+            if (l == 1) {
+                individualResult = simulationResults[0];
+                if (individualResult.operationType != SimulationResultVO.TYPE_FIXED) {
+                    Logger.error('if only one simulation result is returned, it must be of type "fixed"', this);
+                    throw new Error('if only one simulation result is returned, it must be of type "fixed"')
+                }
+                updateFlattenedValues(currentSimulationWindow, individualResult);
+            } else if (l == 3) {
+                for each(individualResult in simulationResults) {
+                    updateFlattenedValues(currentSimulationWindow, individualResult);
+                }
+            } else {
+                Logger.error('one simulation result or three simulation resuits expected, got '+l, this);
+                throw new Error('one simulation result or three simulation resuits expected, got '+l)
+            }
+        }
+//@todo review v2:
+    //    simulationModel.currSimulationWindow.simulationResults = event.results
+//@todo review v2:
 		// TODO: TEMPORARY CODE remove when Peter is finished with runs
-        simulationModel.currSimulationWindow.heatingValue = event.heatingValue;
+        /*simulationModel.currSimulationWindow.heatingValue = event.heatingValue;
         simulationModel.currSimulationWindow.coolingValue = event.coolingValue;
+
+		simulationModel.currSimulationWindow.simulationResults = event.results;*/
 
         onSingleSimulationComplete();
 	}
@@ -307,8 +368,8 @@ public class SimulationController {
 		if (!wVO) {
             throw new WindowValidationError("Window was null");
         }
-		var numChildWindows:uint = wVO.numChildren();
-		if(wVO.isParent)
+	//	var numChildWindows:uint = wVO.numChildren();
+		/*if(wVO.isParent)
 		{
 			// Checks to do if window is a parent
 			if (numChildWindows != 4){
@@ -318,10 +379,10 @@ public class SimulationController {
 			for (var childIndex:uint=0; childIndex<4; childIndex++){
                 validateWindowDimensions(wVO.children[childIndex]);
 			}
-		} else {
+		} else {*/
 			// Checks to do if window is no parent or child
             validateWindowDimensions(wVO);
-		}
+		//}
 	}
 
 	protected function validateWindowDimensions(wVO:WindowVO):void {

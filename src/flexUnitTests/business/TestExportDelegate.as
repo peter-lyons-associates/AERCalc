@@ -102,9 +102,9 @@ package flexUnitTests.business
 					"shadingSystemType":"",
 					"airInfiltration":"",
 					"W7Name":"",
-					"parent_id":0,
+				/*	"parent_id":0,
 					"isParent": true,
-					"isOpen": true,
+					"isOpen": true,*/
 					"W7ID":"",
 					"W7GlzSysID":"",
 					"baseWindowType":"",
@@ -137,9 +137,9 @@ package flexUnitTests.business
                     "THERMFiles":"BASE_B_HD_1003.thm;BASE_B_JB_1003.thm; BASE_B_JB_1003.thm;BASE_B_SL_1003.thm"
 				}
 			);
-			window2.isParent = true;
+			/*window2.isParent = true;
 			window2.children = [childWindow1];
-			childWindow1.parent_id = window2.id;
+			childWindow1.parent_id = window2.id;*/
 			
 			var window3:WindowVO = 	 TestExportDelegate.createDummyWindow(
 				{
@@ -156,9 +156,9 @@ package flexUnitTests.business
 					"shadingSystemType":"",
 					"airInfiltration":"",
 					"W7Name":"",
-					"parent_id":0,
+					/*"parent_id":0,
 					"isOpen": true,
-					"isParent": true,
+					"isParent": true,*/
 					"W7ID":"",
 					"W7GlzSysID":"",
 					"baseWindowType":"",
@@ -191,22 +191,22 @@ package flexUnitTests.business
                     "THERMFiles":"BASE_B_HD_1003.thm;BASE_B_JB_1003.thm; BASE_B_JB_1003.thm;BASE_B_SL_1003.thm"
 				}
 			);
-			window3.isParent = true;
+			/*window3.isParent = true;
 			window3.children = [childWindow2];
-			childWindow1.parent_id = window3.id;
+			childWindow1.parent_id = window3.id;*/
 			
 			_windowsAC = new ArrayCollection([window1, window2, window3]);
 			
 			//set some convenience vars for testing
 			for (var i:uint = 0; i < _windowsAC.length; i++){
 				var windowVO:WindowVO = _windowsAC[i] as WindowVO;
-				if(windowVO.isParent) {
+				/*if(windowVO.isParent) {
 					_totalNumParents++;
 					_totalNumChildren += windowVO.children.length;
 					_totalNumRows = _totalNumRows + 1 + windowVO.children.length;
-				} else if (windowVO.isChild()==false){
+				} else if (windowVO.isChild()==false){*/
 					_totalNumRows++;
-				}
+				//}
 			}
 			
 			
@@ -258,9 +258,9 @@ package flexUnitTests.business
 			
 			var windowVO:WindowVO = _windowsAC[2] as WindowVO;
 			//sanity check
-			assertTrue(windowVO.isParent);
-			assertEquals(1, windowVO.numChildren());
-			windowVO.isOpen = false;
+		/*	assertTrue(windowVO.isParent);
+			assertEquals(1, windowVO.numChildren());*/
+		//	windowVO.isOpen = false;
 			
 			var results:String = _exportDelegate.getCSVFromWindows(_windowsAC);
 			

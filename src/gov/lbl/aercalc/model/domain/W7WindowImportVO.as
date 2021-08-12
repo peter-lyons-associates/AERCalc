@@ -1,6 +1,8 @@
 package gov.lbl.aercalc.model.domain
 {
 
+import com.fenestralia.wincover.model.WindowApplicationVO;
+
 import gov.lbl.aercalc.util.Conversions;
 import flash.events.Event;
 import gov.lbl.aercalc.error.InvalidImportWindowNameError;
@@ -12,6 +14,31 @@ public class W7WindowImportVO extends BaseUnitsVO
 {
     // W7 Window ID
     public var W7ID:String = "";
+    public var W7Name:String = "";
+    public var supplierID:String = "";
+  //  public var applicationCode:String = "";
+
+    public var WincovER_ID:String = "";
+
+    public function get applicationCode():String{
+        return _winApplicationVO ? _winApplicationVO.key : '';
+    }
+
+    public var sequenceNum:String = "";
+
+    public var slatCondition:String = "";
+
+    private var _winApplicationVO:WindowApplicationVO;
+
+    [Transient]
+    public function set winApplicationVO(value:WindowApplicationVO):void{
+        _winApplicationVO = value;
+    }
+
+    public function get winApplicationVO():WindowApplicationVO{
+        return _winApplicationVO;
+    }
+
     // W7 Glazing System ID
     public var W7GlzSysID:String = "";
     public var W7ShdSysID:String = "";
@@ -29,8 +56,8 @@ public class W7WindowImportVO extends BaseUnitsVO
     public var importState:String = "";
     //extra information about why we're having trouble importing this glz sys from W7
     public var errorMessage:String = "";
-    public var shadingSystemType:String = "";
-    public var attachmentPosition:String = "";
+    private var _shadingSystemType:String = "";
+    private var _attachmentPosition:String = "";
     public var shadingSystemManufacturer:String = "";
     public var shadingMaterialManufacturer:String = "";
     public var baseWindowType:String;
@@ -56,7 +83,9 @@ public class W7WindowImportVO extends BaseUnitsVO
         return "w_" + this.W7ID.toString() + ".bsdf";
     }
 
-    public function W7WindowImportVO(){}
+    public function W7WindowImportVO(){
+
+    }
 
 
     /* This is a pseudo-property used mainly to show "invalid" markers in the library list. Much simpler to use this as a flag
@@ -67,13 +96,10 @@ public class W7WindowImportVO extends BaseUnitsVO
     /* GETTERS AND SETTERS */
 
 
-    /* This method is somewhat involved as the name (for the moment) has encoded meta data
-       such as what window, shading system type etc.
 
-     */
     public function set name(value:String):void
     {
-        value = Utils.scrubNewlines(value);
+      //  value = Utils.scrubNewlines(value);
         _name = value;
     }
     public function get name():String
@@ -85,24 +111,27 @@ public class W7WindowImportVO extends BaseUnitsVO
     /* Set the shade type and base window type by parsing the name for expected suffixes.
      */
     public function setPropsByWindowName():void {
+        /*var msg:String;
         try{
-            shadingSystemType = Utils.getShadingTypeFromWindowName(this.name);
+            shadingSystemType = Utils.getShadingTypeFromWindowName(this.W7Name);
         } catch(error:Error){
-            var msg:String = "Invalid shading type name. " + error.message;
+            msg = "Invalid shading type name. " + error.message;
             throw new InvalidImportWindowNameError(msg);
         }
         try {
-            baseWindowType = Utils.getWindowTypeFromWindowName(this.name);
+            baseWindowType = Utils.getWindowTypeFromWindowName(this.W7Name);
         } catch(error:Error){
             msg = "Invalid base window name. " + error.message;
             throw new InvalidImportWindowNameError(msg);
         }
         try {
-            attachmentPosition = Utils.getAttachmentPositionFromWindowName(this.name);
+            attachmentPosition = Utils.getAttachmentPositionFromWindowName(this.W7Name);
         } catch(error:Error){
-            var msg:String = "Invalid shading type name. " + error.message;
+            msg = "Invalid shading type name. " + error.message;
             throw new InvalidImportWindowNameError(msg);
-        }
+        }*/
+       // _shadingSystemType = this.applicationCode;
+        //_attachmentPosition = this.position;
     }
 
 
@@ -357,9 +386,27 @@ public class W7WindowImportVO extends BaseUnitsVO
         return this.name.split("::")[0];
     }
 
-    public function isBlind():Boolean {
+   /* public function isBlind():Boolean {
         return (ImportModel.isBlind(shadingSystemType));
+    }*/
+
+    public function get attachmentPosition():String {
+        return _winApplicationVO ? _winApplicationVO.position : _attachmentPosition;
     }
 
+    public function set attachmentPosition(value:String):void {
+        _attachmentPosition = value;
+        if (_winApplicationVO &&  _winApplicationVO.position != value) throw new Error('cannot set attachmentPosition to conflicting value '+value+' vs. '+_winApplicationVO.position)
+    }
+
+    public function get shadingSystemType():String {
+        return _winApplicationVO ? _winApplicationVO.productType : _shadingSystemType;
+    }
+
+    public function set shadingSystemType(value:String):void {
+        _shadingSystemType = value;
+        if (_winApplicationVO &&  _winApplicationVO.productType != value) throw new Error('cannot set shadingSystemType to conflicting value '+value+' vs. '+_winApplicationVO.productType)
+
+    }
 }
 }

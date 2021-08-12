@@ -482,7 +482,7 @@ package gov.lbl.aercalc.business
 		public function createEPlusFiles(window:WindowVO, baselineType:String):ArrayCollection
 		{
 			var windowList:ArrayCollection = new ArrayCollection();
-			if(window.isParent)
+			/*if(window.isParent)
 			{
 				//lookup children VOs
 				for each(var childVO:WindowVO in window.children)
@@ -491,9 +491,9 @@ package gov.lbl.aercalc.business
 				}
 			}
 			else
-			{
+			{*/
 				windowList.addItem(window);
-			}
+			//}
 			
 			_shadeType = windowList[0].shadingSystemType.toUpperCase();
 			if (!_shadeType){

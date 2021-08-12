@@ -13,6 +13,7 @@ import flash.ui.ContextMenuItem;
 import flash.ui.Keyboard;
 
 import gov.lbl.aercalc.model.ApplicationModel;
+import gov.lbl.aercalc.model.domain.SimulationResultVO;
 
 import mx.collections.ArrayCollection;
 import mx.controls.AdvancedDataGrid;
@@ -76,7 +77,7 @@ public class WindowListViewPM extends EventDispatcher {
     public var lastCalculated:String = "";
 
     [Bindable]
-    public var uFactorHeader:String = "U-factor";
+    public var uFactorHeader:String = "Uw" ;//"U-factor";
 
 	[Bindable]
 	public var airInfiltrationHeader:String = "";
@@ -131,23 +132,23 @@ public class WindowListViewPM extends EventDispatcher {
      */
     public function doExportWindows(openNodes:Object):void {
 
-        if (openNodes){
+        /*if (openNodes){
             try {
                 // Update model to include which parent rows are showing child rows.
                 var numWindows:uint = windowsAC.length;
 
                 //Set all windows to closed and then set windows in openNodes to open
-                for (var winIndex:uint = 0; winIndex < numWindows; winIndex++ ){
+                /!*for (var winIndex:uint = 0; winIndex < numWindows; winIndex++ ){
                     windowsAC[winIndex].isOpen = false;
                 }
                 for each (var obj:Object in openNodes){
                     obj.isOpen = true;
-                }
+                }*!/
             } catch (error:Error){
                 // We just silently fail here. Not big enough error to ruin user's workflow.
                 Logger.error("Couldn't set 'isOpen' property on one or more rows during export. Exception: " + error.toString());
             }
-        }
+        }*/
 
         dispatcher.dispatchEvent(new ExportEvent(ExportEvent.DO_EXPORT_WINDOWS, true));
 
@@ -192,25 +193,25 @@ public class WindowListViewPM extends EventDispatcher {
             Alert.show("No windows selected");
             return;
         }
-
+//@todo figure this out without children
         //build an index of parent IDs for following check
         var numOldWINDOWVersionIDs:uint = 0;
         var parentIDsArray:Array = [];
         for (var index:uint = 0; index < numRows; index++) {
             var windowVO:WindowVO = this.selectedItems[index] as WindowVO;
-            if (!windowVO.isParent && !windowVO.hasBSDF) {
+            /*if (!windowVO.isParent && !windowVO.hasBSDF) {
                 Logger.warn("onRunSimulation() Couldn't run simulation. At least one window missing BSDF file. Window: " + windowVO.id + " : " + windowVO.name, this);
                 Alert.show("One or more of the selected windows are missing BSDF files. Please re-import each window missing a BSDF file before running a simulation.", "BSDF File Missing");
                 return;
-            }
-            if (!windowVO.isParent && Utils.compareVersions(ApplicationModel.VERSION_WINDOW, windowVO.WINDOWVersion) == Utils.FIRST_ARG_HIGHER) {
+            }*/
+            if ( Utils.compareVersions(ApplicationModel.VERSION_WINDOW, windowVO.WINDOWVersion) == Utils.FIRST_ARG_HIGHER) {
                 numOldWINDOWVersionIDs++
             }
-            if (windowVO.isParent) {
+            /*if (windowVO.isParent) {
                 parentIDsArray.push(windowVO.id);
-            }
+            }*/
         }
-
+/*
         //make sure all selected child windows
         //have a selected parent
         for (index = 0; index < numRows; index++) {
@@ -219,7 +220,7 @@ public class WindowListViewPM extends EventDispatcher {
                 Alert.show("You have selected child Product rows without selecting the related parent row.");
                 return;
             }
-        }
+        }*/
 
         if (numOldWINDOWVersionIDs>0){
             var msg:String =    "Note that one or more products selected were imported from older versions of WINDOW. " +
@@ -262,7 +263,8 @@ public class WindowListViewPM extends EventDispatcher {
 
 
     public function formatHeaders():void {
-        uFactorHeader = "U-factor (" + varSettings.getUnits("UvalWinter") + " )";
+       // uFactorHeader = "U-factor (" + varSettings.getUnits("UvalWinter") + " )";
+        uFactorHeader = "Uw";
 		airInfiltrationHeader = "AL (" + varSettings.getUnits("Infiltration") + " )";
     }
 	
@@ -273,7 +275,7 @@ public class WindowListViewPM extends EventDispatcher {
 	*/
 	public function windowValueLabelFunction(item:Object, column:AdvancedDataGridColumn):String {
 		
-		if (item.isParent == false){
+		//if (item.isParent == false){
 			switch(column.dataField){
 				case "UvalWinter":
 				case "Tvis":
@@ -282,13 +284,19 @@ public class WindowListViewPM extends EventDispatcher {
 				case "airInfiltration":
 					return Utils.infiltrationFormatter.format(item[column.dataField]);
 			}
-		}
+		//}
 		
 		return "";
 	}
 
+    public function operationTypeLabelFunction(item:Object, column:AdvancedDataGridColumn):String {
+        return "Fixed"//Utils.heatingCoolingValueFormatter.format(item[column.dataField]);
+    }
+
     public function heatingCoolingValueLabelFunction(item:Object, column:AdvancedDataGridColumn):String {
-        return Utils.heatingCoolingValueFormatter.format(item[column.dataField]);
+        if (item is SimulationResultVO)
+            return Utils.heatingCoolingValueFormatter.format(item[column.dataField]);
+        else return "";
     }
 
     public function heatingCoolingRatingLabelFunction(item:Object, column:AdvancedDataGridColumn):String {
@@ -297,10 +305,10 @@ public class WindowListViewPM extends EventDispatcher {
 
 	// Callback to define which icons to show in grid
 	public function myIconFunc(item:Object, depth:int):Class {
-		if(depth == 1 && item.isParent)
+		/*if(depth == 1 && item.isParent)
 			// If this is the top-level of the tree, return the icon.
 			return windowIcon;
-		else
+		else*/
 			// If this is any other level, return null.
 			return null;
 	}
@@ -411,7 +419,7 @@ public class WindowListViewPM extends EventDispatcher {
 			return;
 		}
 
-		if (field=="userID" ){
+		/*if (field=="userID" ){
 			//make sure userID doesn't exist already
 			var prevUserID:String = vo[field];
 			var newUserID:String = event.currentTarget.itemEditorInstance.text;
@@ -436,7 +444,7 @@ public class WindowListViewPM extends EventDispatcher {
 			libraryController.saveWindow(vo);
 			//event.stopPropagation();
 			return;
-		}
+		}*/
 		
 		//At the moment, the only editable field outside of userID is air infiltration
 		//So the following should never be true, but just in case...
@@ -449,8 +457,9 @@ public class WindowListViewPM extends EventDispatcher {
 		var newValue:String = Utils.infiltrationFormatter.format(Number(event.currentTarget.itemEditorInstance.text));
 		
 		if (prevValue != newValue){
-			vo.coolingRating = 0;
-			vo.heatingRating = 0;
+		/*	vo.coolingRating = 0;
+			vo.heatingRating = 0;*/
+            throw new Error("WIP....")
 		}
 		
 		libraryController.saveWindow(vo);
@@ -466,7 +475,7 @@ public class WindowListViewPM extends EventDispatcher {
 
 	
 	protected function checkWindowForSameUserID(windowsArr:Array, windowID:int, newUserID:String):Boolean{
-		for each(var windowVO:WindowVO in windowsArr){
+		/*for each(var windowVO:WindowVO in windowsArr){
 			if (windowVO.children && windowVO.children.length>0){
 				if(checkWindowForSameUserID(windowVO.children, windowID, newUserID)){
 					return true;
@@ -475,19 +484,22 @@ public class WindowListViewPM extends EventDispatcher {
 			if (windowVO.userID == newUserID && windowVO.id != windowID){
 				return true;
 			}
-		}
+		}*/
 		return false;
 	}
 	
 	
 	public function disallowParentRowEdits(event:AdvancedDataGridEvent):void{
-		if (event.itemRenderer.data && event.itemRenderer.data.isParent){
+        //var windowVO:WindowVO = event.itemRenderer.data as WindowVO;
+
+		/*if (event.itemRenderer.data && event.itemRenderer.data.isParent){
             var clickedCol:AdvancedDataGridColumn = AdvancedDataGridColumn(event.currentTarget.columns[event.columnIndex]);
             if (clickedCol.dataField!="userID"){
                 event.preventDefault();
             }
 
-		}
+        }*/
+        //trace('disallowParentRowEdits')
 	}
 	
 }

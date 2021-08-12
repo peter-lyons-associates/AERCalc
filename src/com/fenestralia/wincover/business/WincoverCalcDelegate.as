@@ -63,7 +63,7 @@ public class WincoverCalcDelegate extends EventDispatcher {
     /*                 PUBLIC METHODS                   */
     /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-    public function calculateRatings(window:WindowVO){
+    public function calculateRatings(window:WindowVO):void{
 
         if (window==null){
             throw new Error("window cannot be null");
@@ -81,14 +81,14 @@ public class WincoverCalcDelegate extends EventDispatcher {
         try {
             var inputFile:File = createInputFileJSON(window);
         } catch(error:Error){
-            Logger.error("Couldn't write input.json file for WincovER. Error"+ error.messages, this);
+            Logger.error("Couldn't write input.json file for WincovER. Error"+ error.message, this);
             // TODO: This should fail gracefully with message, not throw error
             throw new Error(error.message);
         }
         try {
             runWincoverCalc(inputFile);
         } catch (error:Error){
-            Logger.error("Couldn't run WincovER_Calc Error"+ error.messages, this);
+            Logger.error("Couldn't run WincovER_Calc Error"+ error.message, this);
             // TODO: This should fail gracefully with message, not throw error
             throw new Error(error.message);
         }
@@ -96,7 +96,7 @@ public class WincoverCalcDelegate extends EventDispatcher {
 
     }
 
-    public function cancel(){
+    public function cancel():void{
 
         if (_wincoverCalcProcess && _wincoverCalcProcess.running)
         {
@@ -164,24 +164,37 @@ public class WincoverCalcDelegate extends EventDispatcher {
        as expected by wincover-calc. Then writes that to the approprate sub directory.
     */
     protected function createInputFileJSON(wVO:WindowVO):File {
+//@todo UPDATE create new Input File
 
-        var inputObject:WincoverCalcInputVO = new WincoverCalcInputVO();
-        inputObject.name = wVO.name;
+        const inputWrapperObj:Object = { windows: null}; //json pseudo-representation is: "{ \"windows\": [ " + {inputArray item list} + "] }"
 
+
+        if (wVO.Fixed) {
+            //we only need a single fixed InputVO
+            inputWrapperObj.windows = createInputsArray(wVO,[WincoverCalcInputVO.TYPE_FIXED]);
+        } else {
+            //we should create InputVOs corresponding to 'manual', 'timer', and 'sensor'
+            inputWrapperObj.windows = createInputsArray(wVO,[WincoverCalcInputVO.TYPE_MANUAL, WincoverCalcInputVO.TYPE_TIMER, WincoverCalcInputVO.TYPE_AUTOMATED]);
+        }
+       /* var inputObject:WincoverCalcInputVO = new WincoverCalcInputVO();
+        inputObject.name = wVO.name;*/
         // TODO: Move this to helper method
-        var bsdfName:String = Utils.makeUsableAsAFilename(wVO.name) + "_bsdf.idf";
+        /*var bsdfName:String = Utils.makeUsableAsAFilename(wVO.name) + "_bsdf.idf";
         var projectBSDFDir:File = applicationModel.getCurrentProjectBSDFDir();
+
         var w7IdfFile:File = projectBSDFDir.resolvePath(bsdfName);
         if (!w7IdfFile.exists){
             var msg:String = "Missing idf file: " + w7IdfFile.nativePath;
             throw new FileMissingError(msg);
         }
-        var path:String = w7IdfFile.nativePath;
-        inputObject.bsdf_path = path.replace( /\\/g, '/');
+        var path:String = w7IdfFile.nativePath;*/
+       /* inputObject.bsdf_path = path.replace( /\\/g, '/');
         inputObject.shgc = wVO.SHGC;
-        inputObject.uvalue = wVO.UvalWinter;
-        var input_file_json:String = JSON.stringify(inputObject);
-        input_file_json = "{ \"windows\": [ " + input_file_json + "] }";
+        inputObject.uvalue = wVO.UvalWinter;*/
+        //inputArray.push(inputObject);
+
+        var input_file_json:String = JSON.stringify(inputWrapperObj);
+    //    input_file_json = "{ \"windows\": [ " + input_file_json + "] }";
         Logger.debug("Input file json is: " + input_file_json);
 
         var inputFile:File = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINCOVER_CALC_SUBDIR).resolvePath(ApplicationModel.WINCOVER_CALC_INPUT_FILENAME);
@@ -191,6 +204,30 @@ public class WincoverCalcDelegate extends EventDispatcher {
         stream.close();
 
         return inputFile;
+    }
+
+
+    private function createInputsArray(fromWinVO:WindowVO, operations:Array):Array{
+        var output:Array = [];
+        var bsdfName:String = Utils.makeUsableAsAFilename(fromWinVO.name) + "_bsdf.idf";
+        var projectBSDFDir:File = applicationModel.getCurrentProjectBSDFDir();
+        var w7IdfFile:File = projectBSDFDir.resolvePath(bsdfName);
+        if (!w7IdfFile.exists){
+            var msg:String = "Missing idf file: " + w7IdfFile.nativePath;
+            throw new FileMissingError(msg);
+        }
+        var path:String = w7IdfFile.nativePath.replace( /\\/g, '/');
+        for each(var operationType:String in operations) {
+            var inputObject:WincoverCalcInputVO = new WincoverCalcInputVO();
+            inputObject.name = fromWinVO.name;
+
+            inputObject.bsdf_path = path/*.replace( /\\/g, '/')*/;
+            inputObject.shgc = fromWinVO.SHGC;
+            inputObject.uvalue = fromWinVO.UvalWinter;
+            inputObject.operationType = operationType;
+            output.push(inputObject);
+        }
+        return output;
     }
 
 
@@ -235,7 +272,7 @@ public class WincoverCalcDelegate extends EventDispatcher {
         // TODO: Read output results and return event with ratings for window
         // TODO: Notify of error if can't read results.
         var errorMsg:String = null;
-
+        var evt:WincoverCalcOutputEvent;
         try {
             var resultsFile:File = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINCOVER_CALC_OUTPUT_SUBDIR).resolvePath(ApplicationModel.WINCOVER_CALC_OUTPUT_FILENAME);
             var stream:FileStream = new FileStream();
@@ -244,21 +281,27 @@ public class WincoverCalcDelegate extends EventDispatcher {
             stream.close();
         } catch (err:Error) {
             Logger.error("Couldn't load results.json file: " + err, this);
-            var evt:WincoverCalcOutputEvent = new WincoverCalcOutputEvent(WincoverCalcOutputEvent.RUN_WINCOVER_CALC_FINISHED, true);
+            evt = new WincoverCalcOutputEvent(WincoverCalcOutputEvent.RUN_WINCOVER_CALC_FINISHED, true);
             evt.error = "Couldn't load WincovER_Calc results.json. See log for details.";
             dispatchEvent(evt);
             return;
         }
 
         try{
-            var results:Object = JSON.parse(resultsText)[0];
-            var heatingValue:Number = results.heating_value;
-            var heatingRating:Number = results.heating_rating;
-            var coolingValue:Number = results.cooling_value;
-            var coolingRating:Number = results.cooling_rating;
+            var resultArr:Array = JSON.parse(resultsText) as Array;
+            if (!resultArr || ! resultArr.length) throw new Error('No Results found');
+
+            resultArr = typedResults(resultArr);
+
+            //@todo remove:
+            /* var results:Object = JSON.parse(resultsText)[0];
+          ar heatingValue:Number = results.heating_value;
+           var heatingRating:Number = results.heating_rating;
+           var coolingValue:Number = results.cooling_value;
+           var coolingRating:Number = results.cooling_rating;*/
         } catch (err:Error) {
             Logger.error("Couldn't read results.json: " + err, this);
-            var evt:WincoverCalcOutputEvent = new WincoverCalcOutputEvent(WincoverCalcOutputEvent.RUN_WINCOVER_CALC_FINISHED, true);
+            evt = new WincoverCalcOutputEvent(WincoverCalcOutputEvent.RUN_WINCOVER_CALC_FINISHED, true);
             evt.error = "Couldn't read WincovER_Calc results.json. See log for details.";
             dispatchEvent(evt);
             return;
@@ -266,15 +309,35 @@ public class WincoverCalcDelegate extends EventDispatcher {
 
         //TODO: validate results
 
-        var evt:WincoverCalcOutputEvent = new WincoverCalcOutputEvent(WincoverCalcOutputEvent.RUN_WINCOVER_CALC_FINISHED, true);
+        evt = new WincoverCalcOutputEvent(WincoverCalcOutputEvent.RUN_WINCOVER_CALC_FINISHED, true);
+
+       //@todo remove:
         evt.windowID = _windowID;
         evt.windowName = _windowName;
-        evt.heatingValue = heatingValue;
+       /* evt.heatingValue = heatingValue;
         evt.heatingRating = heatingRating;
         evt.coolingValue = coolingValue;
-        evt.coolingRating = coolingRating;
+        evt.coolingRating = coolingRating;*/
+
+        evt.results = resultArr;
         dispatchEvent(evt);
 
+    }
+
+
+    private function typedResults(rawInput:Array):Array{
+        //assume rawInput is never null, and always has items
+        var l:uint = rawInput.length;
+        var processedInput:Array = rawInput.slice();
+
+
+        while (l) {
+            l--;
+            processedInput[l] = SimulationResultVO.createFromJSON(processedInput[l])
+        }
+
+        //for convenience
+        return processedInput;
     }
 
 
