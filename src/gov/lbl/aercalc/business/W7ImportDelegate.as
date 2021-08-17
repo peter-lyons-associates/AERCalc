@@ -744,8 +744,8 @@ public class W7ImportDelegate extends EventDispatcher
         processArgs.push("-db" );
         processArgs.push(wDB.nativePath);
         processArgs.push("-windowReport");
-        processArgs.push("AERC Energy Plus BSDF IDF");
-       // processArgs.push("Energy Plus BSDF IDF");
+       // processArgs.push("AERC Energy Plus BSDF IDF");
+        processArgs.push("Energy Plus BSDF IDF");
         processArgs.push("-windowIDStart");
         processArgs.push(_currGlzSysW7ID);
         processArgs.push("-windowIDStop");
