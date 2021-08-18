@@ -455,7 +455,8 @@ public class W7ImportDelegate extends EventDispatcher
 
             // If this shading layer is a certain type, capture the shading
             // material manufacturer, which may be different from shading system manufacturer
-            try {
+            //GD, removing this after discussion with RP:
+            /*try {
                 if (importModel.shadingLayerRequiresMaterial(int(shadingLayerType))){
                     vo.shadingMaterialManufacturer = getShadingMaterialManufacturer(vo, windowXML);
                 } else {
@@ -467,7 +468,7 @@ public class W7ImportDelegate extends EventDispatcher
                 vo.errorMessage = " Couldn't parse shading material manufacturer: " + error.message;
                 resultsAC.addItem(vo);
                 continue;
-            }
+            }*/
 
             // Capture THERMFiles by reading all <Filename> elements from each <FrameList> in <Window>
             try {

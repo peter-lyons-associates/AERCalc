@@ -35,11 +35,11 @@
         [Bindable]
         public var importController:W7ImportController;
 
-        [Bindable]
-        private var _uFactorHeader:String;
+      //  [Bindable]
+      //  private var _uFactorHeader:String;
 
-        [Bindable]
-        private var _airInfiltrationHeader:String;
+      //  [Bindable]
+      //  private var _airInfiltrationHeader:String;
 
         [Bindable]
         public var lstValid:ListCollectionView;
@@ -139,7 +139,7 @@
 
         protected function onInit():void {
             ToolTipManager.showDelay = 0;
-            updateHeaders();
+          //  updateHeaders();
         }
 
 
@@ -202,7 +202,7 @@
         }
 
 
-        protected function updateHeaders():void {
+        /*protected function updateHeaders():void {
             if (ApplicationModel.currUnits == "IP") {
                 _uFactorHeader = "U-factor (Btu/h-ft2-F)";
                 _airInfiltrationHeader = "Air Infilt. (cfm/ft2)";
@@ -211,12 +211,12 @@
                 _airInfiltrationHeader = "Air Infilt. (l/s)";
             }
 
-        }
+        }*/
 
 
-        protected function shadingSystemTypeLabelFunction(item:Object, column:GridColumn):String {
+        /*protected function shadingSystemTypeLabelFunction(item:Object, column:GridColumn):String {
             return importModel.getShadingSystemName(item.shadingSystemType);
-        }
+        }*/
 
         //TODO: Update these when we implement switch between SI / IP
 
@@ -332,78 +332,85 @@
                                         </fx:Component>
                                     </s:itemRenderer>
                                 </s:GridColumn>
+                                <s:GridColumn
+                                        dataField="W7Name"
+                                        headerText="W7 Product Name"
+                                        showDataTips="true"
+                                        dataTipField="W7Name"
+                                        width="220"/>
 
                                 <s:GridColumn
                                         dataField="W7ID"
                                         headerText="W7 ID"
-                                        width="80"
-                                />
-                                <s:GridColumn
-                                        dataField="W7GlzSysID"
-                                        headerText="W7 GlzSys ID"
-                                        width="90"
-                                />
-                                <s:GridColumn
-                                        dataField="W7ShdSysID"
-                                        headerText="W7 ShdSys ID"
-                                        width="60"
-                                />
-                                <s:GridColumn
-                                        dataField="cgdbVersion"
-                                        headerText="CGDB Ver."
-                                        width="60"
-                                        
-                                />
-                                <s:GridColumn
-                                        dataField="name"
-                                        width="200"
-                                        showDataTips="true"
-                                        dataTipField="name"
-                                        headerText="Window Name"/>
+                                        width="60"/>
 
                                 <s:GridColumn
                                         dataField="shadingSystemManufacturer"
                                         headerText="Manufacturer"
                                         showDataTips="true"
                                         dataTipField="shadingSystemManufacturer"
-                                        width="80"
-                                />
-
-
-                                <s:GridColumn
-                                        dataField="shadingMaterialManufacturer"
-                                        headerText="Material Manufacturer"
-                                        showDataTips="true"
-                                        dataTipField="shadingMaterialManufacturer"
                                         width="80"/>
 
                                 <s:GridColumn
-                                        dataField="shadingSystemType"
-                                        headerText="Window Attachment"
-                                        width="150"
-                                        labelFunction="shadingSystemTypeLabelFunction"
-                                >
+                                        dataField="name"
+                                        width="100"
+                                        showDataTips="true"
+                                        dataTipField="name"
+                                        headerText="Product Name"/>
 
-                                </s:GridColumn>                            
+                                <s:GridColumn   dataField="shadingSystemType"
+                                                headerText="Product Type"
+                                                showDataTips="true"
+                                                dataTipField="shadingSystemType"
+                                                width="120"
+                                                editable="false"/>
+
+                                <s:GridColumn dataField="attachmentPosition"
+                                                           headerText="Attachment Position"
+                                                           showDataTips="false"
+                                                           width="70"
+                                                           editable="false"/>
+
+                                <s:GridColumn dataField="slatCondition"
+                                              headerText="Slat Condition"
+                                              showDataTips="false"
+                                              width="70"
+                                              editable="false"/>
+
+                                <s:GridColumn
+                                        dataField="W7GlzSysID"
+                                        headerText="W7 GlzSys ID"
+                                        width="90"/>
+
+                                <s:GridColumn
+                                        dataField="W7ShdSysID"
+                                        headerText="W7 ShdSys ID"
+                                        width="60"/>
+
+                                <s:GridColumn
+                                        dataField="cgdbVersion"
+                                        headerText="CGDB Ver."
+                                        width="60"/>
+
+                                <s:GridColumn
+                                        dataField="UvalWinter"
+                                        width="50"
+                                        headerText="Uw"
+                                        labelFunction="uvalLabelFunction"/>
 
 								<s:GridColumn
 									dataField="SHGC"
-									headerText="SHGC"
+									headerText="SHGCw"
                                     width="60"
 									labelFunction="shgcLabelFunction"/>
 								
 								<s:GridColumn
 									dataField="Tvis"
-									headerText="TVis"
-                                    width="60"
+									headerText="Tvw"
+                                    width="50"
 									labelFunction="tvisLabelFunction"/>
 								
-                                <s:GridColumn
-                                        id="uFactor"
-                                        dataField="UvalWinter"
-                                        width="80"
-                                        headerText="{_uFactorHeader}"
-										labelFunction="uvalLabelFunction"/>
+
 
 
                             </s:ArrayList>
@@ -445,31 +452,16 @@
                                 </s:GridColumn>
 
                                 <s:GridColumn
+                                        dataField="W7Name"
+                                        headerText="W7 Product Name"
+                                        showDataTips="true"
+                                        dataTipField="W7Name"
+                                        width="220"/>
+
+                                <s:GridColumn
                                         dataField="W7ID"
                                         headerText="W7 ID"
-                                        width="60"
-                                />
-                                <s:GridColumn
-                                        dataField="W7GlzSysID"
-                                        headerText="W7 GlzSys ID"
-                                        width="60"
-                                />
-                                <s:GridColumn
-                                        dataField="W7ShdSysID"
-                                        headerText="W7 ShdSys ID"
-                                        width="60"
-                                />
-                                <s:GridColumn
-                                        dataField="cgdbVersion"
-                                        headerText="CGDB Ver."
-                                        width="60"
-                                />
-                                <s:GridColumn
-                                        dataField="name"
-                                        width="200"
-                                        showDataTips="true"
-                                        dataTipField="name"
-                                        headerText="Window Name"/>
+                                        width="60"/>
 
                                 <s:GridColumn
                                         dataField="shadingSystemManufacturer"
@@ -479,33 +471,63 @@
                                         width="80"/>
 
                                 <s:GridColumn
-                                        dataField="shadingMaterialManufacturer"
-                                        headerText="Material Manufacturer"
+                                        dataField="name"
+                                        width="100"
                                         showDataTips="true"
-                                        dataTipField="shadingMaterialManufacturer"
-                                        width="80"/>
+                                        dataTipField="name"
+                                        headerText="Product Name"/>
+
+                                <s:GridColumn dataField="shadingSystemType"
+                                              headerText="Product Type"
+                                              showDataTips="true"
+                                              dataTipField="shadingSystemType"
+                                              width="120"
+                                              editable="false"/>
+
+                                <s:GridColumn dataField="attachmentPosition"
+                                              headerText="Attachment Position"
+                                              showDataTips="false"
+                                              width="70"
+                                              editable="false"/>
+
+                                <s:GridColumn dataField="slatCondition"
+                                              headerText="Slat Condition"
+                                              showDataTips="false"
+                                              width="70"
+                                              editable="false"/>
 
                                 <s:GridColumn
-                                        dataField="shadingSystemType"
-                                        headerText="Window Attachment"/>
+                                        dataField="W7GlzSysID"
+                                        headerText="W7 GlzSys ID"
+                                        width="90"/>
 
                                 <s:GridColumn
-                                        dataField="SHGC"
-                                        headerText="SHGC"
-                                        width="60"
-										labelFunction="shgcLabelFunction"/>
+                                        dataField="W7ShdSysID"
+                                        headerText="W7 ShdSys ID"
+                                        width="60"/>
 
                                 <s:GridColumn
-                                        dataField="Tvis"
-                                        headerText="TVis"
-                                        width="60"
-										labelFunction="tvisLabelFunction"/>
+                                        dataField="cgdbVersion"
+                                        headerText="CGDB Ver."
+                                        width="60"/>
 
                                 <s:GridColumn
                                         dataField="UvalWinter"
-                                        width="80"
-                                        headerText="{_uFactorHeader}"
-										labelFunction="uvalLabelFunction"/>
+                                        width="50"
+                                        headerText="Uw"
+                                        labelFunction="uvalLabelFunction"/>
+
+                                <s:GridColumn
+                                        dataField="SHGC"
+                                        headerText="SHGCw"
+                                        width="60"
+                                        labelFunction="shgcLabelFunction"/>
+
+                                <s:GridColumn
+                                        dataField="Tvis"
+                                        headerText="Tvw"
+                                        width="50"
+                                        labelFunction="tvisLabelFunction"/>
 
                             </s:ArrayList>
                         </s:columns>

@@ -178,13 +178,13 @@ public class ExportDelegate {
             /* includeInParentRow: true,*/
             blankIfZero: false
         },
-        {
+        /*{
             title: "Material Manufacturer",
             varName: "shadingMaterialManufacturer",
             escapeDelimiter: false,
-            /* includeInParentRow: true,*/
+            /!* includeInParentRow: true,*!/
             blankIfZero: false
-        },
+        },*/
 
         {
             title: "WincovER Version",

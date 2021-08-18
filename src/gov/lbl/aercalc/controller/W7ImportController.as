@@ -382,7 +382,7 @@ public class W7ImportController {
                                         /*"TvT",*/
                                         "shadingSystemType",
                                         "shadingSystemManufacturer",
-                                        "shadingMaterialManufacturer",
+                                       /* "shadingMaterialManufacturer",*/
                                         "attachmentPosition",
                                         "baseWindowType",
                                         "W7ID",

@@ -59,7 +59,7 @@ public class W7WindowImportVO extends BaseUnitsVO
     private var _shadingSystemType:String = "";
     private var _attachmentPosition:String = "";
     public var shadingSystemManufacturer:String = "";
-    public var shadingMaterialManufacturer:String = "";
+  //  public var shadingMaterialManufacturer:String = "";
     public var baseWindowType:String;
     public var THERMFiles:String = "";
     public var WINDOWVersion:String = "";

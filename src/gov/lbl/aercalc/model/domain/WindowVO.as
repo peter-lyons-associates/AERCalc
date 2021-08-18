@@ -38,7 +38,7 @@ import gov.lbl.aercalc.business.IDbProcessable;
 
         public var shadingSystemManufacturer:String  = "";
 
-        public var shadingMaterialManufacturer:String  = "";
+    //    public var shadingMaterialManufacturer:String  = "";
 
 		// Flag to know which VO's to save when closing
 		[Transient]
