@@ -10,8 +10,6 @@ public class ExcelCSV {
 
     private static function searchOfficeRoot():void{
         var base:File = new File('C:\\Program Files (x86)\\Microsoft Office\\root');
-        var random:File = new File('C:\\Program Files (x86)\\Random\\root');
-        trace(random.exists);
         if (base.exists && base.isDirectory) {
             var contents:Array = base.getDirectoryListing();
             var prospectiveExe:File;
