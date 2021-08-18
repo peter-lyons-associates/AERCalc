@@ -339,9 +339,16 @@
                                         dataTipField="W7Name"
                                         width="220"/>
 
-                                <s:GridColumn
+                                <!-- <s:GridColumn
                                         dataField="W7ID"
                                         headerText="W7 ID"
+                                        width="60"/>-->
+
+                                <s:GridColumn
+                                        dataField="WincovER_ID"
+                                        headerText="WincovER ID"
+                                        showDataTips="true"
+                                        dataTipField="WincovER_ID"
                                         width="60"/>
 
                                 <s:GridColumn
@@ -382,10 +389,6 @@
                                         headerText="W7 GlzSys ID"
                                         width="80"/>
 
-                               <!-- <s:GridColumn
-                                        dataField="W7ShdSysID"
-                                        headerText="W7 ShdSys ID"
-                                        width="60"/>-->
 
                                 <s:GridColumn
                                         dataField="cgdbVersion"
@@ -456,9 +459,16 @@
                                         dataTipField="W7Name"
                                         width="220"/>
 
-                                <s:GridColumn
+                               <!-- <s:GridColumn
                                         dataField="W7ID"
                                         headerText="W7 ID"
+                                        width="60"/>-->
+
+                                <s:GridColumn
+                                        dataField="WincovER_ID"
+                                        headerText="WincovER ID"
+                                        showDataTips="true"
+                                        dataTipField="WincovER_ID"
                                         width="60"/>
 
                                 <s:GridColumn
@@ -498,11 +508,6 @@
                                         dataField="W7GlzSysID"
                                         headerText="W7 GlzSys ID"
                                         width="80"/>
-
-                                <!-- <s:GridColumn
-                                         dataField="W7ShdSysID"
-                                         headerText="W7 ShdSys ID"
-                                         width="60"/>-->
 
                                 <s:GridColumn
                                         dataField="cgdbVersion"
