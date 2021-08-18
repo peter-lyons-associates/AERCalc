@@ -24,29 +24,22 @@ public class ExportDelegate {
     // to escape the delimiter if it appears in property value
     private var _exportColumns:Array = [
         {
-            title: "WincovER Record ID",
+            title: "Project Record ID",
             varName: "id",
             escapeDelimiter: false,
            /* includeInParentRow: true,*/
             blankIfZero: false
         },
-       /* {
-            title: "Parent ID",
-            varName: "parent_id",
-            escapeDelimiter: false,
-            includeInParentRow: true,
-            blankIfZero: true
+        {
+            title: "W7 Product Name", // this is full w7 name
+            varName: "name",
+            escapeDelimiter: true,
+            /* includeInParentRow: true,*/
+            blankIfZero: false
         },
         {
-            title: "Parent/Child",
-            varName: "parentChildType",
-            escapeDelimiter: false,
-            includeInParentRow: true,
-            blankIfZero: false
-        },*/
-        {
-            title: "Name", // this is full w7 name
-            varName: "name",
+            title: "WincovER ID",
+            varName: "WincovER_ID",
             escapeDelimiter: true,
             /* includeInParentRow: true,*/
             blankIfZero: false
@@ -178,24 +171,9 @@ public class ExportDelegate {
             /* includeInParentRow: true,*/
             blankIfZero: false
         },
-        /*{
-            title: "Material Manufacturer",
-            varName: "shadingMaterialManufacturer",
-            escapeDelimiter: false,
-            /!* includeInParentRow: true,*!/
-            blankIfZero: false
-        },*/
-
         {
             title: "WincovER Version",
             varName: "WincovERVersion",
-            escapeDelimiter: false,
-            /* includeInParentRow: false,*/
-            blankIfZero: false
-        },
-        {
-            title: "ESCalc Version",
-            varName: "WincovERCalcVersion",
             escapeDelimiter: false,
             /* includeInParentRow: false,*/
             blankIfZero: false
@@ -207,106 +185,7 @@ public class ExportDelegate {
             /* includeInParentRow: false,*/
             blankIfZero: false
         },
-        {
-            title: "Tsol",
-            varName: "Tsol",
-            escapeDelimiter: false,
-            /* includeInParentRow: false,*/
-            blankIfZero: false
-        },
-        /*{
-            title: "TvT",
-            varName: "TvT",
-            escapeDelimiter: false,
-           /!* includeInParentRow: false,*!/
-            blankIfZero: true
-        },*/
-        /*{
-            title: "AL",
-            varName: "airInfiltration",
-            escapeDelimiter: false,
-           /!* includeInParentRow: false,*!/
-            blankIfZero: false
-        },*/
-        /*{
-            title: "Heating Value",
-            varName: "heatingValue",
-            escapeDelimiter: false,
-           /!* includeInParentRow: true,*!/
-            blankIfZero: true
-        },
-        {
-            title: "Heating Rating",
-            varName: "heatingRating",
-            escapeDelimiter: false,
-           /!* includeInParentRow: true,*!/
-            blankIfZero: true
-        },*/
-        /*{
-            title: "Cooling Value",
-            varName: "coolingValue",
-            escapeDelimiter: false,
-           /!* includeInParentRow: true,*!/
-            blankIfZero: true
-        },
-        {
-            title: "Cooling Rating",
-            varName: "coolingRating",
-            escapeDelimiter: false,
-           /!* includeInParentRow: true,*!/
-            blankIfZero: true
-        },*/
-
-
-
-
-
-        /*{
-            title: "EnergyPlus Version",
-            varName: "EPlusVersion",
-            escapeDelimiter: false,
-           /!* includeInParentRow: false,*!/
-            blankIfZero: false
-        },*/
-
-       /* {
-            title: "BSDF",
-            varName: "hasBSDF",
-            escapeDelimiter: false,
-           /!* includeInParentRow: false,*!/
-            blankIfZero: false
-        },
-        {
-            title: "Status",
-            varName: "versionStatus",
-            escapeDelimiter: true,
-           /!* includeInParentRow: false,*!/
-            blankIfZero: false
-        },*/
-       /* {
-            title: "AERC ID",
-            varName: "userID",
-            escapeDelimiter: false,
-           /!* includeInParentRow: true,*!/
-            blankIfZero: false
-        },*/
-        /*{
-            title: "Emissivity Front",
-            varName: "Emishout",
-            escapeDelimiter: false,
-           /!* includeInParentRow: false,*!/
-            blankIfZero: false
-        },
-        {
-            title: "Emissivity Back",
-            varName: "Emishin",
-            escapeDelimiter: false,
-           /!* includeInParentRow: false,*!/
-            blankIfZero: false
-        },*/
-
-
-        {
+              {
             title: "Manual Cooling Stars",
             varName: "manualCoolingStars",
             escapeDelimiter: false,
@@ -321,14 +200,14 @@ public class ExportDelegate {
             blankIfZero: blankIfZeroDependingFixed(false)
         },
         {
-            title: "Manual Cooling PC",
+            title: "Manual Cooling",
             varName: "manualCoolingPC",
             escapeDelimiter: false,
             /* includeInParentRow: true,*/
             blankIfZero: blankIfZeroDependingFixed(false)
         },
         {
-            title: "Manual Heating PC",
+            title: "Manual Heating",
             varName: "manualHeatingPC",
             escapeDelimiter: false,
             /* includeInParentRow: true,*/
@@ -349,21 +228,19 @@ public class ExportDelegate {
             blankIfZero: blankIfZeroDependingFixed(false)
         },
         {
-            title: "Timer Cooling PC",
+            title: "Timer Cooling",
             varName: "timerCoolingPC",
             escapeDelimiter: false,
             /* includeInParentRow: true,*/
             blankIfZero: blankIfZeroDependingFixed(false)
         },
         {
-            title: "Timer Heating PC",
+            title: "Timer Heating",
             varName: "timerHeatingPC",
             escapeDelimiter: false,
             /* includeInParentRow: true,*/
             blankIfZero: blankIfZeroDependingFixed(false)
         },
-
-
         {
             title: "Sensor Cooling Stars",
             varName: "sensorCoolingStars",
@@ -379,14 +256,14 @@ public class ExportDelegate {
             blankIfZero: blankIfZeroDependingFixed(false)
         },
         {
-            title: "Sensor Cooling PC",
+            title: "Sensor Cooling",
             varName: "sensorCoolingPC",
             escapeDelimiter: false,
             /* includeInParentRow: true,*/
             blankIfZero: blankIfZeroDependingFixed(false)
         },
         {
-            title: "Sensor Heating PC",
+            title: "Sensor Heating",
             varName: "sensorHeatingPC",
             escapeDelimiter: false,
             /* includeInParentRow: true,*/
@@ -407,14 +284,14 @@ public class ExportDelegate {
             blankIfZero: blankIfZeroDependingFixed(true)
         },
         {
-            title: "Fixed Cooling PC",
+            title: "Fixed Cooling",
             varName: "fixedCoolingPC",
             escapeDelimiter: false,
             /* includeInParentRow: true,*/
             blankIfZero: blankIfZeroDependingFixed(true)
         },
         {
-            title: "Fixed Heating PC",
+            title: "Fixed Heating",
             varName: "fixedHeatingPC",
             escapeDelimiter: false,
             /* includeInParentRow: true,*/
@@ -444,24 +321,6 @@ public class ExportDelegate {
         }
     }
 
-    /*
-    public var manualCoolingStars:Number;
-		public var manualHeatingStars:Number;
-		public var manualCoolingPC:Number;
-		public var manualHeatingPC:Number;
-		public var timerCoolingStars:Number;
-		public var timerHeatingStars:Number;
-		public var timerCoolingPC:Number;
-		public var timerHeatingPC:Number;
-		public var sensorCoolingStars:Number;
-		public var sensorHeatingStars:Number;
-		public var sensorCoolingPC:Number;
-		public var sensorHeatingPC:Number;
-		public var fixedCoolingStars:Number;
-		public var fixedHeatingStars:Number;
-		public var fixedCoolingPC:Number;
-		public var fixedHeatingPC:Number;
-     */
 
 	public function getColumnsDefs():Array {
 		return _exportColumns
@@ -557,21 +416,6 @@ public class ExportDelegate {
 
             var colData:Object = _exportColumns[colIndex];
             var value:String = currWindow[colData.varName];
-
-            /*if (currWindow.isParent){
-                if (colData.varName == "attachmentPosition"){
-                    var value:String = currWindow.getChildAttachmentPosition();
-                }
-                if (colData.varName == "shadingSystemManufacturer"){
-                    value = currWindow.getChildShadingSystemManufacturer();
-                }
-                if (colData.varName == "shadingMaterialManufacturer"){
-                    value = currWindow.getChildShadingMaterialManufacturer();
-                }
-                if (colData.includeInParentRow==false) {
-                    value = "";
-                }
-            }*/
 
             if (value=="0"){
                 var zeroFuncCheckBlank:Function = colData.blankIfZero as Function;
