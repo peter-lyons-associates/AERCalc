@@ -362,7 +362,7 @@
                                                 headerText="Product Type"
                                                 showDataTips="true"
                                                 dataTipField="shadingSystemType"
-                                                width="120"
+                                                width="115"
                                                 editable="false"/>
 
                                 <s:GridColumn dataField="attachmentPosition"
@@ -380,38 +380,36 @@
                                 <s:GridColumn
                                         dataField="W7GlzSysID"
                                         headerText="W7 GlzSys ID"
-                                        width="90"/>
+                                        width="80"/>
 
-                                <s:GridColumn
+                               <!-- <s:GridColumn
                                         dataField="W7ShdSysID"
                                         headerText="W7 ShdSys ID"
-                                        width="60"/>
+                                        width="60"/>-->
 
                                 <s:GridColumn
                                         dataField="cgdbVersion"
                                         headerText="CGDB Ver."
-                                        width="60"/>
+                                        width="50"/>
 
                                 <s:GridColumn
                                         dataField="UvalWinter"
-                                        width="50"
+                                        width="45"
                                         headerText="Uw"
                                         labelFunction="uvalLabelFunction"/>
 
 								<s:GridColumn
 									dataField="SHGC"
 									headerText="SHGCw"
-                                    width="60"
+                                    width="55"
 									labelFunction="shgcLabelFunction"/>
 								
 								<s:GridColumn
 									dataField="Tvis"
 									headerText="Tvw"
-                                    width="50"
+                                    width="45"
 									labelFunction="tvisLabelFunction"/>
 								
-
-
 
                             </s:ArrayList>
                         </s:columns>
@@ -477,12 +475,12 @@
                                         dataTipField="name"
                                         headerText="Product Name"/>
 
-                                <s:GridColumn dataField="shadingSystemType"
-                                              headerText="Product Type"
-                                              showDataTips="true"
-                                              dataTipField="shadingSystemType"
-                                              width="120"
-                                              editable="false"/>
+                                <s:GridColumn   dataField="shadingSystemType"
+                                                headerText="Product Type"
+                                                showDataTips="true"
+                                                dataTipField="shadingSystemType"
+                                                width="115"
+                                                editable="false"/>
 
                                 <s:GridColumn dataField="attachmentPosition"
                                               headerText="Attachment Position"
@@ -499,34 +497,34 @@
                                 <s:GridColumn
                                         dataField="W7GlzSysID"
                                         headerText="W7 GlzSys ID"
-                                        width="90"/>
+                                        width="80"/>
 
-                                <s:GridColumn
-                                        dataField="W7ShdSysID"
-                                        headerText="W7 ShdSys ID"
-                                        width="60"/>
+                                <!-- <s:GridColumn
+                                         dataField="W7ShdSysID"
+                                         headerText="W7 ShdSys ID"
+                                         width="60"/>-->
 
                                 <s:GridColumn
                                         dataField="cgdbVersion"
                                         headerText="CGDB Ver."
-                                        width="60"/>
+                                        width="50"/>
 
                                 <s:GridColumn
                                         dataField="UvalWinter"
-                                        width="50"
+                                        width="45"
                                         headerText="Uw"
                                         labelFunction="uvalLabelFunction"/>
 
                                 <s:GridColumn
                                         dataField="SHGC"
                                         headerText="SHGCw"
-                                        width="60"
+                                        width="55"
                                         labelFunction="shgcLabelFunction"/>
 
                                 <s:GridColumn
                                         dataField="Tvis"
                                         headerText="Tvw"
-                                        width="50"
+                                        width="45"
                                         labelFunction="tvisLabelFunction"/>
 
                             </s:ArrayList>
