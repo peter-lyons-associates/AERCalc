@@ -237,9 +237,15 @@ public class SimulationController {
 		simulationModel.selectedWindowsAL.removeAll();
 		simulationModel.currWindowIndex = 0;
 		simulationModel.progressDialog.closeDialog();
+        if (errorLog.length) {
+            simulationModel.errorsDialog.setErrorsSource(errorLog);
+            errorLog = [];
+            simulationModel.errorsDialog.show();
+        }
 		var msg:DynamicEvent = new DynamicEvent(CALC_FINISHED, true);
 		simulationModel.simulationInProgress = false;
 		dispatcher.dispatchEvent(msg);
+
 	}
 	
     protected function onSingleSimulationComplete():void {
@@ -265,14 +271,38 @@ public class SimulationController {
         doNextSimulation();
     }
 
+
+    private var errorLog:Array = [];
+
+    private function delimitErrors():void{
+        if (errorLog.length) {
+            //pre-pend a visual delimiter
+            errorLog.push('-------------------------------------------------')
+        }
+    }
+
     protected function onSingleSimulationFailed(errorMsg:String):void {
 		//TODO: Show errors nicely in popup after simulations complete
 		errorMsg = "Window : " + simulationModel.currSimulationWindow.name + " \n\nError : " + errorMsg;
-		Alert.show(errorMsg, "Simulation Error");
+	//	Alert.show(errorMsg, "Simulation Error");
+        delimitErrors();
+        errorLog.push( "Simulation Error : "+ errorMsg)
         simulationModel.currSimulationWindow.simulationStatus = SimulationModel.SIMULATION_STATUS_FAILED;
         libraryModel.windowsAC.refresh();
         doNextSimulation();
     }
+
+    protected function onSingleSimulationInvalid():void{
+        delimitErrors();
+        errorLog.push( "Simulation Invalid for : "+ simulationModel.currSimulationWindow.name)
+        errorLog = errorLog.concat(wincoverCalcDelegate.readSimulationErrors());
+        simulationModel.currSimulationWindow.simulationStatus = SimulationModel.SIMULATION_STATUS_FAILED;
+        //whatever results we had, ignore them, reset:
+        simulationModel.currSimulationWindow.simulationResults = null;
+        libraryModel.windowsAC.refresh();
+        doNextSimulation();
+    }
+
 	
     private function resetFlattenedSimulationResults(forWindow:WindowVO):void{
         forWindow.fixedCoolingPC = 0;
@@ -321,11 +351,23 @@ public class SimulationController {
         if (simulationResults && simulationResults.length) {
             var l:uint = simulationResults.length;
             var individualResult:SimulationResultVO;
+            var hasSimulationError:Boolean = false;
+            for each(var individualResult:SimulationResultVO in simulationResults) {
+                hasSimulationError = !individualResult.isValid();
+                if (hasSimulationError) break;
+            }
+            if (hasSimulationError) {
+                onSingleSimulationInvalid();
+                return;
+            }
+
             if (l == 1) {
                 individualResult = simulationResults[0];
                 if (individualResult.operationType != SimulationResultVO.TYPE_FIXED) {
                     Logger.error('if only one simulation result is returned, it must be of type "fixed"', this);
-                    throw new Error('if only one simulation result is returned, it must be of type "fixed"')
+                   // throw new Error('if only one simulation result is returned, it must be of type "fixed"')
+                    onSingleSimulationFailed('if only one simulation result is returned, it must be of type "fixed"');
+                    return;
                 }
                 updateFlattenedValues(currentSimulationWindow, individualResult);
             } else if (l == 3) {
@@ -334,17 +376,13 @@ public class SimulationController {
                 }
             } else {
                 Logger.error('one simulation result or three simulation resuits expected, got '+l, this);
-                throw new Error('one simulation result or three simulation resuits expected, got '+l)
+               // throw new Error('one simulation result or three simulation results expected, got '+l)
+
+                onSingleSimulationFailed('one simulation result or three simulation results expected, got '+l);
+                return;
             }
         }
-//@todo review v2:
-    //    simulationModel.currSimulationWindow.simulationResults = event.results
-//@todo review v2:
-		// TODO: TEMPORARY CODE remove when Peter is finished with runs
-        /*simulationModel.currSimulationWindow.heatingValue = event.heatingValue;
-        simulationModel.currSimulationWindow.coolingValue = event.coolingValue;
 
-		simulationModel.currSimulationWindow.simulationResults = event.results;*/
 
         onSingleSimulationComplete();
 	}

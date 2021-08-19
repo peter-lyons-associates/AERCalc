@@ -32,6 +32,7 @@ public class SimulationResultVO {
         if (!typed.operationType) {
             typed.operationType = TYPE_FIXED;
         }
+        typed.checkValidity();
         return typed;
     }
 
@@ -42,6 +43,7 @@ public class SimulationResultVO {
         resultVO.coolingStars = windowVO[operationType+"CoolingStars"];
         resultVO.heatingPC = windowVO[operationType+"HeatingPC"];
         resultVO.heatingStars = windowVO[operationType+"HeatingStars"];
+        resultVO.checkValidity();
         return resultVO;
     }
 
@@ -55,6 +57,15 @@ public class SimulationResultVO {
 
     //v2
     public var operationType:String = "";
+
+    private var _isInvalid:Boolean;
+    private function checkValidity():void{
+        _isInvalid = coolingPC < 0 || coolingStars < 0 || heatingPC < 0 || heatingStars <0;
+    }
+
+    public function isValid():Boolean{
+        return !_isInvalid;
+    }
 
     public function SimulationResultVO() {
     }

@@ -11,7 +11,7 @@ import mx.core.Application;
 
 public class WincoverCalcDelegate extends EventDispatcher {
 
-    import flash.desktop.NativeApplication;
+
     import flash.desktop.NativeProcessStartupInfo;
     import flash.desktop.NativeProcess;
     import flash.events.EventDispatcher;
@@ -76,7 +76,7 @@ public class WincoverCalcDelegate extends EventDispatcher {
 
         // Set 'in process' flag
         _simulationInProgress = true;
-
+        _hasInvalidResult = false;
         //TODO: Write window properties to input.json
         try {
             var inputFile:File = createInputFileJSON(window);
@@ -262,9 +262,28 @@ public class WincoverCalcDelegate extends EventDispatcher {
         {
             //Since we haven't gone async yet, this should be a regular error, not an error event
             var msg:String = "Cannot start EnergyPlus. " + err.errorID + " : " + err.message;
-            throw new SimulationError(msg);
             _simulationInProgress = false;
+            throw new SimulationError(msg);
         }
+    }
+
+    public function readSimulationErrors():Array{
+        var ret:Array = [];
+        if (_hasInvalidResult) {
+            try {
+                var errorsFile:File = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINCOVER_CALC_OUTPUT_SUBDIR).resolvePath(ApplicationModel.WINCOVER_CALC_OUTPUT_ERRORS_FILENAME);
+                var stream:FileStream = new FileStream();
+                stream.open(errorsFile, FileMode.READ);
+                var errorsText:String = stream.readUTFBytes(stream.bytesAvailable);
+                stream.close();
+                var messages:Array = JSON.parse(errorsText).messages;
+                ret.push("A simulation error occurred during simulation run on "+_windowName + " :");
+                ret = ret.concat(messages);
+            } catch (err:Error) {
+                ret.push("An unknown simulation error occurred during simulation run on "+_windowName)
+            }
+        }
+        return ret;
     }
 
 
@@ -293,12 +312,6 @@ public class WincoverCalcDelegate extends EventDispatcher {
 
             resultArr = typedResults(resultArr);
 
-            //@todo remove:
-            /* var results:Object = JSON.parse(resultsText)[0];
-          ar heatingValue:Number = results.heating_value;
-           var heatingRating:Number = results.heating_rating;
-           var coolingValue:Number = results.cooling_value;
-           var coolingRating:Number = results.cooling_rating;*/
         } catch (err:Error) {
             Logger.error("Couldn't read results.json: " + err, this);
             evt = new WincoverCalcOutputEvent(WincoverCalcOutputEvent.RUN_WINCOVER_CALC_FINISHED, true);
@@ -311,21 +324,18 @@ public class WincoverCalcDelegate extends EventDispatcher {
 
         evt = new WincoverCalcOutputEvent(WincoverCalcOutputEvent.RUN_WINCOVER_CALC_FINISHED, true);
 
-       //@todo remove:
+
         evt.windowID = _windowID;
         evt.windowName = _windowName;
-       /* evt.heatingValue = heatingValue;
-        evt.heatingRating = heatingRating;
-        evt.coolingValue = coolingValue;
-        evt.coolingRating = coolingRating;*/
 
         evt.results = resultArr;
         dispatchEvent(evt);
 
     }
 
-
+    private var _hasInvalidResult:Boolean;
     private function typedResults(rawInput:Array):Array{
+        _hasInvalidResult = false;
         //assume rawInput is never null, and always has items
         var l:uint = rawInput.length;
         var processedInput:Array = rawInput.slice();
@@ -333,7 +343,9 @@ public class WincoverCalcDelegate extends EventDispatcher {
 
         while (l) {
             l--;
-            processedInput[l] = SimulationResultVO.createFromJSON(processedInput[l])
+            var simulationResult:SimulationResultVO = SimulationResultVO.createFromJSON(processedInput[l]);
+            if (!_hasInvalidResult)  _hasInvalidResult = !simulationResult.isValid();
+            processedInput[l] = simulationResult;
         }
 
         //for convenience

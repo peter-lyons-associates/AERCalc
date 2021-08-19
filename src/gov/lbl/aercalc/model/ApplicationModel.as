@@ -44,6 +44,7 @@ import flash.filesystem.File;
 		public static const WINCOVER_CALC_EXE_FILE_NAME:String 	= "wincover_calc.exe";
 		public static const WINCOVER_CALC_INPUT_FILENAME:String = "input.json";
         public static const WINCOVER_CALC_OUTPUT_FILENAME:String = "results.json";
+		public static const WINCOVER_CALC_OUTPUT_ERRORS_FILENAME:String = "errors.json";
 
 		public static const ENERGY_PLUS_SUBDIR:String 			= "EnergyPlus/";
 		public static const ENERGY_PLUS_MAC_SUBDIR:String		= "EnergyPlusMac/";

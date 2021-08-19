@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"
+               xmlns:mx="library://ns.adobe.com/flex/mx"
+               xmlns:s="library://ns.adobe.com/flex/spark"
+               title="Simulating Performance"
+               close="onOK()"
+                width="600"
+                height="500">
+	
+
+    <fx:Script><![CDATA[
+        import mx.core.FlexGlobals;
+        import mx.managers.PopUpManager;
+
+        [Bindable]
+        private var _simulationErrorsMessage:String;
+
+
+        private var _onOKFunction:Function;
+
+        public function show():void
+        {
+            PopUpManager.addPopUp(this, FlexGlobals.topLevelApplication as DisplayObject, true);
+            PopUpManager.centerPopUp(this)
+        }
+
+		/* Swiz can't inject into popups, so we set controller ref manually */
+		public function setOnOKCallback(f:Function):void{
+            _onOKFunction = f;
+		}
+
+        protected function onOK():void {
+			if (_onOKFunction != null) _onOKFunction();
+            cleanup();
+            PopUpManager.removePopUp(this);
+        }
+
+        public function closeDialog():void {
+            cleanup();
+            PopUpManager.removePopUp(this);
+        }
+
+        public function setErrorsSource(from:Array):void{
+            var fromString:String = '';
+            if (from) {
+                fromString = from.join('\n');
+            }
+            _simulationErrorsMessage = fromString;
+        }
+
+
+        private function cleanup():void {
+            _onOKFunction = null;
+
+        }
+
+        private function onCopy():void{
+            Clipboard.generalClipboard.clear();
+            Clipboard.generalClipboard.setData(ClipboardFormats.TEXT_FORMAT, _simulationErrorsMessage, false);
+        }
+
+        ]]></fx:Script>
+
+    <s:VGroup  top="10"
+               left="10"
+               right="10">
+
+        <s:Spacer height="5"/>
+        <s:Label width="100%"
+                 text="Simulation Errors encountered, please read below"
+                 maxDisplayedLines="2"
+                 height="30"
+                 textAlign="center"
+        />
+
+        <s:Group width="100%" height="300">
+            <s:Rect left="0" right="0" top="0" bottom="0" radiusX="5" radiusY="5">
+                <s:fill>
+                    <s:SolidColor color="#19263b"/>
+                </s:fill>
+            </s:Rect>
+
+            <s:Label left="20"
+                     top="5"
+                     right="20"
+                     color="#b1c4e4"
+                     height="250"
+                     paddingBottom="10"
+                     text="{_simulationErrorsMessage}"
+                     maxDisplayedLines="14"
+                     textAlign="left"
+            />
+
+        </s:Group>
+						
+
+
+    </s:VGroup>
+
+    <s:Button id="btnCopy"
+              left="10"
+              bottom="10"
+              enabled="{_simulationErrorsMessage}"
+              click="onCopy()"
+              label="Copy to Clipboard"
+              minWidth="90"
+              minHeight="30"/>
+
+    <s:Button id="btnOK"
+              right="10"
+              bottom="10"
+              click="onOK()"
+              label="OK"
+              minWidth="90"
+              minHeight="30"/>
+
+
+</s:TitleWindow>

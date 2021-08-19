@@ -1,5 +1,7 @@
 package gov.lbl.aercalc.model {
 import gov.lbl.aercalc.model.domain.WindowVO;
+import gov.lbl.aercalc.view.dialogs.SimulationErrorsDialog;
+
 import mx.collections.ArrayList;
 import gov.lbl.aercalc.view.dialogs.SimulationProgressDialog;
 
@@ -29,6 +31,11 @@ public class SimulationModel {
 
     // Progress dialog for simulation process
     public var progressDialog:SimulationProgressDialog = new SimulationProgressDialog();
+
+    private var _errorsDialog:SimulationErrorsDialog;
+    public function get errorsDialog():SimulationErrorsDialog{
+        return _errorsDialog || (_errorsDialog = new SimulationErrorsDialog());
+    }
 
     public function SimulationModel() {
     }
