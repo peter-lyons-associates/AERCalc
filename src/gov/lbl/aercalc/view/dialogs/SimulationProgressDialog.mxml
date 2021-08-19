@@ -21,8 +21,11 @@
 		[Bindable]
 		private var _thirdPartyAppStatusMessage:String;
 
-        public function show():void
+        public function show(reset:Boolean = true):void
         {
+            if (reset) {
+                _thirdPartyAppStatusMessage = null;
+            }
             PopUpManager.addPopUp(this, FlexGlobals.topLevelApplication as DisplayObject, true);
             PopUpManager.centerPopUp(this)
         }
