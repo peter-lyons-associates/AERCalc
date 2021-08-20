@@ -17,6 +17,13 @@ package gov.lbl.aercalc.model.settings
         [XmlElement]
         public var lblWindowDBPath:String  = "";
 
+        [Bindable]
+        [XmlElement]
+        public var lblWindowExePath:String  = "";
+
+        [Bindable]
+        [XmlElement]
+        public var lblWindowIniPath:String  = "";
 
         /* Date and time string for last calculation started by user */
         [Bindable]

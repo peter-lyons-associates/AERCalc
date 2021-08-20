@@ -165,6 +165,7 @@ public class ApplicationController
 
             var defaultProjectDir:File = ApplicationModel.baseStorageDir;
 			var defaultDB:File = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.DEFAULT_DB_PATH);
+
             loadProject(defaultProjectDir, defaultDB, true);
 		}
 

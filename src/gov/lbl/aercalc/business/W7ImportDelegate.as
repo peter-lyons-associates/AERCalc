@@ -4,7 +4,6 @@ package gov.lbl.aercalc.business
 import com.fenestralia.wincover.model.util.ParsingState;
 import com.fenestralia.wincover.model.util.WindowUtil;
 
-import flash.crypto.generateRandomBytes;
 import flash.desktop.NativeProcess;
 import flash.desktop.NativeProcessStartupInfo;
 import flash.events.EventDispatcher;
@@ -117,6 +116,15 @@ public class W7ImportDelegate extends EventDispatcher
 
     }
 
+
+    private function getSettingsOrDefaultFile(settingsFilePath:String, defaultFilePath:String):File{
+        var file:File = new File(settingsFilePath);
+        if (!file.exists) {
+            file = ApplicationModel.baseStorageDir.resolvePath(defaultFilePath);
+        }
+        return file;
+    }
+
     /* ************** */
     /* PUBLIC METHODS */
     /* ************** */
@@ -133,11 +141,17 @@ public class W7ImportDelegate extends EventDispatcher
 		outDir.createDirectory();
 		
         _process = new NativeProcess();
-        _wDB = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_MDB_FILE_PATH);
-        _wDBLockFile = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_MDB_LOCK_FILE_PATH);
-        _wExe = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_EXE_FILE_PATH);
+        //GD - removed: _wDB = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_MDB_FILE_PATH);
+        _wDB = getSettingsOrDefaultFile(settingsModel.appSettings.lblWindowDBPath, ApplicationModel.WINDOW_MDB_FILE_PATH);
+        //GD - removed:  _wDBLockFile = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_MDB_LOCK_FILE_PATH);
+        var ldbName:String = _wDB.name.substr(0, _wDB.name.toLowerCase().lastIndexOf('.mdb')) + '.ldb';
+        _wDBLockFile = _wDB.parent.resolvePath(ldbName);
+        //GD - removed:   _wExe = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_EXE_FILE_PATH);
+        _wExe = getSettingsOrDefaultFile(settingsModel.appSettings.lblWindowExePath, ApplicationModel.WINDOW_EXE_FILE_PATH);
         _logDir = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_LOGS_FILE_PATH);
-        _iniFile = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_INI_FILE_PATH);
+        //GD - removed:   _iniFile = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_INI_FILE_PATH);
+        _iniFile = getSettingsOrDefaultFile(settingsModel.appSettings.lblWindowIniPath, ApplicationModel.WINDOW_INI_FILE_PATH);
+
         var wDir:File = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_SUBDIR);
         _allWindowsXML = wDir.resolvePath("output/" + WINDOWS_LIST_FILENAME);
         _xmlInputPath = wDir.resolvePath("input/in.xml");
@@ -272,10 +286,10 @@ public class W7ImportDelegate extends EventDispatcher
         processArgs.push("-exit");
 
 
-        Logger.debug(processArgs.join(" "), this);
+        Logger.debug(commandLineString(processArgs, _wExe), this);
         startupInfo.arguments = processArgs;
 
-        Logger.debug("Starting W7 with " + processArgs.concat().toString(), this);
+        Logger.debug("Starting W7 with " + commandLineString(processArgs, _wExe), this);
 
         _process.addEventListener(NativeProcessExitEvent.EXIT, onWindowListProcessFinished);
         _process.addEventListener(ProgressEvent.STANDARD_OUTPUT_DATA, onWStandardOutput);
@@ -651,13 +665,13 @@ public class W7ImportDelegate extends EventDispatcher
             var w6Dir:String = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_SUBDIR).nativePath;
 			var thermExePath:String = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.THERM_EXE_FILE_PATH).nativePath;
 
-            var out:String = File.lineEnding + "O5StandardsPath=" + w6Dir + "\\Standards\\W5_NFRC_2003.std";
-            out += File.lineEnding + "W6BasisStandard=" + w6Dir + "\\W6_full_basis.xml";
-            out += File.lineEnding + "W6BasisHalf=" + w6Dir + "\\W6_half_basis.xml";
-            out += File.lineEnding + "W6BasisQuarter=" + w6Dir + "\\W6_quarter_basis.xml";
-            out += File.lineEnding + "W6Database="+w6Dir + "\\" + ApplicationModel.WINDOW_MDB_FILE_PATH;
+            var out:String = File.lineEnding + "O5StandardsPath=" + ApplicationModel.getAbsoluteFilePath(ApplicationModel.WINDOW_SUBDIR + "\\Standards\\W5_NFRC_2003.std");//w6Dir + "\\Standards\\W5_NFRC_2003.std";
+            out += File.lineEnding + "W6BasisStandard=" +  ApplicationModel.getAbsoluteFilePath(ApplicationModel.WINDOW_SUBDIR + "\\W6_full_basis.xml");//w6Dir + "\\W6_full_basis.xml";
+            out += File.lineEnding + "W6BasisHalf=" + ApplicationModel.getAbsoluteFilePath(ApplicationModel.WINDOW_SUBDIR + "\\W6_half_basis.xml");//w6Dir + "\\W6_half_basis.xml";
+            out += File.lineEnding + "W6BasisQuarter=" + ApplicationModel.getAbsoluteFilePath(ApplicationModel.WINDOW_SUBDIR + "\\W6_quarter_basis.xml");// w6Dir + "\\W6_quarter_basis.xml";
+            out += File.lineEnding + "W6Database="+ ApplicationModel.getAbsoluteFilePath(  ApplicationModel.WINDOW_MDB_FILE_PATH);//w6Dir + "\\" + ApplicationModel.WINDOW_MDB_FILE_PATH;
 			out += File.lineEnding + "ThermPath=" + thermExePath;
-			out += File.lineEnding + "HoneycombGenBSDFPath=" + w6Dir + "\\genBSDF";
+			out += File.lineEnding + "HoneycombGenBSDFPath=" + ApplicationModel.getAbsoluteFilePath(ApplicationModel.WINDOW_SUBDIR + "\\Standards\\W5_NFRC_2003.std");// w6Dir + "\\genBSDF";
 
             s.writeUTFBytes(out)
             s.close()

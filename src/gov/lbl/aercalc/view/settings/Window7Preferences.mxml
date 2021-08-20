@@ -23,11 +23,15 @@
         protected override function read(settings:AppSettings):void
         {
 			window7DBPath.text = settings.lblWindowDBPath;
+            window7ExePath.text = settings.lblWindowExePath;
+            window7IniPath.text = settings.lblWindowIniPath;
         }
 
         protected override function write(settings:AppSettings):void
         {
             settings.lblWindowDBPath = window7DBPath.text;
+            settings.lblWindowExePath = window7ExePath.text;
+            settings.lblWindowIniPath = window7IniPath.text;
         }
 
 
@@ -76,6 +80,92 @@
         }
 
 
+        public function browseForExe():void{
+            appFileChangeMode = 'exe';
+            browseForNewW7AppFile();
+        }
+
+        public function browseForIni():void{
+            appFileChangeMode = 'ini';
+            browseForNewW7AppFile();
+        }
+
+        private var appFileChangeMode:String = 'exe';
+        private function getCurrentFileFilter():FileFilter{
+            var fileFilter:FileFilter;
+            var classification:String;
+            switch(appFileChangeMode) {
+                case "exe":
+                    classification = "Executables";
+                    break;
+                case "ini":
+                    classification = "INI Files";
+                    break;
+                default:
+                    classification = appFileChangeMode + " Files";
+                    break;
+            }
+
+            fileFilter = new FileFilter(classification, "*."+appFileChangeMode);
+            return fileFilter;
+        }
+
+        private function browseForNewW7AppFile():void {
+            try {
+                var newW7AppFile:File = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_DEFAULT_MDB_FILE_PATH);
+                newW7AppFile.browseForOpen("Select new W7 "+appFileChangeMode + " file", [getCurrentFileFilter()]);
+                newW7AppFile.addEventListener(Event.SELECT, onNewW7AppFileSelected, false, 0, true);
+                newW7AppFile.addEventListener(Event.CANCEL, onNewW7AppFileCancel, false, 0, true);
+            }
+            catch (error:Error){
+                Logger.error("browseForNewW7AppFile() error: " + error);
+                Alert.show("Cannot browse for W7 "+appFileChangeMode+". See log for details. (Error: " + error + ")", "Error");
+            }
+        }
+
+
+        private function onNewW7AppFileSelected(event:Event):void{
+            var newW7AppFile:File = event.target as File;
+            newW7AppFile.removeEventListener(Event.SELECT, onNewW7AppFileSelected);
+            newW7AppFile.removeEventListener(Event.CANCEL, onNewW7AppFileCancel);
+
+            // Error Checks
+            if (!newW7AppFile.exists){
+                Alert.show("No file exists at " + newW7AppFile.nativePath, "File Not Found");
+                return;
+            }
+            if (newW7AppFile.extension != appFileChangeMode) {
+                Alert.show("Selected file is not a W7 " + appFileChangeMode, "Incorrect File Type");
+                return;
+            }
+
+            var ti:TextInput = appFileChangeMode == 'exe' ? window7ExePath : window7IniPath;
+
+            // Update settings to make new default
+            if ( ti.text !=  newW7AppFile.nativePath){
+                ti.text = newW7AppFile.nativePath;
+                if (appFileChangeMode == 'exe') {
+                    //try to auto-select the {AppName}.ini in the same directory, if it exists
+                    var autoIniName:String = newW7AppFile.name.substr(0, newW7AppFile.name.toLowerCase().lastIndexOf('.exe'))+ '.ini';
+                    var autoIni:File = newW7AppFile.parent.resolvePath(autoIniName);
+                    if (autoIni.exists) {
+                        window7IniPath.text = autoIni.nativePath;
+                    }
+                }
+
+                //call onChange event so settings model is updated
+                onChange();
+            }
+
+        }
+
+        private function onNewW7AppFileCancel(event:Event):void {
+            var newW7AppFile:File = event.target as File;
+            newW7AppFile.removeEventListener(Event.SELECT, onNewW7AppFileSelected);
+            newW7AppFile.removeEventListener(Event.CANCEL, onNewW7AppFileCancel);
+        }
+
+
 
         ]]>
 
@@ -97,6 +187,35 @@
     <s:HGroup>
         <s:Spacer width="100"/>
         <s:Label text="(Path is read-only and shown only for reference.)" styleName="formNote"/>
+    </s:HGroup>
+
+    <s:Line height="1" width="100%" >
+        <s:stroke>
+            <s:SolidColorStroke color="#000000"/>
+        </s:stroke>
+    </s:Line>
+
+    <s:Label text="WINDOW 7 executable version" width="100%"/>
+
+    <s:HGroup width="100%">
+        <s:Label text="WINDOW 7 exe:" toolTip="WINDOW 7 Executable" width="100"/>
+        <s:TextInput id="window7ExePath"
+                     width="100%"
+                     editable="false"
+                     toolTip="{appSettings.lblWindowExePath}"/>
+        <s:Button id="btnBrowseW7Exe" label="Browse" click="browseForExe()"/>
+    </s:HGroup>
+    <s:HGroup width="100%">
+        <s:Label text="WINDOW 7 ini:" toolTip="WINDOW 7 ini file" width="100"/>
+        <s:TextInput id="window7IniPath"
+                     width="100%"
+                     editable="false"
+                     toolTip="{appSettings.lblWindowIniPath}"/>
+        <s:Button id="btnBrowseW7Ini" label="Browse" click="browseForIni()"/>
+    </s:HGroup>
+    <s:HGroup>
+        <s:Spacer width="100"/>
+        <s:Label text="(Paths above are read-only and shown only for reference.)" styleName="formNote"/>
     </s:HGroup>
 
 </settings:SettingsEditor>

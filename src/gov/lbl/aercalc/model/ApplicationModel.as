@@ -3,8 +3,10 @@ package gov.lbl.aercalc.model
 import flash.desktop.NativeApplication;
 import flash.filesystem.File;
 	import flash.system.Capabilities;
-	
-	import mx.logging.LogEventLevel;
+
+import gov.lbl.aercalc.model.settings.AppSettings;
+
+import mx.logging.LogEventLevel;
 	
 	import gov.lbl.aercalc.util.AboutInfo;
 
@@ -26,6 +28,18 @@ import flash.filesystem.File;
 			var air:Namespace = appXML.namespaceDeclarations()[0];
 			var folderName:String = "" + appXML.air::id;
 			return folderName;
+		}
+
+		public static function getAbsoluteFilePath(baseStorageRelativePath:String):String{
+			var file:File = baseStorageDir.resolvePath(baseStorageRelativePath);
+			if (file.exists) {
+				return file.nativePath;
+			}
+			return '';
+		}
+
+		public static function configureFromAppSettings(appSettings:AppSettings):void{
+
 		}
 		
 		
@@ -145,6 +159,8 @@ import flash.filesystem.File;
 		public function getCurrentProjectBSDFDir():File{
 			return this.currProjectDir.resolvePath("bsdf/");
 		}
+
+
 		
 	}
 }

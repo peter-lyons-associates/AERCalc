@@ -86,6 +86,14 @@ public class AppSettingsDelegate {
         if (!result.lblWindowDBPath || result.lblWindowDBPath == "") {
             result.lblWindowDBPath = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_DEFAULT_MDB_FILE_PATH).nativePath;
         }
+        if (!result.lblWindowExePath) {
+            result.lblWindowExePath = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_EXE_FILE_PATH).nativePath;
+        }
+
+        if (!result.lblWindowIniPath) {
+            result.lblWindowIniPath = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_INI_FILE_PATH).nativePath;
+        }
+
         return result;
     }
     private function settingsToXml(settings:AppSettings):XML
@@ -98,6 +106,8 @@ public class AppSettingsDelegate {
 	private function getDefaults():AppSettings {
 		var appSettings:AppSettings = new AppSettings();
 		appSettings.lblWindowDBPath = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_MDB_FILE_PATH).nativePath;
+        appSettings.lblWindowExePath = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_EXE_FILE_PATH).nativePath;
+        appSettings.lblWindowIniPath = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_INI_FILE_PATH).nativePath;
 		appSettings.logEventLevel = LogEventLevel.DEBUG;
 		return appSettings;
 	}
