@@ -10,6 +10,7 @@ import flash.events.EventDispatcher;
 import flash.events.NativeProcessExitEvent;
 import flash.events.ProgressEvent;
 import flash.filesystem.*;
+import flash.utils.setTimeout;
 
 import gov.lbl.aercalc.error.InvalidImportWindowNameError;
 import gov.lbl.aercalc.error.LblWindowDelegateError;
@@ -24,7 +25,10 @@ import gov.lbl.aercalc.util.Utils;
 import mx.collections.ArrayCollection;
 import mx.core.Application;
 import mx.core.mx_internal;
+import mx.events.CloseEvent;
 import mx.events.DynamicEvent;
+
+import spark.components.Alert;
 
 
 /** This delegate manages the running of W7 to
@@ -116,11 +120,20 @@ public class W7ImportDelegate extends EventDispatcher
 
     }
 
+    private var fileErrors:Array;
+    private var fileErrorCount:uint;
+    private function resetFileErrors():void{
+        fileErrors = [];
+        fileErrorCount = 0;
+    }
 
     private function getSettingsOrDefaultFile(settingsFilePath:String, defaultFilePath:String):File{
         var file:File = new File(settingsFilePath);
         if (!file.exists) {
-            file = ApplicationModel.baseStorageDir.resolvePath(defaultFilePath);
+            var altFile:File = ApplicationModel.baseStorageDir.resolvePath(defaultFilePath);
+            fileErrors.push("Could not locate W7 preferences file: "+file.nativePath + "! Press OK to use "+ altFile.nativePath + ' instead, or choose Cancel, then open File > Preferences, select the WINDOW7 tab and then fix the preference file');
+            fileErrorCount ++;
+            file = altFile;
         }
         return file;
     }
@@ -141,6 +154,7 @@ public class W7ImportDelegate extends EventDispatcher
 		outDir.createDirectory();
 		
         _process = new NativeProcess();
+        resetFileErrors();
         //GD - removed: _wDB = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_MDB_FILE_PATH);
         _wDB = getSettingsOrDefaultFile(settingsModel.appSettings.lblWindowDBPath, ApplicationModel.WINDOW_MDB_FILE_PATH);
         //GD - removed:  _wDBLockFile = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_MDB_LOCK_FILE_PATH);
@@ -290,12 +304,36 @@ public class W7ImportDelegate extends EventDispatcher
         startupInfo.arguments = processArgs;
 
         Logger.debug("Starting W7 with " + commandLineString(processArgs, _wExe), this);
+
         std_out_err = null;
+        if (fileErrorCount) {
+            var onProceed:Function = function(event:CloseEvent):void{
+                var alert:Alert = event.target as Alert;
+                fileErrors.shift();
+                fileErrorCount--;
+                if (event.detail == Alert.OK) {
+                    if (fileErrorCount == 0)
+                        startWindowList(startupInfo);
+                    else {
+                        setTimeout(handleFileErrors, 0, onProceed);
+                    }
+                }
+            }
+            handleFileErrors(onProceed);
+        } else {
+            startWindowList(startupInfo);
+        }
+    }
+
+    private function handleFileErrors(closeHandler:Function):void{
+        Alert.show(fileErrors[0],"Problems with preference Files",Alert.OK|Alert.CANCEL, null, closeHandler);
+    }
+
+    private function startWindowList(startupInfo:NativeProcessStartupInfo):void{
         _process.addEventListener(NativeProcessExitEvent.EXIT, onWindowListProcessFinished);
         _process.addEventListener(ProgressEvent.STANDARD_OUTPUT_DATA, onWStandardOutput);
         _process.addEventListener(ProgressEvent.STANDARD_ERROR_DATA, onWStandardError);
         _process.start(startupInfo);
-
     }
 
 
@@ -774,13 +812,32 @@ public class W7ImportDelegate extends EventDispatcher
         startupInfo.arguments = processArgs;
 
         Logger.debug("Starting W7 with " + commandLineString(processArgs, _wExe), this);
+        
+        std_out_err = null;
+        if (fileErrorCount) {
+            var onProceed:Function = function(event:CloseEvent):void{
+                var alert:Alert = event.target as Alert;
+                fileErrors.shift();
+                fileErrorCount--;
+                if (event.detail == Alert.OK) {
+                    if (fileErrorCount == 0)
+                        startGetBSDF(startupInfo);
+                    else {
+                        setTimeout(handleFileErrors, 0, onProceed);
+                    }
+                }
+            }
+            handleFileErrors(onProceed);
+        } else {
+            startGetBSDF(startupInfo);
+        }
+    }
 
+    private function startGetBSDF(startupInfo:NativeProcessStartupInfo):void{
         _process.addEventListener(NativeProcessExitEvent.EXIT, onGetBSDFProcessFinished);
         _process.addEventListener(ProgressEvent.STANDARD_OUTPUT_DATA, onWStandardOutput);
         _process.addEventListener(ProgressEvent.STANDARD_ERROR_DATA, onWStandardError);
         _process.start(startupInfo);
-
-
     }
 
     /* Called when WINDOW finishes, regardless of exit state */
