@@ -352,7 +352,7 @@ public class SimulationController {
             var l:uint = simulationResults.length;
             var individualResult:SimulationResultVO;
             var hasSimulationError:Boolean = false;
-            for each(var individualResult:SimulationResultVO in simulationResults) {
+            for each(individualResult in simulationResults) {
                 hasSimulationError = !individualResult.isValid();
                 if (hasSimulationError) break;
             }

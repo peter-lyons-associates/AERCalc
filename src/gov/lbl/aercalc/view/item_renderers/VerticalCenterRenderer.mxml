@@ -12,7 +12,7 @@
 
 		//GD - this is a very hack-ish approach to get around the limitations of the default renderer.
 
-		var _renderer:AdvancedDataGridItemRenderer;
+		private var _renderer:AdvancedDataGridItemRenderer;
 
 		private function addChildLocal(child:DisplayObject):DisplayObject
 		{

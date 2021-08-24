@@ -100,7 +100,7 @@
     <s:Button id="btnCopy"
               left="10"
               bottom="10"
-              enabled="{_simulationErrorsMessage}"
+              enabled="{!!_simulationErrorsMessage}"
               click="onCopy()"
               label="Copy to Clipboard"
               minWidth="90"

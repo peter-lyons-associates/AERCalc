@@ -16,7 +16,7 @@ public class WincoverCalcInputVO {
     public function WincoverCalcInputVO() {
     }
 
-    public function toJSON(k):*
+    public function toJSON(s:String):*
     {
         return { "name": this.name, "bsdf_path": this.bsdf_path, /*"shgc": this.shgc, "uvalue": this.uvalue,*/ "operation_type": operationType }
     }
