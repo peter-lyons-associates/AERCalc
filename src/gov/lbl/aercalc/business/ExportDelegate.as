@@ -80,7 +80,7 @@ public class ExportDelegate {
             blankIfZero: false
         },
         {
-            title: "Fixed ?",
+            title: "Fixed",
             varName: "Fixed",
             escapeDelimiter: false,
             /* includeInParentRow: true,*/

@@ -307,7 +307,7 @@
 				<mx:AdvancedDataGridColumn id="isFixed"
 										   dataField="Fixed"
 										   width="40"
-										   headerText="Fixed?"
+										   headerText="Fixed"
 										   editable="false"
 										   textAlign="center"
 										   itemRenderer="gov.lbl.aercalc.view.item_renderers.FixedStatusRenderer"
