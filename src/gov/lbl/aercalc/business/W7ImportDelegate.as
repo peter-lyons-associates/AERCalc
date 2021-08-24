@@ -290,7 +290,7 @@ public class W7ImportDelegate extends EventDispatcher
         startupInfo.arguments = processArgs;
 
         Logger.debug("Starting W7 with " + commandLineString(processArgs, _wExe), this);
-
+        std_out_err = null;
         _process.addEventListener(NativeProcessExitEvent.EXIT, onWindowListProcessFinished);
         _process.addEventListener(ProgressEvent.STANDARD_OUTPUT_DATA, onWStandardOutput);
         _process.addEventListener(ProgressEvent.STANDARD_ERROR_DATA, onWStandardError);
@@ -791,6 +791,14 @@ public class W7ImportDelegate extends EventDispatcher
         removeGetBSDFListeners();
         try
         {
+            //check for exitCode less than zero (int cast)
+            if (std_out_err) {
+                var err_str:String  =std_out_err;
+                std_out_err = null;
+                //" or 0x"+("00000" + event.exitCode.toString(16)).substr(-6)
+                throw new Error("Window process registered error (with exit code "+ int(event.exitCode)+ " ) " + err_str)
+            }
+
             // save generated BSDF to our BSDF storage directory
             // and then tell controller we're done
             var bsdfStorageDir:File = applicationModel.getCurrentProjectBSDFDir();
@@ -859,11 +867,15 @@ public class W7ImportDelegate extends EventDispatcher
 
 
     /* Handles WINDOW output for all processes */
-
+    private var std_out_err:String;
     public function onWStandardOutput(event:ProgressEvent):void
     {
         var text:String = _process.standardOutput.readUTFBytes(_process.standardOutput.bytesAvailable)
         Logger.debug("LBNL WINDOW output: " + text, this);
+        if (text.indexOf("Error") != -1) {
+            if (!std_out_err) std_out_err = '';
+            std_out_err += '\n' + text;
+        }
     }
 
     public function onWStandardError(event:ProgressEvent):void
