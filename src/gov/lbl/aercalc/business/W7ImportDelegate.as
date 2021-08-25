@@ -131,8 +131,11 @@ public class W7ImportDelegate extends EventDispatcher
         var file:File = new File(settingsFilePath);
         if (!file.exists) {
             var altFile:File = ApplicationModel.baseStorageDir.resolvePath(defaultFilePath);
-            fileErrors.push("Could not locate W7 preferences file: "+file.nativePath + "! Press OK to use "+ altFile.nativePath + ' instead, or choose Cancel, then open File > Preferences, select the WINDOW7 tab and then fix the preference file');
-            fileErrorCount ++;
+            if (file.nativePath != altFile.nativePath) {
+                //in particular, default ini files will be created if not present
+                fileErrors.push("Could not locate W7 preferences file: "+file.nativePath + "! Press OK to use "+ altFile.nativePath + ' instead, or choose Cancel, then open File > Preferences, select the WINDOW7 tab and then fix the preference file');
+                fileErrorCount ++;
+            }
             file = altFile;
         }
         return file;
