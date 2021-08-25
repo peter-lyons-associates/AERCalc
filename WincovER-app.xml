@@ -44,7 +44,8 @@
     <!--<extensions>
         <extensionID></extensionID>
     </extensions>-->
-
+    <versionLabel>0.0.7</versionLabel>
+    <architecture>64</architecture>
     <!-- Settings for the application's initial window. Required. -->
     <initialWindow>
         <!-- The main SWF or HTML file of the application. Required. -->
