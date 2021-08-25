@@ -1,0 +1,21 @@
+#INSTRUCTIONS
+#------------
+# Copy this file and rename it as 'local.properties' then change the following configuration values to reflect your local variations
+# the local.properties file is excluded from git via gitignore
+
+#uncomment below and configure a path inside local.properties for your locak Flex/AIR SDK
+#this means you don't check into git any settings that could conflict with a colleague
+#FLEX_HOME = $\{basedir\}/../FLEXSDKS/4.16.1_Air32
+
+# KEYSTORE override
+#KEYSTORE = path/to/signing_certificate.p12
+
+# STOREPASS override
+#STOREPASS = password_for_signing_certificate
+
+# STORETYPE override
+#STORETYPE = PKCS12
+
+
+debug_build = false
+release_build = false

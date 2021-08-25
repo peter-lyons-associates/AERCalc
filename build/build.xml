@@ -1,0 +1,381 @@
+﻿<?xml version="1.0"?>
+<project name="WincovER AIR application"
+			basedir="../" 
+			default="package-app"
+			xmlns:if="ant:if"
+			xmlns:unless="ant:unless">
+
+	<!-- Require Ant 1.9+ -->
+	<fail message="Ant 1.9+ required">
+		<condition>
+			<not><antversion atleast="1.9" /></not>
+		</condition>
+	</fail>
+
+	<!-- default values for dev use only -->
+	<property name="dev.keystore" value="${basedir}/build/dev_selfsign_cert.p12"/>
+	<property name="dev.storepass" value="w1nc0v3r"/>
+	<property name="dev.storetype" value="PKCS12"/>
+
+	
+	<xmlproperty file="${basedir}/build/app-air.xml"
+				 semanticAttributes="false"
+				 includeSemanticAttribute="false"/>
+
+	<property name="WincovER-executable" value="WincovER.exe" />
+
+	<!--<echoproperties/>-->
+
+	<!-- Define overrides used in this build script (ignored if does not exist) -->
+	<property file="./build/local.properties" />
+
+	<!-- local.properties could define debug_build = true, otherwise let it be false by default -->
+	<property name="debug_build" value="false"/>
+	<!-- local.properties could define release_build = true, otherwise let it be false by default -->
+	<property name="release_build" value="false"/>
+
+	<condition property="run-release-steps">
+		<equals arg1="${release_build}" arg2="true" />
+	</condition>
+	
+	<!-- Define variables/paths used in this build script -->
+	<property file="./build/build.properties" />
+
+
+	<condition property="PACKAGE_TARGET" value="air"
+			   else="bundle">
+		<equals arg1="${debug_build}" arg2="true" />
+	</condition>
+	<property name="app-package-dir" value="${bin.dir}/package" />
+
+	<echo>basedir is ${basedir}</echo>
+	<fail unless="flexsdk.bin.dir">The "flexsdk.bin.dir" property must be set in ${build.dir}/build.properties.</fail>
+	<fail unless="flexsdk.lib.dir">The "flexsdk.lib.dir" property must be set in ${build.dir}/build.properties.</fail>
+	<taskdef
+		classpath="${FLEX_HOME}/ant/lib/flexTasks.jar"
+		resource="flexTasks.tasks" />
+
+	<property name="adt_path" value="${FLEX_HOME}/lib/adt.jar" />
+
+	<!-- boilerplate OS properties -->
+	 <condition property="isMac" value="mac">
+        <os family="mac" />
+    </condition>
+    <condition property="isWindows" value="windows">
+        <os family="windows" />
+    </condition>
+	
+	 <condition property="CRLF" value="%0D%0A">
+        <isset property="isWindows" />
+    </condition>
+    <property name="CRLF" value="%0A" />
+	
+	<condition property="exe.extension" value=".exe" else="">
+		 <isset property="isWindows" />
+	</condition>	
+
+
+	
+	<!--
+    	DELETE the existing output folder and files and then re-generate the output folder
+    -->
+
+    <target name="cleanbin"  description="DELETE the existing bin folder and files and then re-generate the output folder">
+	
+    	<echo>Cleaning bin directory...</echo>
+		
+		<!-- delete -->
+        <delete dir="${bin.dir}" failOnError="true" includeEmptyDirs="true"/>
+    	
+		<!-- remake dir -->
+        <mkdir dir="${bin.dir}"/>
+        
+        <echo>bin directory cleaned</echo>
+
+    </target>
+
+
+	
+	<!--
+	    	COMPILE Main entry point
+	-->
+	<target name="compile-air" description="series of tasks to create air app" depends="cleanbin">
+		<echo>starting compile from ${basedir}</echo>
+
+		<antcall target="CompileAirApp" description="compiling ${application.base.name} AIR client"/>
+
+		<antcall target="copyAirAssets" description="copying Air assets for ${application.base.name} AIR client"/>
+
+		<echo>Compile complete</echo>
+
+	</target>
+	
+
+
+	
+	<!--
+    	COMPILE Main entry point
+    -->
+	<target name="CompileAirApp" description="series of tasks to create AIR application">
+
+		<echo>Compiling AIR Application...</echo>
+
+		<mxmlc fork="true" maxmemory="1024M"
+			   file="${src.dir}/${application.base.name}.mxml"
+			   configname="air"
+			   allow-source-path-overlap="true"
+			   failonerror="true"
+			   output="${bin.dir}/${application.base.name}-air.swf">
+
+			<target-player>32.0</target-player>
+
+			<source-path path-element="${src.dir}" />
+			<!--Not needed: <source-path path-element="${locale.dir}" />-->
+
+			<load-config filename="${FLEX_HOME}/frameworks/air-config.xml" />
+			<load-config filename="${basedir}/build/${application.base.name}-config.xml" />
+
+
+			<library-path dir="${lib.dir}" append="true">
+				<include name="*.swc" />
+			</library-path>
+			<show-binding-warnings>false</show-binding-warnings>
+
+			<!--Not needed: <include-resource-bundles>TBC</include-resource-bundles>-->
+
+			<compiler.define name="CONFIG::antbuild" value="true"/>
+		</mxmlc>
+
+		<echo>Application compiled</echo>
+
+	</target>
+
+
+	<target name="copyAirAssets" description="copies air assets to package contents">
+
+		<echo>Copying AIR Application assets...</echo>
+		<!-- descriptor file -->
+		<copy file="${basedir}/build/app-air.xml" todir="${bin.dir}" overwrite="true"/>
+
+		<!-- copy assets temporarily prior to packaging -->
+
+		<!-- general app assets -->
+		<copy todir="${bin.dir}/THERM" overwrite="true">
+			<fileset dir="${basedir}\src\THERM" casesensitive="no" >
+				<include name="**/*.*"/>
+			</fileset>
+		</copy>
+
+		<copy todir="${bin.dir}/config" overwrite="true">
+			<fileset dir="${basedir}/src/config" casesensitive="no" >
+				<include name="**/*.*"/>
+			</fileset>
+		</copy>
+
+		<copy todir="${bin.dir}/W7" overwrite="true">
+			<fileset dir="${basedir}/src/W7" casesensitive="no" >
+				<include name="**/*.*"/>
+			</fileset>
+		</copy>
+
+		<copy todir="${bin.dir}/db" overwrite="true">
+			<fileset dir="${basedir}/src/db" casesensitive="no" >
+				<include name="**/*.*"/>
+			</fileset>
+		</copy>
+
+		<copy todir="${bin.dir}/WincovER_Calc" overwrite="true">
+			<fileset dir="${basedir}/src/WincovER_Calc" casesensitive="no" >
+				<include name="**/*.*"/>
+			</fileset>
+		</copy>
+
+		<copy todir="${bin.dir}/WincovER_sample_THERM_files" overwrite="true">
+			<fileset dir="${basedir}/src/WincovER_sample_THERM_files" casesensitive="no" >
+				<include name="**/*.*"/>
+			</fileset>
+		</copy>
+		<!-- app icons -->
+		<!--Not needed: <copy todir="${bin.dir}/assets" overwrite="true">
+			<fileset dir="${basedir}/build/app_icons" casesensitive="no">
+				<include name="**/*.*"/>
+			</fileset>
+		</copy>-->
+		<echo>AIR Application assets copied</echo>
+
+	</target>
+
+	<target name="delete-temp-files">
+
+		<delete dir="${bin.dir}/THERM" failonerror="false" />
+		<delete dir="${bin.dir}/db" failonerror="false" />
+		<delete dir="${bin.dir}/W7" failonerror="false" />
+		<delete dir="${bin.dir}/config" failonerror="false" />
+		<delete dir="${bin.dir}/WincovER_Calc" failonerror="false" />
+		<delete dir="${bin.dir}/WincovER_sample_THERM_files" failonerror="false" />
+
+		<delete file="${bin.dir}/${APPLICATION_SWF}" failonerror="false" />
+		<delete file="${bin.dir}/app-air.xml" failonerror="false" />
+	</target>
+
+
+
+
+
+	<target name="make-dev-certificate" description="only needed once cert">
+
+		<!-- A dev cert should always be available, either because it is in git, or is generated by this target.
+			 Dev certificate should never be used for release.
+		     Setting KEYSTORE and STOREPASS in location.properties overrides use of the dev cert for a release build -->
+
+		<available property="dev.cert.exists" file="${dev.keystore}" />
+
+		<echo if:true="${dev.cert.exists}" message="There is already a dev cert created - do not recreate"/>
+
+		<java unless:true="${dev.cert.exists}" id="make-dev-cert" jar="${adt_path}" fork="true" failonerror="false" resultproperty="DEVCERT.created">
+			<arg value="-certificate" />
+			<arg value="-cn" />
+			<arg value="SelfSign" />
+			<arg value="-o" />
+			<arg value="${application.base.name}" />
+			<arg value="-c" />
+			<arg value="AU" />
+			<arg value="2048-RSA" />
+			<arg value="${dev.keystore}" />
+			<arg value="${dev.storepass}" />
+		</java>
+
+		<property unless:set="KEYSTORE" name="KEYSTORE" location="${dev.keystore}" />
+		<property unless:set="STOREPASS" name="STOREPASS" value="${dev.storepass}" />
+		<property unless:set="STORETYPE" name="STORETYPE" value="${dev.storetype}" />
+	</target>
+
+
+	<target name="verify-certificate" depends="make-dev-certificate" description="checks signing cert">
+
+		<echo>Checking AIR Signing certificate...</echo>
+
+		<!-- A dev cert should always be available, either because it is in git repo, or is generated by make-dev-certificate (one-time only).
+		     But the location.properties override specification for a release certificate should always be checked -->
+
+		<condition property="KEYSTORE.empty" value="true" else="false">
+			<or>
+				<and>
+					<isset property="KEYSTORE"/>
+					<or>
+						<equals arg1="${KEYSTORE}" arg2="" />
+						<equals arg1="${KEYSTORE}" arg2="NONE" />
+					</or>
+				</and>
+					<not>
+					<isset property="KEYSTORE"/>
+					</not>
+			</or>
+		</condition>
+
+		<!-- is it a valid file? -->
+		<condition property="KEYSTORE.resolved" value="${KEYSTORE}" else="false">
+			<or>
+				<equals arg1="${KEYSTORE.empty}" arg2="true" />
+				<available file="${KEYSTORE}"/>
+			</or>
+		</condition>
+
+
+		<echo>KEYSTORE.resolved ${KEYSTORE.resolved}</echo>
+		<condition property="KEYSTORE.bad" value="true" else="false">
+			<equals arg1="${KEYSTORE.resolved}" arg2="false"/>
+		</condition>
+
+		<fail if="${KEYSTORE.bad}" message="KEYSTORE: ${KEYSTORE} is not valid - check local.properties" />
+
+		<!-- is it a valid password (non empty)? -->
+		<condition property="STOREPASS.bad" value="true" else="false">
+			<or>
+				<not>
+					<isset property="STOREPASS"/>
+				</not>
+				<equals arg1="${STOREPASS}" arg2=""/>
+			</or>
+		</condition>
+
+		<fail if="${STOREPASS.bad}" message="STOREPASS: ${STOREPASS} is not valid - check local.properties" />
+
+		<java id="verify-cert" jar="${adt_path}" fork="true" failonerror="false" resultproperty="CERTCHECK.result">
+			<arg value="-checkstore" />
+			<arg value="-storetype" />
+			<arg value="${STORETYPE}" />
+			<arg value="-keystore" />
+			<arg value="${KEYSTORE}" />
+			<arg value="-storepass" />
+			<arg value="${STOREPASS}" />
+		</java>
+
+		<condition property="CERTCHECK.invalid" value="false" else="true">
+			<equals arg1="${CERTCHECK.result}" arg2="0" />
+		</condition>
+
+		<fail if="${CERTCHECK.invalid}" message="The combination of certificate signing parameters is not valid - check local.properties" />
+
+		<echo>AIR Application Dev Signing certificate checked</echo>
+
+	</target>
+
+
+
+
+	<target name="package-app"  depends="compile-air,verify-certificate">
+
+		<property name="APPLICATION_SWF" value="${application.base.name}-air.swf"/>
+		<property name="app-build-descriptor" value="${basedir}/build/app-air.xml"/>
+
+
+		<property name="tsa" value="http://sha256timestamp.ws.symantec.com/sha256/timestamp"/>
+
+		<property name="assets_dirs" value="${bin.dir}/THERM ${bin.dir}/W7 ${bin.dir}/db ${bin.dir}/config ${bin.dir}/WincovER_Calc ${bin.dir}/WincovER_sample_THERM_files" />
+
+
+
+		<property name="command-line" value="${adt_path} -package -storetype ${STORETYPE} -keystore ${KEYSTORE} -storepass ${STOREPASS} -tsa ${tsa} -target ${PACKAGE_TARGET} ${app-package-dir} ${app-build-descriptor} ${APPLICATION_SWF} ${assets_dirs}" />
+
+		<!-- always sign with the dev cert. We will use external tool 'signtool' to sign with an EV cert -->
+
+		<java id="packager" jar="${adt_path}" fork="true" failonerror="true">
+
+			<arg value="-package" />
+
+			<arg value="-storetype" />
+			<arg value="${STORETYPE}" />
+			<arg value="-keystore" />
+			<arg value="${KEYSTORE.resolved}" />
+			<arg value="-storepass" />
+			<arg value="${STOREPASS}" />
+
+			<arg value="-tsa" />
+			<arg value="${tsa}" />
+
+			<arg value="-target" />
+			<arg value="${PACKAGE_TARGET}" />
+
+			<arg value="${app-package-dir}" />
+			<arg value="${app-build-descriptor}" />
+			<arg value="-C" />
+			<arg value="${bin.dir}" />
+			<arg value="${APPLICATION_SWF}" />
+			<!-- asset dirs -->
+			<arg line="${assets_dirs}" />
+
+
+		</java>
+		<antcall target="delete-temp-files"/>
+
+		<echo>PACKAGING COMMAND LINE (FOR REFERENCE)</echo>
+		<echo>--------------------------------------</echo>
+		<echo>${command-line}</echo>
+		<echo>--------------------------------------</echo>
+		<zip destfile="${bin.dir}/package.zip">
+			<fileset dir="${bin.dir}/package" />
+		</zip>
+	</target>
+
+</project>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<application xmlns="http://ns.adobe.com/air/application/32.0">
+	<id>WincovER.v2</id>
+	<filename>WincovER</filename>
+	<name>WincovER</name>
+	<architecture>64</architecture>
+	<versionNumber>0.0.7</versionNumber>
+	<versionLabel>0.0.7</versionLabel>
+	<initialWindow>
+		<content>WincovER-air.swf</content>
+		<title>WincovER</title>
+		<width>1200</width>
+		<height>900</height>
+		<autoOrients>false</autoOrients>
+        <fullScreen>false</fullScreen>
+        <visible>false</visible>
+    </initialWindow>
+	<supportedProfiles>extendedDesktop</supportedProfiles>
+</application>
