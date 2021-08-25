@@ -3,7 +3,7 @@ bin/
 bin-debug/
 bin-release/
 bin-release-temp/
-build/
+/build/local.properties
 out/
 [Oo]bj/ # FlashDevelop obj
 [Bb]in/ # FlashDevelop bin
