@@ -16,6 +16,8 @@
         import gov.lbl.aercalc.model.settings.AppSettings;
         import gov.lbl.aercalc.util.Logger;
 
+        import spark.filters.GlowFilter;
+
         [Bindable]
         public var appSettings:AppSettings
 
@@ -150,6 +152,19 @@
                     var autoIni:File = newW7AppFile.parent.resolvePath(autoIniName);
                     if (autoIni.exists) {
                         window7IniPath.text = autoIni.nativePath;
+                        myFilter.stop();myFilter.play();
+                    } else {
+                        var parentDir:File = newW7AppFile.parent;
+                        var check:RegExp = /WINDOW(\d\.\d)/
+                        if (parentDir.isDirectory && check.test(parentDir.name)) {
+                            var version:String = check.exec(parentDir.name)[1];
+                            autoIniName = "W"+ version + ".ini";
+                            autoIni = new File("C:\\Users\\Public\\LBNL\\Settings\\"+autoIniName)
+                            if (autoIni.exists) {
+                                window7IniPath.text = autoIni.nativePath;
+                                myFilter.stop();myFilter.play();
+                            }
+                        }
                     }
                 }
 
@@ -170,6 +185,18 @@
         ]]>
 
 	</fx:Script>
+    <fx:Declarations>
+
+        <s:AnimateFilter id="myFilter"
+                         target="{window7IniPath}"
+                         repeatCount="1"
+                         duration="1000"
+                         bitmapFilter="{new spark.filters.GlowFilter()}">
+            <s:SimpleMotionPath property="strength" valueFrom="0" valueTo="5"/>
+            <s:SimpleMotionPath property="blurX" valueFrom="0" valueTo="4"/>
+            <s:SimpleMotionPath property="blurY" valueFrom="0" valueTo="4"/>
+        </s:AnimateFilter>
+    </fx:Declarations>
 
 
     <s:Label text="Imports" width="100%" styleName="formSectionHeader"/>
