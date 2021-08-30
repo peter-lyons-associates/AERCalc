@@ -588,8 +588,7 @@ public class ApplicationController
                 //ApplicationModel.ENERGY_PLUS_SUBDIR,
                 ApplicationModel.WINCOVER_CALC_SUBDIR,
                 ApplicationModel.BSDF_SUBDIR,
-                ApplicationModel.THERM_SUBDIR,
-                ApplicationModel.THERM_FILES_SUBDIR
+                ApplicationModel.THERM_SUBDIR
             ];
 			
 			//bsdf is a special case.  Since it is empty AIR won't create it when making the install

@@ -190,11 +190,6 @@
 			</fileset>
 		</copy>
 
-		<copy todir="${bin.dir}/WincovER_sample_THERM_files" overwrite="true">
-			<fileset dir="${basedir}/src/WincovER_sample_THERM_files" casesensitive="no" >
-				<include name="**/*.*"/>
-			</fileset>
-		</copy>
 		<!-- app icons -->
 		<!--Not needed: <copy todir="${bin.dir}/assets" overwrite="true">
 			<fileset dir="${basedir}/build/app_icons" casesensitive="no">
@@ -212,7 +207,6 @@
 		<delete dir="${bin.dir}/W7" failonerror="false" />
 		<delete dir="${bin.dir}/config" failonerror="false" />
 		<delete dir="${bin.dir}/WincovER_Calc" failonerror="false" />
-		<delete dir="${bin.dir}/WincovER_sample_THERM_files" failonerror="false" />
 
 		<delete file="${bin.dir}/${APPLICATION_SWF}" failonerror="false" />
 		<delete file="${bin.dir}/app-air.xml" failonerror="false" />
@@ -332,7 +326,7 @@
 
 		<property name="tsa" value="http://sha256timestamp.ws.symantec.com/sha256/timestamp"/>
 
-		<property name="assets_dirs" value="${bin.dir}/THERM ${bin.dir}/W7 ${bin.dir}/db ${bin.dir}/config ${bin.dir}/WincovER_Calc ${bin.dir}/WincovER_sample_THERM_files" />
+		<property name="assets_dirs" value="${bin.dir}/THERM ${bin.dir}/W7 ${bin.dir}/db ${bin.dir}/config ${bin.dir}/WincovER_Calc" />
 
 
 
