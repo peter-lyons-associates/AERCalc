@@ -652,7 +652,7 @@
                   verticalCenter="-60"
                   verticalAlign="middle">
             <s:Label  text.gettingList="Loading all glazing systems from WINDOW..."
-                      text.importingSelected="Importing selected glazing systems from WINDOW..."  />
+                      text.importingSelected="Generating .idf file(s), please wait..."  />
             <s:Spacer width="10"/>
             <s:BusyIndicator symbolColor="#999999" />
         </s:HGroup>
