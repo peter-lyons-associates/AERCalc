@@ -9,7 +9,9 @@
     <fx:Script>
 		<![CDATA[
         import flash.events.EventDispatcher;
-        
+
+        import gov.lbl.aercalc.util.Utils;
+
         import spark.components.Alert;
         
         import gov.lbl.aercalc.model.ApplicationModel;
@@ -39,8 +41,15 @@
 
         private function browseForNewW7DB():void {
             try {
-                var newW7DBFile:File = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_DEFAULT_MDB_FILE_PATH);
-                newW7DBFile.browseForOpen("Select new W7 database");
+                var oldDBFile:File = new File(settings.lblWindowDBPath);
+                var newW7DBFile:File
+                if (oldDBFile.exists) {
+                    newW7DBFile = oldDBFile;
+                } else {
+                    newW7DBFile = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_DEFAULT_MDB_FILE_PATH);
+                }
+
+                newW7DBFile.browseForOpen("Select new W7 database",[ new FileFilter("Access Database", "*.mdb")]);
                 newW7DBFile.addEventListener(Event.SELECT, onNewW7DBSelected, false, 0, true);
                 newW7DBFile.addEventListener(Event.CANCEL, onNewW7DBCancel, false, 0, true);
             }
@@ -49,7 +58,6 @@
                 Alert.show("Cannot browse for W7 db. See log for details. (Error: " + error + ")", "Error");
             }
         }
-
 
         private function onNewW7DBSelected(event:Event):void{
             var newW7DBFile:File = event.target as File;
@@ -114,7 +122,45 @@
 
         private function browseForNewW7AppFile():void {
             try {
-                var newW7AppFile:File = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_DEFAULT_MDB_FILE_PATH);
+                var newW7AppFile:File ;//= ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_DEFAULT_MDB_FILE_PATH);
+                switch(appFileChangeMode) {
+                    case 'exe' :
+                        //check current settings
+                        newW7AppFile = new File(settings.lblWindowExePath) ;
+                        if (!newW7AppFile.exists) {
+                            if (newW7AppFile.parent.exists) {
+                                newW7AppFile = newW7AppFile.parent;
+                            }
+                        }
+                        if (!newW7AppFile.exists) {
+                            //default to ApplicationModel.VERION_WINDOW_BASE if it is present
+                            if (Utils.isWindowVersionPresent(ApplicationModel.VERION_WINDOW_BASE, "W7.exe")) {
+                                newW7AppFile = Utils.getWindowApplicationDir(ApplicationModel.VERION_WINDOW_BASE).resolvePath("W7.exe");
+                            } else {
+                                //if the program files are present, default to that directory
+                                newW7AppFile = Utils.getWindowVersionsParentDirForBrowsing();
+                            }
+                        }
+
+                        break;
+                    case 'ini' :
+                        newW7AppFile = new File(settings.lblWindowIniPath) ;
+                        if (!newW7AppFile.exists) {
+                            if (newW7AppFile.parent.exists) {
+                                newW7AppFile = newW7AppFile.parent;
+                            }
+                        }
+                        if (!newW7AppFile.exists) {
+                            //check in default location for ini
+                            newW7AppFile = Utils.getWindowIniParentDirForBrowsing();
+
+                        }
+                        break;
+                    default:
+                        throw new Error('unsupported browseForOpen : '+appFileChangeMode)
+                        break;
+                }
+
                 newW7AppFile.browseForOpen("Select new W7 "+appFileChangeMode + " file", [getCurrentFileFilter()]);
                 newW7AppFile.addEventListener(Event.SELECT, onNewW7AppFileSelected, false, 0, true);
                 newW7AppFile.addEventListener(Event.CANCEL, onNewW7AppFileCancel, false, 0, true);
@@ -147,25 +193,12 @@
             if ( ti.text !=  newW7AppFile.nativePath){
                 ti.text = newW7AppFile.nativePath;
                 if (appFileChangeMode == 'exe') {
-                    //try to auto-select the {AppName}.ini in the same directory, if it exists
-                    var autoIniName:String = newW7AppFile.name.substr(0, newW7AppFile.name.toLowerCase().lastIndexOf('.exe'))+ '.ini';
-                    var autoIni:File = newW7AppFile.parent.resolvePath(autoIniName);
-                    if (autoIni.exists) {
+                    var autoIni:File = Utils.getAutoIniForExe(newW7AppFile);
+                    if (autoIni && autoIni.exists) {
                         window7IniPath.text = autoIni.nativePath;
                         myFilter.stop();myFilter.play();
-                    } else {
-                        var parentDir:File = newW7AppFile.parent;
-                        var check:RegExp = /WINDOW(\d\.\d)/
-                        if (parentDir.isDirectory && check.test(parentDir.name)) {
-                            var version:String = check.exec(parentDir.name)[1];
-                            autoIniName = "W"+ version + ".ini";
-                            autoIni = new File("C:\\Users\\Public\\LBNL\\Settings\\"+autoIniName)
-                            if (autoIni.exists) {
-                                window7IniPath.text = autoIni.nativePath;
-                                myFilter.stop();myFilter.play();
-                            }
-                        }
                     }
+
                 }
 
                 //call onChange event so settings model is updated

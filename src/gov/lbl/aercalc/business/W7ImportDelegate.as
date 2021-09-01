@@ -45,9 +45,11 @@ public class W7ImportDelegate extends EventDispatcher
     // Events launched from this delegate
     public static const GLAZING_SYSTEM_LIST_IMPORTED:String = "glazingSystemListImportedFromW6";
     public static const GLAZING_SYSTEM_LIST_IMPORT_FAILED:String = "glazingSystemListImportFromW6Failed";
+    public static const GLAZING_SYSTEM_LIST_IMPORT_SKIPPED:String = "glazingSystemListImportSkipped";
 
     public static const BSDF_GENERATED:String = "bsdfGeneratedFromW7";
     public static const BSDF_GENERATION_FAILED:String = "bsdfGenerationFromW7Failed";
+    public static const BSDF_GENERATION_SKIPPED:String = "bsdfGenerationFromW7Skipped";
 
     // Constants for internal use
     protected static const WINDOWS_LIST_FILENAME:String = "windows_all.xml";
@@ -129,7 +131,7 @@ public class W7ImportDelegate extends EventDispatcher
 
     private function getSettingsOrDefaultFile(settingsFilePath:String, defaultFilePath:String):File{
         var file:File = new File(settingsFilePath);
-        if (!file.exists) {
+        if (!file.exists && defaultFilePath) {
             var altFile:File = ApplicationModel.baseStorageDir.resolvePath(defaultFilePath);
             if (file.nativePath != altFile.nativePath) {
                 //in particular, default ini files will be created if not present
@@ -141,17 +143,13 @@ public class W7ImportDelegate extends EventDispatcher
         return file;
     }
 
-    /* ************** */
-    /* PUBLIC METHODS */
-    /* ************** */
 
-    /* Initialize local variables that manage location of files,
-       so we don't have to resolve them each time we run nativeProcess.
-       This method is public as we might need to re-init file locations
-       if the user changes preferences (e.g. location of WINDOW .mdb)
+    private var _w7SkipError:String;
+    /* Initialize local variables that manage location of files
      */
-    public function initW7Files():void
+    private function initW7Files():void
     {
+        _w7SkipError = null;
 		//make sure 'output' directory exists in W7 folder, since W7 will bomb if it doesn't
 		var outDir:File = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_SUBDIR + "output");
 		outDir.createDirectory();
@@ -160,11 +158,33 @@ public class W7ImportDelegate extends EventDispatcher
         resetFileErrors();
         //GD - removed: _wDB = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_MDB_FILE_PATH);
         _wDB = getSettingsOrDefaultFile(settingsModel.appSettings.lblWindowDBPath, ApplicationModel.WINDOW_MDB_FILE_PATH);
+        var checkFile:File = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_MDB_FILE_PATH);
+
         //GD - removed:  _wDBLockFile = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_MDB_LOCK_FILE_PATH);
         var ldbName:String = _wDB.name.substr(0, _wDB.name.toLowerCase().lastIndexOf('.mdb')) + '.ldb';
         _wDBLockFile = _wDB.parent.resolvePath(ldbName);
         //GD - removed:   _wExe = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_EXE_FILE_PATH);
-        _wExe = getSettingsOrDefaultFile(settingsModel.appSettings.lblWindowExePath, ApplicationModel.WINDOW_EXE_FILE_PATH);
+        _wExe = getSettingsOrDefaultFile(settingsModel.appSettings.lblWindowExePath, null);
+        if (checkFile.nativePath == _wDB.nativePath) {
+            //we are using the default db. We need to use the default Window version that matches that.
+            var possible:Boolean = Utils.isWindowVersionPresent(ApplicationModel.VERION_WINDOW_BASE, "W7.exe");
+            if (possible) {
+                var correct_exe:File = Utils.getWindowApplicationDir(ApplicationModel.VERION_WINDOW_BASE).resolvePath("W7.exe");
+                if (!correct_exe.exists || correct_exe.nativePath != _wExe.nativePath) {
+                    possible = false;
+                }
+            }
+            if (!possible) {//Please open File > Preferences, select the WINDOW7 tab and then browse to a valid WINDOW database
+                _w7SkipError = "Please Choose File -> Preferences, select the WINDOW7 tab and then ensure your WINDOW executable is version " + ApplicationModel.VERION_WINDOW_BASE + " to use the sample/demo database";
+                return;
+            }
+        }
+
+        if (!_wExe.exists) {
+            _w7SkipError = "Please Choose File -> Preferences, select the WINDOW7 tab and ensure a compatible WINDOW executable is selected" ;
+            return;
+        }
+
         _logDir = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_LOGS_FILE_PATH);
         //GD - removed:   _iniFile = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_INI_FILE_PATH);
         _iniFile = getSettingsOrDefaultFile(settingsModel.appSettings.lblWindowIniPath, ApplicationModel.WINDOW_INI_FILE_PATH);
@@ -176,6 +196,10 @@ public class W7ImportDelegate extends EventDispatcher
         _generatedBsdfOutputFile = wDir.resolvePath("output/" + GENERATED_BSDF_FILENAME);
 
         updateIniIfMissing();
+        if (!_iniFile.exists) {
+            _w7SkipError = "Please Choose File -> Preferences, select the WINDOW7 tab and ensure a compatible WINDOW ini file is selected" ;
+            return;
+        }
 
         if (Utils.isMac) {
 
@@ -191,7 +215,9 @@ public class W7ImportDelegate extends EventDispatcher
 
         }
     }
-
+    /* ************** */
+    /* PUBLIC METHODS */
+    /* ************** */
 
     /* Run WINDOW to get an xml list of all glazing systems available in the current DB
      *
@@ -245,6 +271,12 @@ public class W7ImportDelegate extends EventDispatcher
 
         //use latest paths...might have been changed.
         initW7Files();
+        if (_w7SkipError) {
+            var event:DynamicEvent = new DynamicEvent(GLAZING_SYSTEM_LIST_IMPORT_SKIPPED, false);
+            event.message = _w7SkipError;
+            dispatchEvent(event)
+            return;
+        }
 
         //If this is a mac, just fake it
         if (Utils.isMac) {
@@ -703,16 +735,16 @@ public class W7ImportDelegate extends EventDispatcher
             //var w6InstallationPath:String = appSettingsModel.w6InstallationPath
             //var lbnlSharedPath:String = appSettingsModel.w6InstallationPath
 
-            var w6Dir:String = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_SUBDIR).nativePath;
-			var thermExePath:String = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.THERM_EXE_FILE_PATH).nativePath;
+        //    var w6Dir:String = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_SUBDIR).nativePath;
+		//	var thermExePath:String = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.THERM_EXE_FILE_PATH).nativePath;
 
             var out:String = File.lineEnding + "O5StandardsPath=" + ApplicationModel.getAbsoluteFilePath(ApplicationModel.WINDOW_SUBDIR + "\\Standards\\W5_NFRC_2003.std");//w6Dir + "\\Standards\\W5_NFRC_2003.std";
             out += File.lineEnding + "W6BasisStandard=" +  ApplicationModel.getAbsoluteFilePath(ApplicationModel.WINDOW_SUBDIR + "\\W6_full_basis.xml");//w6Dir + "\\W6_full_basis.xml";
             out += File.lineEnding + "W6BasisHalf=" + ApplicationModel.getAbsoluteFilePath(ApplicationModel.WINDOW_SUBDIR + "\\W6_half_basis.xml");//w6Dir + "\\W6_half_basis.xml";
             out += File.lineEnding + "W6BasisQuarter=" + ApplicationModel.getAbsoluteFilePath(ApplicationModel.WINDOW_SUBDIR + "\\W6_quarter_basis.xml");// w6Dir + "\\W6_quarter_basis.xml";
             out += File.lineEnding + "W6Database="+ ApplicationModel.getAbsoluteFilePath(  ApplicationModel.WINDOW_MDB_FILE_PATH);//w6Dir + "\\" + ApplicationModel.WINDOW_MDB_FILE_PATH;
-			out += File.lineEnding + "ThermPath=" + thermExePath;
-			out += File.lineEnding + "HoneycombGenBSDFPath=" + ApplicationModel.getAbsoluteFilePath(ApplicationModel.WINDOW_SUBDIR + "\\Standards\\W5_NFRC_2003.std");// w6Dir + "\\genBSDF";
+		//	out += File.lineEnding + "ThermPath=" + thermExePath;
+			out += File.lineEnding + "HoneycombGenBSDFPath=" + ApplicationModel.getAbsoluteFilePath(ApplicationModel.WINDOW_SUBDIR + "\\genBSDF");// w6Dir + "\\genBSDF";
 
             s.writeUTFBytes(out)
             s.close()
@@ -746,6 +778,11 @@ public class W7ImportDelegate extends EventDispatcher
 
         //use latest paths...might have been changed.
         initW7Files();
+        if (_w7SkipError) {
+            dispatchEvent(new DynamicEvent(BSDF_GENERATION_SKIPPED, false));
+            Alert.show(_w7SkipError , "Please fix this first");
+            return;
+        }
 
         //If this is a mac, just fake it
         if (Utils.isMac) {

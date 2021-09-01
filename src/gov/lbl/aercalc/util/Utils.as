@@ -13,7 +13,6 @@ import mx.formatters.NumberFormatter;
 import spark.formatters.DateTimeFormatter;
 
 import gov.lbl.aercalc.error.InvalidUnitsError;
-import gov.lbl.aercalc.model.ApplicationModel;
 
 public class Utils
 	{
@@ -73,7 +72,6 @@ public class Utils
 			return shadeTypeToken;
 		}
 
-
 		/* Returns full string for attachment position, based on token in product name */
 		public static function getAttachmentPositionFromWindowName(windowName:String):String {
             var windowNameArr:Array = getWindowNameArr(windowName);
@@ -88,7 +86,6 @@ public class Utils
             return attachmentPositionLabel;
 		}
 
-
         private static function getWindowNameArr(windowName:String):Array {
             var windowNameArr:Array = windowName.split("::");
             if (windowNameArr.length != 4) {
@@ -99,6 +96,82 @@ public class Utils
         }
 
 
+		public static function getWindowVersionsParentDirForBrowsing():File{
+			var file:File;
+			if (isWindows) { //windows only at this point, anyway
+				file = new File("C:\\Program Files (x86)\\LBNL");
+				if (!file.exists) file = null;
+			}
+			if (!file) file = new File();
+			return file ;
+		}
+
+		public static function getWindowIniParentDirForBrowsing():File{
+			var file:File;
+			if (isWindows) { //windows only at this point, anyway
+				file = new File("C:\\Users\\Public\\LBNL\\Settings");
+				if (!file.exists) file = null;
+			}
+			if (!file) file = new File();
+			return file ;
+		}
+
+		/**
+		 * Get an array of the currently installed WINDOW versions, assuming default installation path
+		 * @return an array of objects that contain numeric 'version' (highest first) and 'directory' (File instance) fields
+		 */
+		public static function getInstalledWindowVersions():Array{
+			var LBNL:File = getWindowVersionsParentDirForBrowsing();
+			var versions:Array = [];
+			if (LBNL.exists && LBNL.isDirectory) {
+				var contents:Array = LBNL.getDirectoryListing();
+				var l:uint = contents.length;
+				for (var i:uint=0;i<l;i++) {
+					var contentFile:File = contents[i];
+					if (contentFile.isDirectory && contentFile.name.indexOf("WINDOW") == 0) {
+						var version:Number = parseFloat(contentFile.name.substr("WINDOW".length));
+						versions.push( {version: version, directory:contentFile})
+					}
+				}
+				versions.sortOn('version', Array.DESCENDING|Array.NUMERIC)
+			}
+
+			return versions;
+		}
+
+		public static function getAutoIniForExe(exe:File):File{
+			var autoIniName:String = exe.name.substr(0, exe.name.toLowerCase().lastIndexOf('.exe'))+ '.ini';
+			var autoIni:File = exe.parent.resolvePath(autoIniName);
+			if (!autoIni.exists) {
+				var parentDir:File = exe.parent;
+				var check:RegExp = /WINDOW(\d\.\d)/
+				if (parentDir.isDirectory && check.test(parentDir.name)) {
+					var version:String = check.exec(parentDir.name)[1];
+					autoIniName = "W"+ version + ".ini";
+					autoIni = new File("C:\\Users\\Public\\LBNL\\Settings\\"+autoIniName)
+					if (!autoIni.exists) {
+						autoIni = null;
+					}
+				} else {
+					autoIni = null;
+				}
+			}
+
+			return autoIni;
+		}
+
+		public static function getWindowApplicationDir(forMainVersionString:String):File{
+			var file:File;
+			if (isWindows) { //windows only at this point, anyway
+				file = new File("C:\\Program Files (x86)\\LBNL\\WINDOW"+forMainVersionString);
+			}
+			return file;
+		}
+
+		public static function isWindowVersionPresent(mainVersionString:String, exe:String = "W7.exe"):Boolean{
+			var file:File = getWindowApplicationDir(mainVersionString);
+			return file && file.exists && file.resolvePath(exe).exists;
+		}
 
 		public static function initFormatters():void {
 			/* Initialize static formatters */

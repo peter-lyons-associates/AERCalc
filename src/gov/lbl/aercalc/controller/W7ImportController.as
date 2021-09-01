@@ -70,9 +70,11 @@ public class W7ImportController {
     public function onPostConstruct():void {
         wDelegate.addEventListener(W7ImportDelegate.GLAZING_SYSTEM_LIST_IMPORTED, onGlazingSystemListImported);
         wDelegate.addEventListener(W7ImportDelegate.GLAZING_SYSTEM_LIST_IMPORT_FAILED, onGlazingSystemListImportFailed);
+        wDelegate.addEventListener(W7ImportDelegate.GLAZING_SYSTEM_LIST_IMPORT_SKIPPED, onGlazingSystemListImportSkipped);
 
         wDelegate.addEventListener(W7ImportDelegate.BSDF_GENERATED, onBSDFGenerated);
         wDelegate.addEventListener(W7ImportDelegate.BSDF_GENERATION_FAILED, onBSDFGenerationFailed);
+        wDelegate.addEventListener(W7ImportDelegate.BSDF_GENERATION_SKIPPED, onBSDFGenerationSkipped);
 
     }
 
@@ -218,7 +220,11 @@ public class W7ImportController {
         importModel.importW7WindowsDialog.currentState = "listError";
 		importModel.currentState = "";
 	}
-
+    protected function onGlazingSystemListImportSkipped(event:DynamicEvent):void {
+        importModel.importW7WindowsDialog.closeDialog();
+        Alert.show(event.message , "Please fix this first");
+        importModel.currentState = "";
+    }
 
 	/* 
 		If a BSDF was generated, we can go ahead and 
@@ -274,6 +280,13 @@ public class W7ImportController {
         doNextBSDFImport();
     }
 
+    protected function onBSDFGenerationSkipped(event:DynamicEvent):void {
+        //simulate cancel
+        onUserCancelWindowImport();
+        importModel.importW7WindowsDialog.closeDialog();
+        Alert.show(event.message , "Please fix this first");
+        importModel.currentState = "";
+    }
 
     protected function onImportFinished():void {
 		

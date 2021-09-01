@@ -79,7 +79,7 @@ public class AppSettingsDelegate {
         }
     }
 
-    /* Deserialize xml into AppSettings. Handle any missing or incorrectedly serialized values */
+    /* Deserialize xml into AppSettings. Handle any missing or incorrectly serialized values */
     private function parseAppSettings(xml:XML):AppSettings {
         var result:AppSettings = FxBEngine.instance.getXmlSerializer().deserialize(xml, AppSettings) as AppSettings;
         //set some sane defaults
@@ -87,11 +87,28 @@ public class AppSettingsDelegate {
             result.lblWindowDBPath = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_DEFAULT_MDB_FILE_PATH).nativePath;
         }
         if (!result.lblWindowExePath) {
-            result.lblWindowExePath = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_EXE_FILE_PATH).nativePath;
+            var options:Array = Utils.getInstalledWindowVersions();
+            if (options.length) {
+                //choose highest version first, first entry in array
+                var file:File = options[0].directory as File;
+                file = file.resolvePath('W7.exe');
+                if (file.exists) {
+                    result.lblWindowExePath = file.nativePath;
+                }
+            }
+            //result.lblWindowExePath = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_EXE_FILE_PATH).nativePath;
         }
 
         if (!result.lblWindowIniPath) {
-            result.lblWindowIniPath = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_INI_FILE_PATH).nativePath;
+            if (result.lblWindowExePath) {
+                file = new File(result.lblWindowExePath);
+                if (file.exists) {
+                    file = Utils.getAutoIniForExe(file);
+                    result.lblWindowIniPath = file.nativePath;
+                }
+            }
+
+           // result.lblWindowIniPath = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_INI_FILE_PATH).nativePath;
         }
 
         return result;
@@ -106,8 +123,25 @@ public class AppSettingsDelegate {
 	private function getDefaults():AppSettings {
 		var appSettings:AppSettings = new AppSettings();
 		appSettings.lblWindowDBPath = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_MDB_FILE_PATH).nativePath;
-        appSettings.lblWindowExePath = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_EXE_FILE_PATH).nativePath;
-        appSettings.lblWindowIniPath = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_INI_FILE_PATH).nativePath;
+        var options:Array = Utils.getInstalledWindowVersions();
+        if (options.length) {
+            //choose highest version first, first entry in array
+            var file:File = options[0].directory as File;
+            file = file.resolvePath('W7.exe');
+            if (file.exists) {
+                appSettings.lblWindowExePath = file.nativePath;
+            }
+        }
+        if (appSettings.lblWindowExePath) {
+            file = new File(appSettings.lblWindowExePath);
+            if (file.exists) {
+                file = Utils.getAutoIniForExe(file);
+                appSettings.lblWindowIniPath = file.nativePath;
+            }
+        }
+
+        //appSettings.lblWindowExePath = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_EXE_FILE_PATH).nativePath;
+        //appSettings.lblWindowIniPath = ApplicationModel.baseStorageDir.resolvePath(ApplicationModel.WINDOW_INI_FILE_PATH).nativePath;
 		appSettings.logEventLevel = LogEventLevel.DEBUG;
 		return appSettings;
 	}
