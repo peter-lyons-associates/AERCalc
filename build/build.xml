@@ -160,11 +160,6 @@
 		<!-- copy assets temporarily prior to packaging -->
 
 		<!-- general app assets -->
-		<copy todir="${bin.dir}/THERM" overwrite="true">
-			<fileset dir="${basedir}\src\THERM" casesensitive="no" >
-				<include name="**/*.*"/>
-			</fileset>
-		</copy>
 
 		<copy todir="${bin.dir}/config" overwrite="true">
 			<fileset dir="${basedir}/src/config" casesensitive="no" >
@@ -202,7 +197,6 @@
 
 	<target name="delete-temp-files">
 
-		<delete dir="${bin.dir}/THERM" failonerror="false" />
 		<delete dir="${bin.dir}/db" failonerror="false" />
 		<delete dir="${bin.dir}/W7" failonerror="false" />
 		<delete dir="${bin.dir}/config" failonerror="false" />
@@ -326,7 +320,7 @@
 
 		<property name="tsa" value="http://sha256timestamp.ws.symantec.com/sha256/timestamp"/>
 
-		<property name="assets_dirs" value="${bin.dir}/THERM ${bin.dir}/W7 ${bin.dir}/db ${bin.dir}/config ${bin.dir}/WincovER_Calc" />
+		<property name="assets_dirs" value="${bin.dir}/W7 ${bin.dir}/db ${bin.dir}/config ${bin.dir}/WincovER_Calc" />
 
 
 

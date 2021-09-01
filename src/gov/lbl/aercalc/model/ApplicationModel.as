@@ -47,10 +47,12 @@ import mx.logging.LogEventLevel;
 		//xml list, we want a constant defined here
 		//so we can immediately flag rows without having
 		//to do an initial import and parse the xml
-		public static const VERSION_WINDOW:String				= "7.7.01";
+		public static const VERION_WINDOW_BASE:String 			= "7.7";
+		public static const VERSION_WINDOW:String				= VERION_WINDOW_BASE + ".01";
 		public static const VERSION_ENERGYPLUS:String			= "9.1.0";
 		public static const VERSION_WINCOVER_CALC:String		= "0.0.1";
-		public static const VERSION_THERM:String				= "7.7.01";
+		public static const VERSION_THERM:String				= VERION_WINDOW_BASE + ".01";
+
 
 		public static const BASE_STORAGE_PATH_DIRNAME:String 	= "AppData/Local/"+getStorageFolderName()+"/";
 		public static const WINCOVER_CALC_SUBDIR:String 		= "WincovER_Calc/";
@@ -69,7 +71,7 @@ import mx.logging.LogEventLevel;
 		public static const BSDF_SUBDIR:String 					= "bsdf/";
 		public static const CONFIG_SUBDIR:String 				= "config";
 		public static const WINDOW_SUBDIR:String 				= "W7/";	 //setting to var so we can switch to W7 during development
-		public static const THERM_SUBDIR:String 				= "THERM/";
+		//public static const THERM_SUBDIR:String 				= "THERM/";
 
 
 		//Used on first startup to find DB within Application directory,
@@ -78,10 +80,9 @@ import mx.logging.LogEventLevel;
 		public static const DEFAULT_DB_NAME:String 				= "wincoverV2.sqlite";
         public static const DEFAULT_DB_PATH:String 				= DB_SUBDIR + DEFAULT_DB_NAME;
 
-		private static const __SAMPLE_DB:String = "W7_7_db_for_WincovER_import_testing.mdb";
-		//private static const __SAMPLE_DB:String = "WincovER_sample.mdb";
+		private static const __SAMPLE_DB:String = "WincovER sample database.mdb";
 
-		public static var WINDOW_EXE_FILE_PATH:String 			= WINDOW_SUBDIR + "W7.exe";
+	//	public static var WINDOW_EXE_FILE_PATH:String 			= WINDOW_SUBDIR + "W7.exe";
 		public static var WINDOW_LOGS_FILE_PATH:String 			=  WINDOW_SUBDIR + "W7.log";
 		public static var WINDOW_MDB_FILE_PATH:String 			=  WINDOW_SUBDIR + __SAMPLE_DB;//"WincovER_sample.mdb";
 		public static var WINDOW_MDB_LOCK_FILE_PATH:String 		= WINDOW_SUBDIR + __SAMPLE_DB.substr(0, __SAMPLE_DB.lastIndexOf('.')) + '.ldb';//"WincovER_sample.ldb";
@@ -89,7 +90,7 @@ import mx.logging.LogEventLevel;
 		public static var WINDOW_INI_TEMPLATE_FILE_PATH:String 	=  WINDOW_SUBDIR + "W7_template.ini";
 		public static var WINDOW_DEFAULT_MDB_FILE_PATH:String 	=  WINDOW_SUBDIR + __SAMPLE_DB;//"WincovER_sample.mdb";
 		
-		public static var THERM_EXE_FILE_PATH:String 			= THERM_SUBDIR + "THERM7.exe";
+		//public static var THERM_EXE_FILE_PATH:String 			= THERM_SUBDIR + "THERM7.exe";
 
 		public static const AERCALC_LOG_FILE_PATH:String		= "logs/";
 		public static const AERCALC_LOG_FILE_NAME:String 		= "wincover_log.txt";
