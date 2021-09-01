@@ -1,1 +1,0 @@
-Blindware Tuscany White 50mm Slat is oz40.xml
