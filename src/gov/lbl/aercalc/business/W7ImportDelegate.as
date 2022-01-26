@@ -326,6 +326,7 @@ public class W7ImportDelegate extends EventDispatcher
 		processArgs.push("-log");
 		processArgs.push(_logDir.nativePath);
 		processArgs.push("-verbose");
+        processArgs.push("-clearlog");   //RP: added this to clear the W7 log for each import session - it gets very long in verbose mode
         processArgs.push("-db" );
         processArgs.push(wDB.nativePath);
         processArgs.push("-DBExportTable");
@@ -452,7 +453,7 @@ public class W7ImportDelegate extends EventDispatcher
          //   trace('--->\n'+windowXML.toXMLString())
             try {
                 vo.W7ID = windowXML.ID;
-                vo.W7GlzSysID = windowXML.GlzSysList.GlzSysID;
+                vo.W7GlzSysID = windowXML.GlzSysList.GlzSysID + windowXML.GlzSysList.GlzSys.Name;   // RP: added glazing system name for record keeping
                 vo.W7ShdSysID = windowXML.GlzSysList.GlzSys.ShadeList.ID;
                 var parseState:ParsingState = WindowUtil.parseImportName(windowXML.Name, vo)
               //  vo.name = windowXML.Name;
@@ -889,11 +890,26 @@ public class W7ImportDelegate extends EventDispatcher
         try
         {
             //check for exitCode less than zero (int cast)
-            if (std_out_err) {
-                var err_str:String  =std_out_err;
-                std_out_err = null;
-                //" or 0x"+("00000" + event.exitCode.toString(16)).substr(-6)
-                throw new Error("Window process registered error (with exit code "+ int(event.exitCode)+ " ) " + err_str)
+            // TODO: Rebecca experiment
+            //if (std_out_err) {
+            //    var err_str:String  =std_out_err;
+            //    std_out_err = null;
+            //    //" or 0x"+("00000" + event.exitCode.toString(16)).substr(-6)
+            //    throw new Error("Window process registered error (with exit code "+ int(event.exitCode)+ " ) " + err_str)
+            //}
+            //RP: change success criteria to idf file exists and is larger than 50kB (smaller files indicate missing xml data)
+            if (!_generatedBsdfOutputFile.exists || _generatedBsdfOutputFile.size < 50){
+                if (std_out_err){
+                    var err_str:String  =std_out_err;
+                    std_out_err = null;
+                    //" or 0x"+("00000" + event.exitCode.toString(16)).substr(-6)
+                    throw new Error("Window process registered an error (with exit code "+ int(event.exitCode)+ " ) " + err_str);
+
+                }
+                else{
+                    throw new Error("BSDF file was not generated for an unknown reason.");
+                }
+                
             }
 
             // save generated BSDF to our BSDF storage directory
@@ -904,9 +920,12 @@ public class W7ImportDelegate extends EventDispatcher
             }
             var newBSDFName:String = libraryModel.getBSDFName(_currGlzSysName);
             var targetBSDF:File = bsdfStorageDir.resolvePath(newBSDFName);
+            //Alert.show("newBSDFName " + newBSDFName);
+            //Alert.show("targetBSDF path " + targetBSDF.nativePath);
+            //Logger.info("Window process generated idf.  Trying to copy generated idf to: " + targetBSDF.nativePath);
             _generatedBsdfOutputFile.copyTo(targetBSDF, true);
 			
-			changeComplexFenestrationStateName(targetBSDF, _currGlzSysName);
+			changeComplexFenestrationStateName(targetBSDF, _currGlzSysName);   // change name of CFS object inside file to match W7 product name
 
             // cleanup generic output file
 			_generatedBsdfOutputFile.deleteFile();

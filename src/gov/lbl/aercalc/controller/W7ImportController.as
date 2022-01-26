@@ -263,7 +263,7 @@ public class W7ImportController {
 
         if (importModel.currImportIndex < numImports){
             var glzSysVO:W7WindowImportVO = importModel.importGlazingSystemAC.getItemAt(importModel.currImportIndex) as W7WindowImportVO;
-            wDelegate.getBSDF(glzSysVO.W7ID, glzSysVO.name);
+            wDelegate.getBSDF(glzSysVO.W7ID, glzSysVO.W7Name);
         }
         else {
             onImportFinished();

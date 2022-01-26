@@ -7,16 +7,12 @@
 		"product_type": "Pleated Blinds",
 		"position": "Internal"
 	},
-	"ILS": {
-		"product_type": "Indoor Louvre Plantation Shutters",
+	"ISP": {
+		"product_type": "Indoor Shutters Plantation-Louvred",
 		"position": "Internal"
 	},
 	"ROL": {
 		"product_type": "Indoor Roller Blinds",
-		"position": "Internal"
-	},
-	"SHB": {
-		"product_type": "Indoor Sheer Blinds",
 		"position": "Internal"
 	},
 	"VEN": {
@@ -47,11 +43,11 @@
 		"product_type": "Louvre Panels",
 		"position": "External"
 	},
-	"ELS": {
-		"product_type": "Outdoor Louvre Plantation Shutters",
+	"OSL": {
+		"product_type": "Outdoor Shutters Louvred",
 		"position": "External"
 	},
-	"ERB": {
+	"ORB": {
 		"product_type": "Outdoor Roller Blinds",
 		"position": "External"
 	},

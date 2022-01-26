@@ -454,6 +454,7 @@ public class ApplicationController
                 return;
 			}
 			Alert.show("Project saved");
+			loadProject(targetDir, targetDB);   // switch to saved project
 		}
 
 
